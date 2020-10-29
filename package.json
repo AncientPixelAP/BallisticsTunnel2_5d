@@ -1,0 +1,17 @@
+{
+  "name": "BallisticsTunnel",
+  "version": "1.0.0",
+  "description": "simple socket racing game",
+  "main": "server.js",
+  "scripts": {
+	  "start":"node server.js",
+    "test": "test"
+  },
+  "author": "Sebastian Merkl",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "path": "^0.12.7",
+    "socket.io": "^2.2.0"
+  }
+}
