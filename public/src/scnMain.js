@@ -1,5 +1,6 @@
 import Hand from "./hand.js";
 import Segment from "./segment.js";
+import Ui from "./ui.js";
 
 export default class ScnMain extends Phaser.Scene {
 
@@ -48,27 +49,34 @@ export default class ScnMain extends Phaser.Scene {
         //Phaser.Math.RND.sow(["seed"]);
         //console.log(Phaser.Math.RND);
         
-        this.bsp = this.add.bitmapText(-124, -124, "pixelmix", "", 8, 1);//.setOrigin(0.5);
-        this.bsp.depth = 10000;
-        this.deb = this.add.bitmapText(-124, -100, "pixelmix", "", 8, 1);//.setOrigin(0.5);
-        this.deb.depth = 10000;
-        this.deb.setTint(0xff0000)
-        this.debugArrow = this.add.sprite(-124, -50, "sprDebugArrow00");
-        this.debugArrow.depth = 10000;
+        //this.bsp = this.add.bitmapText(-124, -124, "pixelmix", "", 8, 1);//.setOrigin(0.5);
+        //this.bsp.depth = 10000;
+        //this.deb = this.add.bitmapText(-124, -100, "pixelmix", "", 8, 1);//.setOrigin(0.5);
+        //this.deb.depth = 10000;
+        //this.deb.setTint(0xff0000);
+        //this.debugArrow = this.add.sprite(-124, -50, "sprDebugArrow00");
+        //this.debugArrow.depth = 10000;
 
         
         this.you = null;
         this.playersData = null;
         this.segments = [];
         this.trackData = [
-            this.createSegment(0, 0, 0, "sprSegDebug03", 64),
-            this.createSegment(0, 0, 0, "sprSegDebug01", 1),
-            this.createSegment(0, 0, 0, "sprSegDebug00", 63),
-            this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegDebug02", 64),
-            this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegDebug01", 64),
-            this.createSegment(0, 0, Math.PI * -1, "sprSegDebug01", 64),
-            this.createSegment(0.05, -0.025, 0, "sprSegDebug02", 64),
-            this.createSegment(-0.05, 0, 0, "sprSegDebug00", 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_",1 ,0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
+            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
+            this.createSegment(0, 0, 0, "sprSegFinishLine_", 2, 0.25, 16),
+            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
+            this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", 1, 0, 64),
+            this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", 2, 1, 64),
+            this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", 2, 1, 64),
+            this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", 1, 0, 64),
+            this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad04_", 6, 1, 60),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
         ];
         this.trackLength = 0;
         for(let s of this.trackData){
@@ -81,9 +89,9 @@ export default class ScnMain extends Phaser.Scene {
             strength: 0,
             yaw: 0,
             pitch: 0,
-            roll: Math.PI * -0.5,
-            toRoll: Math.PI * -0.5,
-            asset: "sprSegDebug02",
+            roll: 0,
+            toRoll: 0,
+            asset: "sprSegStartTunnel_",
             curve: {
                 x: 0,
                 y: 0
@@ -92,13 +100,18 @@ export default class ScnMain extends Phaser.Scene {
                 x: 0,
                 y: 0,
                 z: 0
-            }
+            },
+            subimage: 0,
+            subimageMax: 1,
+            imgSpd: 0
         }
         
         this.zoom = 16;
         this.player = {
             spd: 0,
             spdMax: 0.25,
+            slipstream: 0,
+            acceleration: 0.01,
             vel: {
                 x: 0,
                 y: 0,
@@ -127,6 +140,11 @@ export default class ScnMain extends Phaser.Scene {
             roll: Math.PI * -0.5,
             spd: 0.25
         }*/
+
+        /*this.skybox = this.add.sprite(0, 0, "sprSkybox00");
+        this.skybox.depth = -10000;*/
+
+        this.ui = new Ui(this);
         
 
         //console.log(socket);
@@ -171,7 +189,7 @@ export default class ScnMain extends Phaser.Scene {
             //KEYBOARD CONTROLS
             if(this.cursors.up.isDown){
                 if(this.player.spd < this.player.spdMax){
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + 0.01);
+                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.acceleration);
                 }
             } else if (this.cursors.down.isDown) {
                 if (this.player.spd > 0) {
@@ -213,7 +231,7 @@ export default class ScnMain extends Phaser.Scene {
             //MOUSE CONTROLS
             if (this.hand.pos.y < this.game.config.height * 0.25) {
                 if (this.player.spd < this.player.spdMax) {
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + 0.01);
+                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.acceleration);
                 }
             } else{
                 if (this.player.spd > 0) {
@@ -231,12 +249,6 @@ export default class ScnMain extends Phaser.Scene {
             if (Math.abs(amt) > 2) {
                 this.player.roll -= Math.max(-0.05, Math.min(0.05, amt * 0.001));
             }
-            /*if (this.hand.pos.x < this.hand.start.x - 8) {
-                this.player.roll -= 0.05;
-            }
-            if (this.hand.pos.x > this.hand.start.x + 8) {
-                this.player.roll += 0.05;
-            }*/
         }
 
         if (this.segments.length > 0) {
@@ -256,16 +268,19 @@ export default class ScnMain extends Phaser.Scene {
 
             //CHECK MAX SPEED
             let checkY = this.segments[this.segments.length - 2].screenPos.y
-            if ((checkY / 100) < -10){
+            /*if ((checkY / 100) < -10){
                 this.player.spdMax = 0.9;
             }else if ((checkY / 100) > 10){
                 this.player.spdMax = 0.1;
             }else{
                 this.player.spdMax = 0.25;
-            }
-            //this.player.spdMax = (50 + (checkY/100)) * 0.01;
+            }*/
 
-            this.deb.setText(this.player.spd.toFixed(2) + "\n" + this.player.trackPos + "/" + this.trackLength);
+            this.player.spdMax = Math.max(0, Math.min(0.9, (50 - (checkY/100)) * 0.01));
+
+            /*this.skybox.x = 0;
+            this.skybox.y = 0;
+            this.skybox.rotation = this.player.roll;*/
         }
 
         //UPDATE
@@ -296,14 +311,19 @@ export default class ScnMain extends Phaser.Scene {
                 s.curve.y = this.spawner.pitch;
                 s.dir = this.spawner.roll;
                 s.toKill = false;
-                s.sprite.setTexture(this.spawner.asset);
 
+                s.sprite.setTexture(this.spawner.asset + String(Math.floor(this.spawner.subimage)));
+                this.spawner.subimage += this.spawner.imgSpd;
+                if(this.spawner.subimage >= this.spawner.subimageMax){
+                    this.spawner.subimage = 0;
+                }
 
                 this.player.trackPos += 1;
                 this.spawner.trackPos += 1;
                 if(this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units){
                     this.spawner.trackPos = 0;
                     this.spawner.trackArrPos += 1;
+                    this.spawner.subimage = 0;
                     if(this.spawner.trackArrPos >= this.trackData.length){
                         this.spawner.trackArrPos = 0;
                         console.log("new LAP");
@@ -312,6 +332,8 @@ export default class ScnMain extends Phaser.Scene {
                 }
 
                 this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
+                this.spawner.subimageMax = this.trackData[this.spawner.trackArrPos].subimageMax;
+                this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
                 //absolute curving
                 this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
                 this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
@@ -319,10 +341,10 @@ export default class ScnMain extends Phaser.Scene {
 
                 let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
                 if (this.spawner.roll < this.spawner.toRoll) {
-                    this.spawner.roll += Math.min(0.1, dif);
+                    this.spawner.roll += Math.min(0.025, dif);
                 }
                 if (this.spawner.roll > this.spawner.toRoll) {
-                    this.spawner.roll -= Math.min(0.1, dif);
+                    this.spawner.roll -= Math.min(0.025, dif);
                 }
 
                 this.spawner.yaw += this.spawner.curve.x;
@@ -352,6 +374,8 @@ export default class ScnMain extends Phaser.Scene {
 
         for(let o of this.otherPlayers){
 
+            let rec = 9999999;
+
             o.trackPos += o.spd;
             if(o.trackPos >= this.trackLength){
                 o.trackPos = 0;
@@ -361,7 +385,6 @@ export default class ScnMain extends Phaser.Scene {
 
             if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos){
                 //console.log(o.trackPos - this.player.trackPos);
-                
                 let parent = this.segments[flPos - this.player.trackPos];
 
                 let pos = {
@@ -369,18 +392,36 @@ export default class ScnMain extends Phaser.Scene {
                     y: parent.pos.y,
                     z: flPos - this.player.trackPos
                 }
+
+                let len = Phaser.Math.Distance.Between(0, 0, pos.x, pos.y);
+                let ang = Phaser.Math.Angle.Between(0, 0, pos.x, pos.y);// + o.roll;
+
+                let screenPos = {
+                    x: Math.cos(ang) * len,
+                    y: (Math.sin(ang) * len)// - (24 * this.zoom)
+                }
+
                 let dz = 1 / pos.z;
                 let shade = Math.max(0, 255 - (pos.z * 4));
 
-                o.sprite.x = (parent.screenPos.x) * dz;
-                o.sprite.y = (parent.screenPos.y) * dz;
+                //o.sprite.x = (parent.screenPos.x) * dz;
+                //o.sprite.y = (parent.screenPos.y) * dz;
 
-                o.sprite.rotation = this.player.roll - o.roll - (Math.PI * -0.5);
+                o.sprite.x = (parent.screenPos.x + Math.cos((o.roll *-1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
+                o.sprite.y = (parent.screenPos.y + Math.sin((o.roll *-1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
+
+                o.sprite.rotation = this.player.roll - o.roll;
 
                 o.sprite.setScale(dz * this.zoom);
                 o.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
                 o.sprite.depth = dz;
                 o.sprite.alpha = 1;
+
+                //player ui info
+                if (pos.z < rec) {
+                    rec = pos.z;
+                    this.ui.setTargetPos(o.sprite.x, o.sprite.y, dz);
+                }
             }else{
                 o.sprite.alpha = 0;
             }
@@ -388,9 +429,9 @@ export default class ScnMain extends Phaser.Scene {
         
         this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
 
-        this.debugArrow.rotation = this.spawner.yaw;
+        //this.debugArrow.rotation = this.spawner.yaw;
 
-        
+        this.ui.update();
     }
 
     synchronize(){
@@ -422,21 +463,23 @@ export default class ScnMain extends Phaser.Scene {
 
     createTrack(){
 
-        this.segments.push(new Segment(this, { x: 0, y: 0, z: 0 }, Math.PI * -0.5, "sprSegDebug02"));
+        this.segments.push(new Segment(this, { x: 0, y: 0, z: 0 }, 0, "sprSegStartTunnel_0"));
 
         for(let i = 1 ; i < 64 ; i++){
-            this.segments.push(new Segment(this, { x: 0, y: 0, z: (i * 1) }, Math.PI * -0.5, "sprSegDebug02"));
+            this.segments.push(new Segment(this, { x: 0, y: 0, z: (i * 1) }, 0, "sprSegStartTunnel_0"));
         }
     }
 
-    createSegment(_curveX, _curveY, _roll, _asset, _units){
+    createSegment(_curveX, _curveY, _roll, _asset, _subimageMax, _imgSpd, _units){
         return {
             curve: {
                 x: _curveX,
                 y: _curveY
             },
-            roll: _roll + ( Math.PI * -0.5),
+            roll: _roll,
             asset: _asset,
+            subimageMax: _subimageMax,
+            imgSpd: _imgSpd,
             units: _units
         }
     }

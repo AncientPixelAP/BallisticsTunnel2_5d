@@ -37,10 +37,15 @@
         import ScnLoad from './src/scnLoad.js'; 
         import ScnLogin from './src/scnLogin.js'; 
         import ScnMain from './src/scnMain.js'; 
+
+        let ratio = window.innerWidth / window.innerHeight;
+        let h = 320;
+        let w = h * ratio;
+
         var config = { 
             type: Phaser.AUTO, 
-            width: 512,
-            height: 320, 
+            width: w,//512
+            height: h, //320
             render: { 
                 antialias: false,
                 roundPixels: true, 
