@@ -38,9 +38,9 @@
         import ScnLogin from './src/scnLogin.js'; 
         import ScnMain from './src/scnMain.js'; 
 
-        let ratio = window.innerWidth / window.innerHeight;
-        let h = 320;
-        let w = h * ratio;
+        let ratio = Math.max(0.5, Math.min(1.77,window.innerWidth / window.innerHeight));
+        let w = 512;
+        let h = Math.floor(w / ratio);
 
         var config = { 
             type: Phaser.AUTO, 

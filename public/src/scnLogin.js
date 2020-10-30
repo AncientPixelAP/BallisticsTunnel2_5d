@@ -29,17 +29,86 @@ export default class ScnLogin extends Phaser.Scene {
 
         this.hand = new Hand(this);
 
-        this.btnPlay = new Button(this, { x: 0, y: -16 }, "sprBtn00", "PLAY", false, () => {
+        this.btnPlay = new Button(this, { x: -32, y: -32 }, "sprBtn00", "PLAY", false, () => {
             this.gotoMain();
         });
 
-        this.btnFullscreen = new Button(this, { x: 0, y: 16 }, "sprBtn00", "FULLSCRN", false, () => {
+        this.btnFullscreen = new Button(this, { x: -32, y: 32 }, "sprBtn00", "FULLSCRN", false, () => {
             if(this.scale.isFullscreen){
                 this.scale.stopFullscreen();
             }else{
                 this.scale.startFullscreen();
             }
         });
+
+        this.shipStats = [
+            {
+                model: "Aegis",
+                manufacturer: "Hapton Industries",
+                asset: "sprBike00",
+                acceleration: 0.01,
+                spd: 0.3,
+                curveMod: 0.5,
+                slipMax: 0.3,
+                slipZone: 0.3,
+                brake: 0.1,
+                friction: 0.01,
+                speedDeg: 0.00075,
+                roll: 0.05
+            }, {
+                model: "Dart",
+                manufacturer: "Arashi Corporation",
+                asset: "sprBike01",
+                acceleration: 0.008,
+                spd: 0.35,
+                curveMod: 0.45,
+                slipMax: 0.15,
+                slipZone: 0.3,
+                brake: 0.1,
+                friction: 0.01,
+                speedDeg: 0.0011,
+                roll: 0.05
+            }, {
+                model: "Asynch",
+                manufacturer: "Daito",
+                asset: "sprBike02",
+                acceleration: 0.009,
+                spd: 0.33,
+                curveMod: 0.52,
+                slipMax: 0.25,
+                slipZone: 0.3,
+                brake: 0.1,
+                friction: 0.01,
+                speedDeg: 0.001,
+                roll: 0.06
+            }, {
+                model: "Kite",
+                manufacturer: "Tinnemann",
+                asset: "sprBike03",
+                acceleration: 0.008,
+                spd: 0.32,
+                curveMod: 0.55,
+                slipMax: 0.27,
+                slipZone: 0.3,
+                brake: 0.1,
+                friction: 0.01,
+                speedDeg: 0.001,
+                roll: 0.04
+            }
+        ]
+
+        this.shipSelect = {
+            bg: this.add.sprite(64, 0, "sprSegStartTunnel_0"),
+            currentBike: 0,
+            bike: this.add.sprite(64, 24, "sprBike00"),
+            btnNext: new Button(this, { x: -32, y: 0 }, "sprBtn00", "SHIP", false, () => {
+                this.shipSelect.currentBike += 1;
+                if(this.shipSelect.currentBike >= 4){
+                    this.shipSelect.currentBike = 0;
+                }
+                this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset);
+            })
+        }
     }
 
     update(){
@@ -47,6 +116,8 @@ export default class ScnLogin extends Phaser.Scene {
 
         this.btnFullscreen.update();
         this.btnPlay.update();
+
+        this.shipSelect.btnNext.update();
     }
 
     gotoMain(){
@@ -54,7 +125,7 @@ export default class ScnLogin extends Phaser.Scene {
             name: this.name.txt.text,
             lastLocationId: this.locationTxt.text
         }));*/
-        this.scene.start("ScnMain");
+        this.scene.start("ScnMain", { bikeData: this.shipStats[this.shipSelect.currentBike]});
     }
 
     getRandomName(){

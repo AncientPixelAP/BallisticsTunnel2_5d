@@ -10,6 +10,9 @@ export default function() {
         preload: function() {
             this.load.setBaseURL("./assets/");
             this.load.bitmapFont("pixelmix", "fonts/pixelmix.png", "fonts/pixelmix.xml");
+
+            this.load.image("sprPixelMan", "sprites/splashscreen/sprPixelMan.png");
+            this.load.spritesheet("sprPixelTurn", "sprites/splashscreen/sprPixelTurn.png", {frameWidth: 32, frameHeight: 32});
         },
 
         create: function() {

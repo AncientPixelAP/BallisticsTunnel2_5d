@@ -47,7 +47,7 @@ io.on("connection", socket => {
 
     //PLAYERS
     socket.on("joinPlayer", (_data) => {
-        gameData.addPlayer(id);
+        gameData.addPlayer(id, _data.bikeData);
         io.to(id).emit("getPlayers", {
             you: gameData.players[gameData.players.length-1],
             playersData: gameData.players

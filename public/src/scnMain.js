@@ -8,6 +8,10 @@ export default class ScnMain extends Phaser.Scene {
         super("ScnMain");
     }
 
+    init(_data) {
+        this.bikeData = _data.bikeData;
+    }
+
     create() {
         //console.log(this);
         this.cameras.main.setScroll(-this.game.config.width * 0.5, -this.game.config.height * 0.5);
@@ -51,22 +55,21 @@ export default class ScnMain extends Phaser.Scene {
         
         //this.bsp = this.add.bitmapText(-124, -124, "pixelmix", "", 8, 1);//.setOrigin(0.5);
         //this.bsp.depth = 10000;
-        //this.deb = this.add.bitmapText(-124, -100, "pixelmix", "", 8, 1);//.setOrigin(0.5);
-        //this.deb.depth = 10000;
-        //this.deb.setTint(0xff0000);
+        /*this.deb = this.add.bitmapText(-124, -100, "pixelmix", "", 8, 1);//.setOrigin(0.5);
+        this.deb.depth = 10000;
+        this.deb.setTint(0xff0000);*/
         //this.debugArrow = this.add.sprite(-124, -50, "sprDebugArrow00");
         //this.debugArrow.depth = 10000;
 
         
         this.you = null;
         this.playersData = null;
-        this.segments = [];
+        this.segments = []; 
         this.trackData = [
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_",1 ,0, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
             this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
             this.createSegment(0, 0, 0, "sprSegFinishLine_", 2, 0.25, 16),
             this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
+
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
             this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
             this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", 1, 0, 64),
@@ -74,9 +77,25 @@ export default class ScnMain extends Phaser.Scene {
             this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", 2, 1, 64),
             this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", 1, 0, 64),
             this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
+
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
             this.createSegment(0, 0, 0, "sprSegMetalRoad04_", 6, 1, 60),
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+
+            this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", 4, -1, 64),
+            this.createSegment(0, 0.1, 0, "sprSegTreeRoad00_", 4, -1, 64),
+            this.createSegment(0, -0.1, 0, "sprSegTreeRoad00_", 4, -1, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+
+            this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", 2, 1, 64),
+            this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", 2, 1, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 0, 2),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad01_", 1, 0, 30),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
         ];
         this.trackLength = 0;
         for(let s of this.trackData){
@@ -111,7 +130,7 @@ export default class ScnMain extends Phaser.Scene {
             spd: 0,
             spdMax: 0.25,
             slipstream: 0,
-            acceleration: 0.01,
+            stats: this.bikeData,
             vel: {
                 x: 0,
                 y: 0,
@@ -130,7 +149,7 @@ export default class ScnMain extends Phaser.Scene {
                     z: 0
                 }
             },
-            trackPos: 0
+            trackPos: this.trackLength-64
         }
 
         this.otherPlayers = [];
@@ -178,7 +197,9 @@ export default class ScnMain extends Phaser.Scene {
             }
         })
 
-        socket.emit("joinPlayer", {});
+        socket.emit("joinPlayer", {
+            bikeData: this.bikeData
+        });
     }
 
     update(){
@@ -189,30 +210,30 @@ export default class ScnMain extends Phaser.Scene {
             //KEYBOARD CONTROLS
             if(this.cursors.up.isDown){
                 if(this.player.spd < this.player.spdMax){
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.acceleration);
+                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                 }
             } else if (this.cursors.down.isDown) {
                 if (this.player.spd > 0) {
-                    this.player.spd = Math.max(0, this.player.spd - 0.1);
+                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
                 }
                 this.player.spd = Math.max(0, this.player.spd);
             }else{
                 if(this.player.spd > 0){
-                    this.player.spd = Math.max(0, this.player.spd - 0.01);
+                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
                 }
             }
             if(this.player.spd > this.player.spdMax){
-                this.player.spd = Math.max(0, this.player.spd-0.001);
+                this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
             }
 
             if(this.cursors.left.isDown){
-                this.player.roll -= 0.05;
+                this.player.roll -= this.player.stats.roll;
             }
             if (this.cursors.right.isDown) {
-                this.player.roll += 0.05;
+                this.player.roll += this.player.stats.roll;
             }
 
-            if(this.keys.w.isDown){
+            /*if(this.keys.w.isDown){
 
             }else if(this.keys.s.isDown){
 
@@ -226,57 +247,53 @@ export default class ScnMain extends Phaser.Scene {
 
             } else {
 
-            }
+            }*/
         }else{
             //MOUSE CONTROLS
             if (this.hand.pos.y < this.game.config.height * 0.25) {
                 if (this.player.spd < this.player.spdMax) {
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.acceleration);
+                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                 }
             } else{
                 if (this.player.spd > 0) {
-                    this.player.spd = Math.max(0, this.player.spd - 0.1);
+                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
                 }
                 this.player.spd = Math.max(0, this.player.spd);
             }
 
             if (this.player.spd > this.player.spdMax) {
-                this.player.spd = Math.max(0, this.player.spd - 0.001);
+                this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
             }
 
             let amt = this.hand.start.x - this.hand.pos.x;
             //console.log(amt);
             if (Math.abs(amt) > 2) {
-                this.player.roll -= Math.max(-0.05, Math.min(0.05, amt * 0.001));
+                this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, amt * 0.001));
             }
         }
 
         if (this.segments.length > 0) {
             let overZero = this.spawner.pos.x > 0 ? true : false;
-            this.spawner.pos.x -= (this.segments[0].pos.x * 65) * 1;
+            this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z +64)) * 1;
             if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
                 this.spawner.pos.x = 0;
             }
 
             overZero = this.spawner.pos.y > 0 ? true : false;
-            this.spawner.pos.y -= (this.segments[0].pos.y * 65) * 1;
+            this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z +64)) * 1;
             if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
                 this.spawner.pos.y = 0;
             }
 
-            //this.deb.setText(this.player.roll - this.segments[0].dir);
-
             //CHECK MAX SPEED
-            let checkY = this.segments[this.segments.length - 2].screenPos.y
-            /*if ((checkY / 100) < -10){
-                this.player.spdMax = 0.9;
-            }else if ((checkY / 100) > 10){
-                this.player.spdMax = 0.1;
-            }else{
-                this.player.spdMax = 0.25;
-            }*/
+            let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
+            let modify = Math.round(checkY * -0.01);
 
-            this.player.spdMax = Math.max(0, Math.min(0.9, (50 - (checkY/100)) * 0.01));
+            //adaptivespeed
+            this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
+
+            //this.deb.setText(this.player.spdMax.toFixed(2) + " | " + modify);
+
 
             /*this.skybox.x = 0;
             this.skybox.y = 0;
@@ -303,7 +320,7 @@ export default class ScnMain extends Phaser.Scene {
             s.update();
 
             if(s.toKill === true){
-
+                //feed spawener data to segment and jump it to the far end
                 s.pos.x = this.spawner.pos.x;
                 s.pos.y = this.spawner.pos.y;
                 s.pos.z += 64;
@@ -313,12 +330,23 @@ export default class ScnMain extends Phaser.Scene {
                 s.toKill = false;
 
                 s.sprite.setTexture(this.spawner.asset + String(Math.floor(this.spawner.subimage)));
-                this.spawner.subimage += this.spawner.imgSpd;
-                if(this.spawner.subimage >= this.spawner.subimageMax){
-                    this.spawner.subimage = 0;
+                if(this.spawner.imgSpd !== -1){
+                    this.spawner.subimage += this.spawner.imgSpd;
+                    if(this.spawner.subimage >= this.spawner.subimageMax){
+                        this.spawner.subimage = 0;
+                    }
+                }else{
+                    this.spawner.subimage = Math.floor(Math.random() * this.spawner.subimageMax);
                 }
 
+                this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
+
                 this.player.trackPos += 1;
+                if (this.player.trackPos >= this.trackLength){
+                    console.log("new LAP");
+                    this.player.trackPos = 0;
+                }
+
                 this.spawner.trackPos += 1;
                 if(this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units){
                     this.spawner.trackPos = 0;
@@ -326,8 +354,6 @@ export default class ScnMain extends Phaser.Scene {
                     this.spawner.subimage = 0;
                     if(this.spawner.trackArrPos >= this.trackData.length){
                         this.spawner.trackArrPos = 0;
-                        console.log("new LAP");
-                        this.player.trackPos = 0;
                     }
                 }
 
@@ -372,6 +398,8 @@ export default class ScnMain extends Phaser.Scene {
             });
         }
 
+        //UPDATE OTHER PLAYERRS
+        let target = null;
         for(let o of this.otherPlayers){
 
             let rec = 9999999;
@@ -417,19 +445,35 @@ export default class ScnMain extends Phaser.Scene {
                 o.sprite.depth = dz;
                 o.sprite.alpha = 1;
 
-                //player ui info
+                //get nearest enemy that is in front and player is in its slipstream
                 if (pos.z < rec) {
-                    rec = pos.z;
-                    this.ui.setTargetPos(o.sprite.x, o.sprite.y, dz);
+                    if(o.trackPos > this.player.trackPos){
+                        rec = pos.z;
+                        if (Math.abs(this.player.roll - o.roll) < this.player.stats.slipZone){
+                            target = o;
+
+                            //slow down and avoid other player
+                            if(o.trackPos < this.player.trackPos + 3){
+                                this.player.spd *= 0.5;
+                                this.player.roll += (this.player.roll - o.roll) * 0.25;
+                            }
+                        }
+                    }
                 }
             }else{
                 o.sprite.alpha = 0;
             }
         }
-        
-        this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
 
-        //this.debugArrow.rotation = this.spawner.yaw;
+        if(target !== null){
+            this.ui.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - this.player.trackPos));
+            this.player.slipstream = this.player.stats.slipMax;
+        }else{
+            this.player.slipstream = 0;
+            this.ui.setTargetPos(99999, 9999, 0);
+        }
+        
+        //this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
 
         this.ui.update();
     }
@@ -454,7 +498,7 @@ export default class ScnMain extends Phaser.Scene {
                         spd: d.spd,
                         rol: d.roll,
                         trackPos: d.trackPos,
-                        sprite: this.add.sprite(0, 0, "sprBike00")
+                        sprite: this.add.sprite(0, 0, d.data.asset)
                     })
                 }
             }

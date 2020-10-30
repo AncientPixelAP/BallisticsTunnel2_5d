@@ -9,8 +9,8 @@ class GameData {
         
     }
 
-    addPlayer(_id, _start){
-        this.players.push(new Player(_id));
+    addPlayer(_id, _data){
+        this.players.push(new Player(_id, _data));
     }
 
     removePlayer(_id) {

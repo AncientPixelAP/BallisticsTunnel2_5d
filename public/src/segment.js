@@ -29,7 +29,7 @@ export default class Segment{
 
         if(this.pos.z > 0){
             let dz = 1/this.pos.z;
-            let shade = Math.max(0, 255 - (this.pos.z * 4));
+            let shade = Math.max(0, 255 - ((this.pos.z * 4) + this.pos.z));
 
             this.sprite.rotation = this.scene.player.roll - this.dir;
 

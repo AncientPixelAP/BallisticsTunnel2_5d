@@ -25,6 +25,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprUiRoll", "sprites/sprUiRoll.png");
         this.load.image("sprUiSpawnerRoll", "sprites/sprUiSpawnerRoll.png");
         this.load.image("sprUiTextWrap", "sprites/sprUiTextWrap.png");
+        this.load.image("sprUiTrackLine", "sprites/sprUiTrackLine.png");
+        this.load.image("sprUiTrackLinePlayer", "sprites/sprUiTrackLinePlayer.png");
+        this.load.image("sprUiTrackLineBike", "sprites/sprUiTrackLineBike.png");
 
         this.load.image("sprSegDebug00_0", "sprites/sprSegDebug00.png");
         this.load.image("sprSegDebug01_0", "sprites/sprSegDebug01.png");
@@ -60,28 +63,51 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSegMetalRoad05_6", "sprites/sprSegMetalRoad05_6.png");
         this.load.image("sprSegMetalRoad05_7", "sprites/sprSegMetalRoad05_7.png");
 
+        this.load.image("sprSegTreeRoad00_0", "sprites/sprSegTreeRoad00_0.png");
+        this.load.image("sprSegTreeRoad00_1", "sprites/sprSegTreeRoad00_1.png");
+        this.load.image("sprSegTreeRoad00_2", "sprites/sprSegTreeRoad00_2.png");
+        this.load.image("sprSegTreeRoad00_3", "sprites/sprSegTreeRoad00_3.png");
+
         this.load.image("sprSegFinishLineClamp_0", "sprites/sprSegFinishLineClamp_0.png");
         this.load.image("sprSegFinishLine_0", "sprites/sprSegFinishLine00.png");
         this.load.image("sprSegFinishLine_1", "sprites/sprSegFinishLine01.png");
 
         this.load.image("sprBike00", "sprites/sprBike00.png");
+        this.load.image("sprBike01", "sprites/sprBike01.png");
+        this.load.image("sprBike02", "sprites/sprBike02.png");
+        this.load.image("sprBike03", "sprites/sprBike03.png");
+
         this.load.image("sprDebugTarget00", "sprites/sprDebugTarget00.png");
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");
 
-        this.loadTxt = this.add.bitmapText(0, 0, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
+        this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
+        this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);
+        this.pixel = this.add.sprite(0, -48, "sprPixelTurn").setScale(2);
+
+        let turnAnim = this.anims.create({
+            key: "turning",
+            frames: this.anims.generateFrameNumbers("sprPixelTurn"),
+            frameRate: 32,
+            repeat: -1
+        });
+        this.pixel.play("turning");
+        this.logoDidRepeat = 0;
+        this.pixel.on('animationrepeat', function () {
+            this.logoDidRepeat += 1;
+        }, this);
 
         this.load.on('progress', this.update_progress_display, this);
     }
 
     create(){
         this.load.off("progress", this.update_progress_display, this);
-
-        this.cache.bitmapFont.get("pixelmix").data.lineHeight = 40;
-        this.scene.start("ScnLogin");
+        this.cache.bitmapFont.get("pixelmix").data.lineHeight = 40;  
     }
 
     update(){
-
+        if (this.logoDidRepeat >= 2) {
+            this.scene.start("ScnLogin");
+        }
     }
 
     update_progress_display(_pct) {
