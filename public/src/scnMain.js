@@ -48,6 +48,10 @@ export default class ScnMain extends Phaser.Scene {
             // event.stopPropagation();
         }, this);
 
+        this.keys.space.on('down', function (key, event) {
+            console.log(this.player.trackPos);
+        }, this);
+
         this.hand = new Hand(this);
         
         //Phaser.Math.RND.sow(["seed"]);
@@ -64,7 +68,9 @@ export default class ScnMain extends Phaser.Scene {
         
         this.you = null;
         this.playersData = null;
-        this.segments = []; 
+        this.segments = [];
+        this.obstacles = [];
+        this.clutter = [];
         this.trackData = [
             this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
             this.createSegment(0, 0, 0, "sprSegFinishLine_", 2, 0.25, 16),
@@ -101,6 +107,18 @@ export default class ScnMain extends Phaser.Scene {
         for(let s of this.trackData){
             this.trackLength += s.units;
         }
+
+        this.obstacles.push(this.createObstacle(64, 0, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(64, Math.PI * 0.66, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(64, Math.PI * -0.66, 32, "sprObsBlade01_0", 0.3));
+
+        this.obstacles.push(this.createObstacle(486, Math.PI, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(678, Math.PI, 32, "sprObsBlade01_0", 0.3));
+
+        this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(854, Math.PI * -0.33, 32, "sprObsBlade01_0", 0.3));
+        
 
         this.spawner = {
             trackPos: 0,
@@ -398,20 +416,30 @@ export default class ScnMain extends Phaser.Scene {
             });
         }
 
-        //UPDATE OTHER PLAYERRS
+        //UPDATE OTHER PLAYERRS and STUFF
+        this.updateOtherPlayers();
+        this.updateObstacles();
+        
+        
+        //this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
+
+        this.ui.update();
+    }
+
+    updateOtherPlayers(){
         let target = null;
-        for(let o of this.otherPlayers){
+        for (let o of this.otherPlayers) {
 
             let rec = 9999999;
 
             o.trackPos += o.spd;
-            if(o.trackPos >= this.trackLength){
+            if (o.trackPos >= this.trackLength) {
                 o.trackPos = 0;
             }
 
             let flPos = Math.floor(o.trackPos);
 
-            if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos){
+            if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos) {
                 //console.log(o.trackPos - this.player.trackPos);
                 let parent = this.segments[flPos - this.player.trackPos];
 
@@ -435,8 +463,8 @@ export default class ScnMain extends Phaser.Scene {
                 //o.sprite.x = (parent.screenPos.x) * dz;
                 //o.sprite.y = (parent.screenPos.y) * dz;
 
-                o.sprite.x = (parent.screenPos.x + Math.cos((o.roll *-1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
-                o.sprite.y = (parent.screenPos.y + Math.sin((o.roll *-1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
+                o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
+                o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
 
                 o.sprite.rotation = this.player.roll - o.roll;
 
@@ -447,35 +475,85 @@ export default class ScnMain extends Phaser.Scene {
 
                 //get nearest enemy that is in front and player is in its slipstream
                 if (pos.z < rec) {
-                    if(o.trackPos > this.player.trackPos){
+                    if (o.trackPos > this.player.trackPos) {
                         rec = pos.z;
-                        if (Math.abs(this.player.roll - o.roll) < this.player.stats.slipZone){
+                        if (Math.abs(this.player.roll - o.roll) < this.player.stats.slipZone) {
                             target = o;
 
                             //slow down and avoid other player
-                            if(o.trackPos < this.player.trackPos + 3){
+                            if (o.trackPos < this.player.trackPos + 3) {
                                 this.player.spd *= 0.5;
                                 this.player.roll += (this.player.roll - o.roll) * 0.25;
                             }
                         }
                     }
                 }
-            }else{
+            } else {
                 o.sprite.alpha = 0;
             }
         }
 
-        if(target !== null){
+        if (target !== null) {
             this.ui.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - this.player.trackPos));
             this.player.slipstream = this.player.stats.slipMax;
-        }else{
+        } else {
             this.player.slipstream = 0;
             this.ui.setTargetPos(99999, 9999, 0);
         }
-        
-        //this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
+    }
 
-        this.ui.update();
+    updateObstacles() {
+        for (let o of this.obstacles) {
+            o.trackPos += o.spd;
+            if (o.trackPos >= this.trackLength) {
+                o.trackPos = 0;
+            }
+
+            let flPos = Math.floor(o.trackPos);
+
+            if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos) {
+                let parent = this.segments[flPos - this.player.trackPos];
+
+                let pos = {
+                    x: parent.pos.x,
+                    y: parent.pos.y,
+                    z: o.trackPos - this.player.trackPos
+                }
+
+                let len = Phaser.Math.Distance.Between(0, 0, pos.x, pos.y);
+                let ang = Phaser.Math.Angle.Between(0, 0, pos.x, pos.y);
+
+                let screenPos = {
+                    x: Math.cos(ang) * len,
+                    y: (Math.sin(ang) * len)
+                }
+
+                let dz = 1 / pos.z;
+                let shade = Math.max(0, 255 - (pos.z * 4));
+
+                o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (o.len * this.zoom)) * dz;
+                o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (o.len * this.zoom)) * dz;
+
+                o.sprite.rotation = this.player.roll - o.roll;
+
+                o.sprite.setScale(dz * this.zoom);
+                o.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
+                o.sprite.depth = dz;
+                o.sprite.alpha = 1;
+
+                if (o.trackPos > this.player.trackPos) {
+                    if (Math.abs(this.player.roll - o.roll) < o.collisionZone) {
+                        //slow down and avoid other player
+                        if (o.trackPos < this.player.trackPos + 3) {
+                            this.player.spd *= 0.5;
+                            this.player.roll += (this.player.roll - o.roll) * 0.25;
+                        }
+                    }
+                }
+            } else {
+                o.sprite.alpha = 0;
+            }
+        }
     }
 
     synchronize(){
@@ -496,7 +574,7 @@ export default class ScnMain extends Phaser.Scene {
                     this.otherPlayers.push({
                         id: d.id,
                         spd: d.spd,
-                        rol: d.roll,
+                        roll: d.roll,
                         trackPos: d.trackPos,
                         sprite: this.add.sprite(0, 0, d.data.asset)
                     })
@@ -525,6 +603,18 @@ export default class ScnMain extends Phaser.Scene {
             subimageMax: _subimageMax,
             imgSpd: _imgSpd,
             units: _units
+        }
+    }
+
+    createObstacle(_trackPos, _roll, _len, _asset, _collisionZone){
+        return {
+            spd: 0,
+            rollSpd: 0,
+            roll: _roll,
+            len: _len,
+            trackPos: _trackPos,
+            sprite: this.add.sprite(0, 0, _asset),
+            collisionZone: _collisionZone
         }
     }
 }

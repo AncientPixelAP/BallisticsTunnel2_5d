@@ -86,6 +86,10 @@ export default class Ui{
         this.playerLine.depth = 10000;
         this.otherLines = [];
 
+        this.overSpd = false;
+        this.overSlp = false;
+        this.overRes = false;
+
         /*this.playersLine = this.scene.add.graphics({ x: 0.5, y: this.screenHeightModified * 0.5 });
         this.playersLine.lineStyle(1, 0xffffff);
         this.playersLine.depth = 10000;*/
@@ -96,8 +100,50 @@ export default class Ui{
 
     update(){
         this.spdTxt.setText("SPD " + String(Math.floor(this.scene.player.spd * 900)));
+        /*if(this.scene.player.spdMax - this.scene.player.spd < 0.01){
+            if(this.overSpd === false){
+                this.overSpd = true;
+                this.spdTxt.setTintFill(0xff004d);
+            }
+        }else{
+            if (this.overSpd === true) {
+                this.overSpd = false;
+                this.spdTxt.setTintFill(0xffffff);
+            }
+        }*/
+        
         this.slpTxt.setText("SLP " + String(this.scene.player.slipstream.toFixed(2)));
-        this.resTxt.setText("RES " + String((1 - this.scene.player.spdMax).toFixed(2)));
+        if (this.scene.player.slipstream > 0) {
+            if(this.overSlp === false){
+                this.overSlp = true;
+                this.slpTxt.setTintFill(0xff004d);
+                this.textWrap.slp.setTintFill(0xff004d);
+            }
+        }else{
+            if (this.overSlp === true) {
+                this.overSlp = false;
+                this.slpTxt.setTintFill(0xffffff);
+                this.textWrap.slp.setTintFill(0xffffff);
+            }
+        }
+
+        let res = 1 - this.scene.player.spdMax;
+        this.resTxt.setText("RES " + String(res.toFixed(2)));
+        if(res >= 0.85){
+            if(this.overRes === false){
+                this.overRes = true;
+                this.resTxt.setTintFill(0xff004d);
+                this.textWrap.res.setTintFill(0xff004d);
+                this.grav.roll.setTintFill(0xff004d);
+            }
+        }else{
+            if (this.overRes === true) {
+                this.overRes = false;
+                this.resTxt.setTintFill(0xffffff);
+                this.textWrap.res.setTintFill(0xffffff);
+                this.grav.roll.setTintFill(0xffffff);
+            }
+        }
 
         this.grav.roll.rotation = this.scene.player.roll * -1;
         this.grav.yaw.rotation = this.scene.spawner.yaw;
