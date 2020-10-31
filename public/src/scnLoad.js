@@ -75,6 +75,8 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.image("sprSegMetroPlatform01_0", "sprites/sprSegMetroPlatform01_0.png");
 
+        this.load.image("sprSegAirVent00_0", "sprites/sprSegAirVent00_0.png");
+
         this.load.image("sprSegTreeRoad00_0", "sprites/sprSegTreeRoad00_0.png");
         this.load.image("sprSegTreeRoad00_1", "sprites/sprSegTreeRoad00_1.png");
         this.load.image("sprSegTreeRoad00_2", "sprites/sprSegTreeRoad00_2.png");
@@ -90,6 +92,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprObsBlade00_3", "sprites/obstacles/sprObsBlade00_3.png");
 
         this.load.image("sprObsBlade01_0", "sprites/obstacles/sprObsBlade01_0.png");
+
+        this.load.image("sprObsVentBlade00_0", "sprites/obstacles/sprObsVentBlade00_0.png");
 
         this.load.image("sprAdvertTeamArashi", "sprites/clutter/sprAdvertTeamArashi.png");
         this.load.image("sprAdvertTeamDaito", "sprites/clutter/sprAdvertTeamDaito.png");

@@ -99,11 +99,20 @@ export default class ScnMain extends Phaser.Scene {
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 0, 2),
             this.createSegment(0, 0, 0, "sprSegMetalRoad01_", 1, 0, 30),
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
 
             this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", 1, 0, 2),
             this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", 8, 1, 64),
             this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", 1, 0, 2),
             this.createSegment(0.01, 0, 0, "sprSegMetalRoad00_", 1, 0, 62),
+
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
+
+            this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", 1, 0, 96),
+            this.createSegment(-0.01, 0.025, 0, "sprSegAirVent00_", 1, 0, 96),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
 
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
             this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
@@ -124,6 +133,27 @@ export default class ScnMain extends Phaser.Scene {
         this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_0", 0.3));
         this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_0", 0.3));
         this.obstacles.push(this.createObstacle(854, Math.PI * -0.33, 32, "sprObsBlade01_0", 0.3));
+
+        this.obstacles.push(this.createObstacle(1072, Math.PI, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length-1].rollSpd = 0.045;
+        this.obstacles.push(this.createObstacle(1072, Math.PI * 0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+        this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+
+        this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
+        this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
+        this.obstacles.push(this.createObstacle(1168, Math.PI * -0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
+
+        this.obstacles.push(this.createObstacle(1264, Math.PI, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+        this.obstacles.push(this.createObstacle(1264, Math.PI * 0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+        this.obstacles.push(this.createObstacle(1264, Math.PI * -0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
         
 
         this.spawner = {
@@ -306,13 +336,13 @@ export default class ScnMain extends Phaser.Scene {
 
         if (this.segments.length > 0) {
             let overZero = this.spawner.pos.x > 0 ? true : false;
-            this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z +64)) * 1;
+            this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * 1;
             if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
                 this.spawner.pos.x = 0;
             }
 
             overZero = this.spawner.pos.y > 0 ? true : false;
-            this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z +64)) * 1;
+            this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z + 64)) * 1;
             if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
                 this.spawner.pos.y = 0;
             }
@@ -522,9 +552,15 @@ export default class ScnMain extends Phaser.Scene {
             if (o.trackPos >= this.trackLength) {
                 o.trackPos = 0;
             }
+            
+            o.roll += o.rollSpd;
+            if(o.roll > Math.PI){
+                o.roll -= Math.PI * 2;
+            }else{
+                o.roll += Math.PI * 2;
+            }
 
             let flPos = Math.floor(o.trackPos);
-
             if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos) {
                 let parent = this.segments[flPos - this.player.trackPos];
 
