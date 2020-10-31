@@ -10,6 +10,7 @@ export default class ScnMain extends Phaser.Scene {
 
     init(_data) {
         this.bikeData = _data.bikeData;
+        this.bikeData.asset += _data.livery;
     }
 
     create() {
@@ -112,8 +113,8 @@ export default class ScnMain extends Phaser.Scene {
         this.obstacles.push(this.createObstacle(64, Math.PI * 0.66, 32, "sprObsBlade01_0", 0.3));
         this.obstacles.push(this.createObstacle(64, Math.PI * -0.66, 32, "sprObsBlade01_0", 0.3));
 
-        this.obstacles.push(this.createObstacle(486, Math.PI, 32, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(678, Math.PI, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(486, Math.PI, 28, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(678, Math.PI, 28, "sprObsBlade01_0", 0.3));
 
         this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_0", 0.3));
         this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_0", 0.3));
@@ -285,8 +286,9 @@ export default class ScnMain extends Phaser.Scene {
 
             let amt = this.hand.start.x - this.hand.pos.x;
             //console.log(amt);
-            if (Math.abs(amt) > 2) {
-                this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, amt * 0.001));
+            if (Math.abs(amt) > 8) {
+                let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
+                this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
             }
         }
 

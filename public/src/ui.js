@@ -1,6 +1,16 @@
+import Button from "./button.js";
+
 export default class Ui{
     constructor(_scene){
         this.scene = _scene;
+
+        this.btnFullscreen = new Button(this.scene, { x: this.scene.right - 16, y: this.scene.top + 16 }, "sprUiFullscreen", "", false, () => {
+            if (this.scene.scale.isFullscreen) {
+                this.scene.scale.stopFullscreen();
+            } else {
+                this.scene.scale.startFullscreen();
+            }
+        });
 
         
         //create stats text
@@ -99,6 +109,8 @@ export default class Ui{
     }
 
     update(){
+        this.btnFullscreen.update();
+
         this.spdTxt.setText("SPD " + String(Math.floor(this.scene.player.spd * 900)));
         /*if(this.scene.player.spdMax - this.scene.player.spd < 0.01){
             if(this.overSpd === false){

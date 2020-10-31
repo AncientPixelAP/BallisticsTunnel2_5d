@@ -29,11 +29,11 @@ export default class ScnLogin extends Phaser.Scene {
 
         this.hand = new Hand(this);
 
-        this.btnPlay = new Button(this, { x: -32, y: -32 }, "sprBtn00", "PLAY", false, () => {
+        this.btnPlay = new Button(this, { x: -32, y: -48 }, "sprBtn00", "PLAY", false, () => {
             this.gotoMain();
         });
 
-        this.btnFullscreen = new Button(this, { x: -32, y: 32 }, "sprBtn00", "FULLSCRN", false, () => {
+        this.btnFullscreen = new Button(this, { x: -32, y: 48 }, "sprBtn00", "FULLSCRN", false, () => {
             if(this.scale.isFullscreen){
                 this.scale.stopFullscreen();
             }else{
@@ -45,7 +45,7 @@ export default class ScnLogin extends Phaser.Scene {
             {
                 model: "Aegis",
                 manufacturer: "Hapton Industries",
-                asset: "sprBike00",
+                asset: "sprBike00_",
                 acceleration: 0.01,
                 spd: 0.3,
                 curveMod: 0.5,
@@ -58,7 +58,7 @@ export default class ScnLogin extends Phaser.Scene {
             }, {
                 model: "Dart",
                 manufacturer: "Arashi Corporation",
-                asset: "sprBike01",
+                asset: "sprBike01_",
                 acceleration: 0.008,
                 spd: 0.35,
                 curveMod: 0.45,
@@ -71,7 +71,7 @@ export default class ScnLogin extends Phaser.Scene {
             }, {
                 model: "Asynch",
                 manufacturer: "Daito",
-                asset: "sprBike02",
+                asset: "sprBike02_",
                 acceleration: 0.009,
                 spd: 0.33,
                 curveMod: 0.52,
@@ -84,7 +84,7 @@ export default class ScnLogin extends Phaser.Scene {
             }, {
                 model: "Kite",
                 manufacturer: "Tinnemann",
-                asset: "sprBike03",
+                asset: "sprBike03_",
                 acceleration: 0.008,
                 spd: 0.32,
                 curveMod: 0.55,
@@ -100,14 +100,22 @@ export default class ScnLogin extends Phaser.Scene {
         this.shipSelect = {
             bg: this.add.sprite(64, 0, "sprSegStartTunnel_0"),
             currentBike: 0,
-            bike: this.add.sprite(64, 24, "sprBike00"),
-            btnNext: new Button(this, { x: -32, y: 0 }, "sprBtn00", "SHIP", false, () => {
+            currentLivery: 0,
+            bike: this.add.sprite(64, 24, "sprBike00_0"),
+            btnNext: new Button(this, { x: -32, y: -12 }, "sprBtn00", "SHIP", false, () => {
                 this.shipSelect.currentBike += 1;
                 if(this.shipSelect.currentBike >= 4){
                     this.shipSelect.currentBike = 0;
                 }
-                this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset);
-            })
+                this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset + this.shipSelect.currentLivery);
+            }),
+            btnLivery: new Button(this, { x: -32, y: 12 }, "sprBtn00", "LVRY", false, () => {
+                this.shipSelect.currentLivery += 1;
+                if (this.shipSelect.currentLivery >= 4) {
+                    this.shipSelect.currentLivery = 0;
+                }
+                this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset + this.shipSelect.currentLivery);
+            }),
         }
     }
 
@@ -118,6 +126,7 @@ export default class ScnLogin extends Phaser.Scene {
         this.btnPlay.update();
 
         this.shipSelect.btnNext.update();
+        this.shipSelect.btnLivery.update();
     }
 
     gotoMain(){
@@ -125,7 +134,10 @@ export default class ScnLogin extends Phaser.Scene {
             name: this.name.txt.text,
             lastLocationId: this.locationTxt.text
         }));*/
-        this.scene.start("ScnMain", { bikeData: this.shipStats[this.shipSelect.currentBike]});
+        this.scene.start("ScnMain", { 
+            bikeData: this.shipStats[this.shipSelect.currentBike],
+            livery: this.shipSelect.currentLivery
+        });
     }
 
     getRandomName(){

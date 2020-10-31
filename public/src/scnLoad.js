@@ -28,6 +28,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprUiTrackLine", "sprites/sprUiTrackLine.png");
         this.load.image("sprUiTrackLinePlayer", "sprites/sprUiTrackLinePlayer.png");
         this.load.image("sprUiTrackLineBike", "sprites/sprUiTrackLineBike.png");
+        this.load.image("sprUiFullscreen", "sprites/sprUiFullscreen.png");
 
         this.load.image("sprSegDebug00_0", "sprites/sprSegDebug00.png");
         this.load.image("sprSegDebug01_0", "sprites/sprSegDebug01.png");
@@ -84,10 +85,22 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprAdvertTeamHapton", "sprites/clutter/sprAdvertTeamHapton.png");
         this.load.image("sprAdvertTeamTinnemann", "sprites/clutter/sprAdvertTeamTinnemann.png");
 
-        this.load.image("sprBike00", "sprites/sprBike00.png");
-        this.load.image("sprBike01", "sprites/sprBike01.png");
-        this.load.image("sprBike02", "sprites/sprBike02.png");
-        this.load.image("sprBike03", "sprites/sprBike03.png");
+        this.load.image("sprBike00_0", "sprites/sprBike00_0.png");
+        this.load.image("sprBike00_1", "sprites/sprBike00_1.png");
+        this.load.image("sprBike00_2", "sprites/sprBike00_2.png");
+        this.load.image("sprBike00_3", "sprites/sprBike00_3.png");
+        this.load.image("sprBike01_0", "sprites/sprBike01_0.png");
+        this.load.image("sprBike01_1", "sprites/sprBike01_1.png");
+        this.load.image("sprBike01_2", "sprites/sprBike01_2.png");
+        this.load.image("sprBike01_3", "sprites/sprBike01_3.png");
+        this.load.image("sprBike02_0", "sprites/sprBike02_0.png");
+        this.load.image("sprBike02_1", "sprites/sprBike02_1.png");
+        this.load.image("sprBike02_2", "sprites/sprBike02_2.png");
+        this.load.image("sprBike02_3", "sprites/sprBike02_3.png");
+        this.load.image("sprBike03_0", "sprites/sprBike03_0.png");
+        this.load.image("sprBike03_1", "sprites/sprBike03_1.png");
+        this.load.image("sprBike03_2", "sprites/sprBike03_2.png");
+        this.load.image("sprBike03_3", "sprites/sprBike03_3.png");
 
         this.load.image("sprDebugTarget00", "sprites/sprDebugTarget00.png");
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");

@@ -20,6 +20,7 @@ export default class Button{
         this.active = false;
         
         this.sprite = this.scene.add.sprite(_pos.x, _pos.y, _asset);
+        this.sprite.depth = 10000;
         this.txt = this.scene.add.bitmapText(_pos.x, _pos.y, "pixelmix", _text, 8, 1).setOrigin(0.5);
 
         this.colorInState(this.state);
