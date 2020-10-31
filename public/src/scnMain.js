@@ -292,6 +292,13 @@ export default class ScnMain extends Phaser.Scene {
             }
         }
 
+        //keep roll within PI
+        if (this.player.roll > Math.PI) {
+            this.player.roll -= Math.PI * 2;
+        }else{
+            this.player.roll += Math.PI * 2;
+        }
+
         if (this.segments.length > 0) {
             let overZero = this.spawner.pos.x > 0 ? true : false;
             this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z +64)) * 1;

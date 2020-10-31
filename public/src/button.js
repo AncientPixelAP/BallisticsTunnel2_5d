@@ -6,8 +6,8 @@ export default class Button{
 
         this.colors = {
             out: 0xffffff,
-            over: 0x00ffff,
-            on: 0x00ff00
+            over: 0x29adff,
+            on: 0x00e436
         }
 
         this.states = {
