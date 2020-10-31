@@ -64,6 +64,17 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSegMetalRoad05_6", "sprites/sprSegMetalRoad05_6.png");
         this.load.image("sprSegMetalRoad05_7", "sprites/sprSegMetalRoad05_7.png");
 
+        this.load.image("sprSegMetroPlatform00_0", "sprites/sprSegMetroPlatform00_0.png");
+        this.load.image("sprSegMetroPlatform00_1", "sprites/sprSegMetroPlatform00_1.png");
+        this.load.image("sprSegMetroPlatform00_2", "sprites/sprSegMetroPlatform00_2.png");
+        this.load.image("sprSegMetroPlatform00_3", "sprites/sprSegMetroPlatform00_3.png");
+        this.load.image("sprSegMetroPlatform00_4", "sprites/sprSegMetroPlatform00_4.png");
+        this.load.image("sprSegMetroPlatform00_5", "sprites/sprSegMetroPlatform00_5.png");
+        this.load.image("sprSegMetroPlatform00_6", "sprites/sprSegMetroPlatform00_6.png");
+        this.load.image("sprSegMetroPlatform00_7", "sprites/sprSegMetroPlatform00_7.png");
+
+        this.load.image("sprSegMetroPlatform01_0", "sprites/sprSegMetroPlatform01_0.png");
+
         this.load.image("sprSegTreeRoad00_0", "sprites/sprSegTreeRoad00_0.png");
         this.load.image("sprSegTreeRoad00_1", "sprites/sprSegTreeRoad00_1.png");
         this.load.image("sprSegTreeRoad00_2", "sprites/sprSegTreeRoad00_2.png");

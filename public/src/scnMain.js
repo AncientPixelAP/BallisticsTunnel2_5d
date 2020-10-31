@@ -100,6 +100,11 @@ export default class ScnMain extends Phaser.Scene {
             this.createSegment(0, 0, 0, "sprSegMetalRoad01_", 1, 0, 30),
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
 
+            this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", 1, 0, 2),
+            this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", 8, 1, 64),
+            this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", 1, 0, 2),
+            this.createSegment(0.01, 0, 0, "sprSegMetalRoad00_", 1, 0, 62),
+
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
             this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
             this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
