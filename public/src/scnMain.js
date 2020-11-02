@@ -285,7 +285,7 @@ export default class ScnMain extends Phaser.Scene {
 
         this.delta.current += _delta;
         if (this.delta.current >= this.delta.treshold){
-            this.delta.current = 0;
+            this.delta.current -= this.delta.treshold;
 
             this.ui.deltaTxt.setText("DEL " + String(_delta));
 
