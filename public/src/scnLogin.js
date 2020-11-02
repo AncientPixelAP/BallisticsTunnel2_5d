@@ -17,15 +17,15 @@ export default class ScnLogin extends Phaser.Scene {
         this.top = this.game.config.height * -0.5;
         this.bottom = this.game.config.height * 0.5;
 
-        this.saveGame = {
-            name: this.getRandomName()
-        }
+        this.saveGame = this.getFreshSaveGame();
 
-        /*if (localStorage.getItem(SAVEGAMENAME) === null) {
+        if (localStorage.getItem(SAVEGAMENAME) === null || localStorage.getItem(SAVEGAMENAME) === "null") {
             localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
+            console.log("making a new savegame");
         } else {
             this.saveGame = JSON.parse(localStorage.getItem(SAVEGAMENAME));
-        }*/
+            console.log("loading savegame");
+        }
 
         this.hand = new Hand(this);
 
@@ -49,7 +49,7 @@ export default class ScnLogin extends Phaser.Scene {
                 asset: "sprBike00_",
                 description: "The Aegis by Hapton Industries has very good acceleration and speed degrades slowly due to its small aircutting frame.",
                 acceleration: 0.01,
-                spd: 0.3,
+                spd: 0.32,
                 curveMod: 0.5,
                 slipMax: 0.3,
                 slipZone: 0.3,
@@ -79,7 +79,7 @@ export default class ScnLogin extends Phaser.Scene {
                 asset: "sprBike02_",
                 description: "Daito´s Asynch asymmetrical design allows for nimble manoeuveurs and excellent cornering speeds, but the offcenter engine it is hard to control for its pilots.",
                 acceleration: 0.009,
-                spd: 0.33,
+                spd: 0.34,
                 curveMod: 0.52,
                 slipMax: 0.25,
                 slipZone: 0.3,
@@ -94,7 +94,7 @@ export default class ScnLogin extends Phaser.Scene {
                 asset: "sprBike03_",
                 description: "Inspired by speedboat racing, Tinnemann´s Kite rides the walls of the loop like it would be water and is sometimes equally sluggish.\nThe Kite profits from slipstreaming and the perfect racing line.",
                 acceleration: 0.008,
-                spd: 0.32,
+                spd: 0.33,
                 curveMod: 0.55,
                 slipMax: 0.27,
                 slipZone: 0.3,
@@ -107,10 +107,10 @@ export default class ScnLogin extends Phaser.Scene {
 
         this.shipSelect = {
             bg: this.add.sprite(-16, 0, "sprSegStartTunnel_0"),
-            currentBike: 0,
-            currentLivery: 0,
-            bike: this.add.sprite(-16, 48, "sprBike00_0"),
-            logo: this.add.sprite(-16, 0, "sprLogoHapton"),
+            currentBike: this.saveGame.multiplayer.bike,
+            currentLivery: this.saveGame.multiplayer.livery,
+            bike: this.add.sprite(-16, 48, this.shipStats[this.saveGame.multiplayer.bike].asset + this.saveGame.multiplayer.livery),
+            logo: this.add.sprite(-16, 0, this.shipStats[this.saveGame.multiplayer.bike].logo),
             btnNext: new Button(this, { x: -160, y: -12 }, "sprBtn00", "SHIP", false, () => {
                 this.shipSelect.currentBike += 1;
                 if(this.shipSelect.currentBike >= 4){
@@ -127,7 +127,7 @@ export default class ScnLogin extends Phaser.Scene {
                 }
                 this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset + this.shipSelect.currentLivery);
             }),
-            description: this.add.bitmapText(154, 0, "pixelmix", this.shipStats[0].description, 8, 1).setOrigin(0.5)
+            description: this.add.bitmapText(154, 0, "pixelmix", this.shipStats[this.saveGame.multiplayer.bike].description, 8, 1).setOrigin(0.5)
         }
         this.shipSelect.description.maxWidth = 144;
         this.shipSelect.logo.depth = 1;
@@ -148,14 +148,33 @@ export default class ScnLogin extends Phaser.Scene {
     }
 
     gotoMain(){
-        /*localStorage.setItem(SAVEGAMENAME, JSON.stringify({
-            name: this.name.txt.text,
-            lastLocationId: this.locationTxt.text
-        }));*/
+        localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.setSaveGame()));
         this.scene.start("ScnMain", { 
             bikeData: this.shipStats[this.shipSelect.currentBike],
             livery: this.shipSelect.currentLivery
         });
+    }
+
+    getFreshSaveGame(){
+        return {
+            name: this.getRandomName(),
+            multiplayer: {
+                bike: 0,
+                livery: 0
+            },
+            singleplayer: null
+        }
+    }
+
+    setSaveGame(){
+        return {
+            name: this.saveGame.name,
+            multiplayer: {
+                bike: this.shipSelect.currentBike,
+                livery: this.shipSelect.currentLivery
+            },
+            singleplayer: this.saveGame.singleplayer,
+        }
     }
 
     getRandomName(){

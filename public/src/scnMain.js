@@ -73,88 +73,99 @@ export default class ScnMain extends Phaser.Scene {
         this.obstacles = [];
         this.clutter = [];
         this.trackData = [
-            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
-            this.createSegment(0, 0, 0, "sprSegFinishLine_", 2, 0.25, 16),
-            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", 1, 0, 1),
+            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+            this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
+            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
 
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
-            this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", 1, 0, 64),
-            this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", 2, 1, 64),
-            this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", 2, 1, 64),
-            this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", 1, 0, 64),
-            this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+            this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", [0], 0, 64),
+            this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+            this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+            this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", [0], 0, 64),
+            this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
 
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad04_", 6, 1, 60),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad04_", [0, 1, 2, 3, 4, 5], 1, 60),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-            this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", 4, -1, 64),
-            this.createSegment(0, 0.1, 0, "sprSegTreeRoad00_", 4, -1, 64),
-            this.createSegment(0, -0.1, 0, "sprSegTreeRoad00_", 4, -1, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+            this.createSegment(0, 0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+            this.createSegment(0, -0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-            this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", 2, 1, 64),
-            this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", 2, 1, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 0, 2),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad01_", 1, 0, 30),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
+            this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 0, 2),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 0, 30),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-            this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", 1, 0, 2),
-            this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", 8, 1, 64),
-            this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", 1, 0, 2),
-            this.createSegment(0.01, 0, 0, "sprSegMetalRoad00_", 1, 0, 62),
+            this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+            this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+            this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+            this.createSegment(0.01, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
 
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8), 
 
-            this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", 1, 0, 96),
-            this.createSegment(-0.01, 0.025, 0, "sprSegAirVent00_", 1, 0, 96),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
+            this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", [0], 0, 96),
+            this.createSegment(-0.01, 0, 0, "sprSegAirVent00_", [0], 0, 96),
+            this.createSegment(0, 0.025, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+            this.createSegment(0, 0.025, 0, "sprSegMetalRoad00_", [0], 0, 88),
 
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", 1, 0, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", 8, 1, 8), 
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8), 
         ];
         this.trackLength = 0;
         for(let s of this.trackData){
             this.trackLength += s.units;
         }
 
-        this.obstacles.push(this.createObstacle(64, 0, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(78, Math.PI * 0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+        this.obstacles.push(this.createObstacle(78, Math.PI * -0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+
+        /*this.obstacles.push(this.createObstacle(64, 0, 32, "sprObsBlade01_0", 0.3));
         this.obstacles.push(this.createObstacle(64, Math.PI * 0.66, 32, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(64, Math.PI * -0.66, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(64, Math.PI * -0.66, 32, "sprObsBlade01_0", 0.3));*/
 
-        this.obstacles.push(this.createObstacle(486, Math.PI, 28, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(678, Math.PI, 28, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(486, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+        this.obstacles.push(this.createObstacle(678, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
 
-        this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(854, Math.PI * -0.33, 32, "sprObsBlade01_0", 0.3));
+        this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_", [0], 0, 0.3));
+        this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_", [0], 0, 0.3));
+        this.obstacles.push(this.createObstacle(854, Math.PI * -0.33, 32, "sprObsBlade01_", [0], 0, 0.3));
 
-        this.obstacles.push(this.createObstacle(1072, Math.PI, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(992, 0, 32, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.5));
+
+        this.obstacles.push(this.createObstacle(1072, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length-1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1072, Math.PI * 0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1072, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
 
-        this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1167, Math.PI * 0.25, 32, "sprObsVentDoor00_", [0], 0, Math.PI * 0.5));
+        this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-        this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-        this.obstacles.push(this.createObstacle(1168, Math.PI * -0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1168, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
 
-        this.obstacles.push(this.createObstacle(1264, Math.PI, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1264, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1264, Math.PI * 0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1264, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1264, Math.PI * -0.33, 24, "sprObsVentBlade00_0", 0.3));
+        this.obstacles.push(this.createObstacle(1264, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+
+        this.obstacles.push(this.createObstacle(1368, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+        this.obstacles.push(this.createObstacle(1368, Math.PI, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
         
+        this.startFinishTxt = this.createTextClutter(18, 0, 10, "NEW LAP");
 
         this.spawner = {
             trackPos: 0,
@@ -174,6 +185,9 @@ export default class ScnMain extends Phaser.Scene {
                 y: 0,
                 z: 0
             },
+            subimgArrPos: 0,
+            subimgJumper: 0,
+            subimgArr: [0],
             subimage: 0,
             subimageMax: 1,
             imgSpd: 0
@@ -203,7 +217,12 @@ export default class ScnMain extends Phaser.Scene {
                     z: 0
                 }
             },
-            trackPos: this.trackLength-64
+            trackPos: this.trackLength-64,
+            laps: 0,
+            lapTime: {
+                current: 0,
+                best: 0
+            }
         }
 
         this.otherPlayers = [];
@@ -256,7 +275,7 @@ export default class ScnMain extends Phaser.Scene {
         });
     }
 
-    update(){
+    update(_time, _delta){
 
         this.hand.update();
 
@@ -330,7 +349,7 @@ export default class ScnMain extends Phaser.Scene {
         //keep roll within PI
         if (this.player.roll > Math.PI) {
             this.player.roll -= Math.PI * 2;
-        }else{
+        }else if(this.player.roll <= Math.PI * -1){
             this.player.roll += Math.PI * 2;
         }
 
@@ -391,14 +410,23 @@ export default class ScnMain extends Phaser.Scene {
                 s.dir = this.spawner.roll;
                 s.toKill = false;
 
-                s.sprite.setTexture(this.spawner.asset + String(Math.floor(this.spawner.subimage)));
+                s.sprite.setTexture(this.spawner.asset + String(this.spawner.subimage));
                 if(this.spawner.imgSpd !== -1){
-                    this.spawner.subimage += this.spawner.imgSpd;
-                    if(this.spawner.subimage >= this.spawner.subimageMax){
-                        this.spawner.subimage = 0;
+                    this.spawner.subimgJumper += this.spawner.imgSpd;
+                    if(this.spawner.subimgJumper >= 1){
+                        this.spawner.subimgJumper = 0;
+                        this.spawner.subimgArrPos += 1;
+                        if(this.spawner.subimgArrPos >= this.spawner.subimgArr.length){
+                            this.spawner.subimgArrPos = 0;
+                        }
+                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
                     }
                 }else{
-                    this.spawner.subimage = Math.floor(Math.random() * this.spawner.subimageMax);
+                    /*this.spawner.subimgJumper += this.spawner.imgSpd;
+                    if (this.spawner.subimgJumper >= 1) {
+                        this.spawner.subimgJumper = 0;
+                    }*/
+                    this.spawner.subimage = Math.floor(Math.random() * this.spawner.subimgArr.length);
                 }
 
                 this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
@@ -407,6 +435,7 @@ export default class ScnMain extends Phaser.Scene {
                 if (this.player.trackPos >= this.trackLength){
                     console.log("new LAP");
                     this.player.trackPos = 0;
+                    this.player.laps += 1;
                 }
 
                 this.spawner.trackPos += 1;
@@ -414,13 +443,14 @@ export default class ScnMain extends Phaser.Scene {
                     this.spawner.trackPos = 0;
                     this.spawner.trackArrPos += 1;
                     this.spawner.subimage = 0;
+                    this.spawner.subimgArrPos = 0;
                     if(this.spawner.trackArrPos >= this.trackData.length){
                         this.spawner.trackArrPos = 0;
                     }
                 }
 
                 this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
-                this.spawner.subimageMax = this.trackData[this.spawner.trackArrPos].subimageMax;
+                this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
                 this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
                 //absolute curving
                 this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
@@ -440,14 +470,6 @@ export default class ScnMain extends Phaser.Scene {
 
                 this.spawner.pos.x += this.spawner.yaw * 100;
                 this.spawner.pos.y += this.spawner.pitch * 100;
-
-
-                /*socket.emit("updatePlayer", {
-                    id: this.you.id,
-                    spd: this.player.spd,
-                    roll: this.player.roll,
-                    trackPos: this.player.trackPos
-                });*/
             }
         }
 
@@ -461,16 +483,44 @@ export default class ScnMain extends Phaser.Scene {
         }
 
         //UPDATE OTHER PLAYERRS and STUFF
-        this.updateOtherPlayers();
-        this.updateObstacles();
-        
-        
-        //this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
+        let adjPlayerTrackPos = this.player.trackPos;
+        if (adjPlayerTrackPos + 64 > this.trackLength) {
+            adjPlayerTrackPos -= this.trackLength;
+        }
+        this.updateOtherPlayers(adjPlayerTrackPos);
+        this.updateObstacles(adjPlayerTrackPos);
+
+        //UPDATE START FINISH TEXT
+        if (this.startFinishTxt.trackPos < adjPlayerTrackPos + 64 && this.startFinishTxt.trackPos > adjPlayerTrackPos) {
+            this.startFinishTxt.txt.setText((Math.max(1, this.player.laps)) + "/5 LAPS");
+            let parent = this.segments[this.startFinishTxt.trackPos - adjPlayerTrackPos];
+
+            let pos = {
+                x: parent.pos.x,
+                y: parent.pos.y,
+                z: this.startFinishTxt.trackPos - adjPlayerTrackPos
+            }
+
+            let dz = 1 / pos.z;
+            let shade = Math.max(0, 255 - (pos.z * 4));
+
+            this.startFinishTxt.txt.x = (parent.screenPos.x + Math.cos((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+            this.startFinishTxt.txt.y = (parent.screenPos.y + Math.sin((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+
+            this.startFinishTxt.txt.rotation = this.player.roll - this.startFinishTxt.roll;
+
+            this.startFinishTxt.txt.setFontSize((dz * this.zoom) * 8);
+            this.startFinishTxt.txt.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
+            this.startFinishTxt.txt.depth = dz;
+            this.startFinishTxt.txt.alpha = 1;
+        } else {
+            this.startFinishTxt.txt.alpha = 0;
+        }
 
         this.ui.update();
     }
 
-    updateOtherPlayers(){
+    updateOtherPlayers(_adjPlayerPosition){
         let target = null;
         for (let o of this.otherPlayers) {
 
@@ -483,29 +533,17 @@ export default class ScnMain extends Phaser.Scene {
 
             let flPos = Math.floor(o.trackPos);
 
-            if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos) {
-                //console.log(o.trackPos - this.player.trackPos);
-                let parent = this.segments[flPos - this.player.trackPos];
+            if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
+                let parent = this.segments[flPos - _adjPlayerPosition];
 
                 let pos = {
                     x: parent.pos.x,
                     y: parent.pos.y,
-                    z: flPos - this.player.trackPos
-                }
-
-                let len = Phaser.Math.Distance.Between(0, 0, pos.x, pos.y);
-                let ang = Phaser.Math.Angle.Between(0, 0, pos.x, pos.y);// + o.roll;
-
-                let screenPos = {
-                    x: Math.cos(ang) * len,
-                    y: (Math.sin(ang) * len)// - (24 * this.zoom)
+                    z: flPos - _adjPlayerPosition
                 }
 
                 let dz = 1 / pos.z;
                 let shade = Math.max(0, 255 - (pos.z * 4));
-
-                //o.sprite.x = (parent.screenPos.x) * dz;
-                //o.sprite.y = (parent.screenPos.y) * dz;
 
                 o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
                 o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
@@ -519,15 +557,21 @@ export default class ScnMain extends Phaser.Scene {
 
                 //get nearest enemy that is in front and player is in its slipstream
                 if (pos.z < rec) {
-                    if (o.trackPos > this.player.trackPos) {
+                    if (o.trackPos > _adjPlayerPosition) {
                         rec = pos.z;
-                        if (Math.abs(this.player.roll - o.roll) < this.player.stats.slipZone) {
+                        let rollDif = (this.player.roll - o.roll);// + Math.PI;
+                        if (rollDif > Math.PI) {
+                            rollDif -= Math.PI * 2;
+                        } else if (rollDif < Math.PI * -1) {
+                            rollDif += Math.PI * 2;
+                        }
+                        if (Math.abs(rollDif) < this.player.stats.slipZone) {
                             target = o;
 
                             //slow down and avoid other player
-                            if (o.trackPos < this.player.trackPos + 3) {
+                            if (o.trackPos < _adjPlayerPosition + 3) {
                                 this.player.spd *= 0.5;
-                                this.player.roll += (this.player.roll - o.roll) * 0.25;
+                                this.player.roll += (rollDif) * 0.25;
                             }
                         }
                     }
@@ -538,7 +582,7 @@ export default class ScnMain extends Phaser.Scene {
         }
 
         if (target !== null) {
-            this.ui.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - this.player.trackPos));
+            this.ui.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - _adjPlayerPosition));
             this.player.slipstream = this.player.stats.slipMax;
         } else {
             this.player.slipstream = 0;
@@ -546,7 +590,7 @@ export default class ScnMain extends Phaser.Scene {
         }
     }
 
-    updateObstacles() {
+    updateObstacles(_adjPlayerPosition) {
         for (let o of this.obstacles) {
             o.trackPos += o.spd;
             if (o.trackPos >= this.trackLength) {
@@ -556,30 +600,30 @@ export default class ScnMain extends Phaser.Scene {
             o.roll += o.rollSpd;
             if(o.roll > Math.PI){
                 o.roll -= Math.PI * 2;
-            }else{
+            }else if (o.roll <= Math.PI * -1){
                 o.roll += Math.PI * 2;
             }
 
             let flPos = Math.floor(o.trackPos);
-            if (flPos < this.player.trackPos + 64 && flPos > this.player.trackPos) {
-                let parent = this.segments[flPos - this.player.trackPos];
-
+            if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
+                let parent = this.segments[flPos - _adjPlayerPosition];
                 let pos = {
                     x: parent.pos.x,
                     y: parent.pos.y,
-                    z: o.trackPos - this.player.trackPos
+                    z: o.trackPos - _adjPlayerPosition
                 }
-
-                let len = Phaser.Math.Distance.Between(0, 0, pos.x, pos.y);
-                let ang = Phaser.Math.Angle.Between(0, 0, pos.x, pos.y);
-
-                let screenPos = {
-                    x: Math.cos(ang) * len,
-                    y: (Math.sin(ang) * len)
-                }
-
                 let dz = 1 / pos.z;
                 let shade = Math.max(0, 255 - (pos.z * 4));
+
+                if(o.imgSpd !== -1){
+                    o.subimgArrPos += o.imgSpd;
+                    if(o.subimgArrPos >= o.subimgArr.length){
+                        o.subimgArrPos = 0;
+                    }
+                    o.sprite.setTexture(o.asset + String(o.subimgArr[Math.floor(o.subimgArrPos)]));
+                }else{
+                    o.sprite.setTexture(o.asset + String(o.subimgArr[Math.floor(Math.random() * o.subimgArr.length)]));
+                }
 
                 o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (o.len * this.zoom)) * dz;
                 o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (o.len * this.zoom)) * dz;
@@ -591,12 +635,26 @@ export default class ScnMain extends Phaser.Scene {
                 o.sprite.depth = dz;
                 o.sprite.alpha = 1;
 
-                if (o.trackPos > this.player.trackPos) {
-                    if (Math.abs(this.player.roll - o.roll) < o.collisionZone) {
-                        //slow down and avoid other player
-                        if (o.trackPos < this.player.trackPos + 3) {
+                if (o.trackPos > _adjPlayerPosition) {
+                    let rollDif = (this.player.roll - o.roll);// + Math.PI;
+                    if(rollDif > Math.PI){
+                        rollDif -= Math.PI * 2;
+                    }else if(rollDif < Math.PI * -1){
+                        rollDif += Math.PI * 2;
+                    }
+                    /*if (o.trackPos < _adjPlayerPosition + 16) {
+                        //console.log(Math.abs(rollDif));
+                        if(Math.abs(rollDif) < o.collisionZone){
+                            console.log("collision warning")
+                        }else{
+                            //console.log(Math.PI - Math.abs(rollDif));
+                        }
+                    }*/
+                    if (Math.abs(rollDif) < o.collisionZone) {   
+                        //slow down and avoid obstacle
+                        if (o.trackPos < _adjPlayerPosition + 3) {
                             this.player.spd *= 0.5;
-                            this.player.roll += (this.player.roll - o.roll) * 0.25;
+                            this.player.roll += (rollDif) * 0.25;
                         }
                     }
                 }
@@ -642,7 +700,7 @@ export default class ScnMain extends Phaser.Scene {
         }
     }
 
-    createSegment(_curveX, _curveY, _roll, _asset, _subimageMax, _imgSpd, _units){
+    createSegment(_curveX, _curveY, _roll, _asset, _subimgArr, _imgSpd, _units){
         return {
             curve: {
                 x: _curveX,
@@ -650,13 +708,30 @@ export default class ScnMain extends Phaser.Scene {
             },
             roll: _roll,
             asset: _asset,
-            subimageMax: _subimageMax,
+            subimgArr: _subimgArr,
             imgSpd: _imgSpd,
             units: _units
         }
     }
 
-    createObstacle(_trackPos, _roll, _len, _asset, _collisionZone){
+    createObstacle(_trackPos, _roll, _len, _asset, _subimgArr, _imgSpd, _collisionZone){
+        return {
+            spd: 0,
+            rollSpd: 0,
+            roll: _roll,
+            len: _len,
+            trackPos: _trackPos,
+            asset: _asset,
+            sprite: this.add.sprite(0, 0, _asset),
+            imgSpd: _imgSpd,
+            subimgArr: _subimgArr,
+            subimgArrPos: 0,
+            collisionZone: _collisionZone,
+            update: () => { }
+        }
+    }
+
+    createSpriteClutter(_trackPos, _roll, _len, _asset) {
         return {
             spd: 0,
             rollSpd: 0,
@@ -664,7 +739,20 @@ export default class ScnMain extends Phaser.Scene {
             len: _len,
             trackPos: _trackPos,
             sprite: this.add.sprite(0, 0, _asset),
-            collisionZone: _collisionZone
+            update: () => {}
+        }
+    }
+
+    createTextClutter(_trackPos, _roll, _len, _text) {
+        return {
+            spd: 0,
+            rollSpd: 0,
+            roll: _roll,
+            len: _len,
+            trackPos: _trackPos,
+            text: _text,
+            txt: this.add.bitmapText(0, 0, "pixelmix", _text, 8, 1).setOrigin(0.5),
+            update: () => { }
         }
     }
 }
