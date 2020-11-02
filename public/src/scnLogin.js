@@ -65,7 +65,7 @@ export default class ScnLogin extends Phaser.Scene {
                 description: "Arashi Corporation built Dart for one thing only: speed.\nIt gets so fast it can get troublesome to get around corners or into another pilots slipstream.",
                 acceleration: 0.008,
                 spd: 0.35,
-                curveMod: 0.45,
+                curveMod: 0.49,
                 slipMax: 0.15,
                 slipZone: 0.3,
                 brake: 0.1,
