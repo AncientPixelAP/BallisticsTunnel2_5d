@@ -273,250 +273,259 @@ export default class ScnMain extends Phaser.Scene {
         socket.emit("joinPlayer", {
             bikeData: this.bikeData
         });
+
+        this.delta = {
+            current: 0,
+            treshold: 16,
+        }
     }
 
     update(_time, _delta){
-
         this.hand.update();
 
-        this.ui.deltaTxt.setText("DEL " + String(_delta));
+        this.delta.current += _delta;
+        if (this.delta.current >= this.delta.treshold){
+            this.delta.current = 0;
 
-        if(this.hand.pressed === false){
-            //KEYBOARD CONTROLS
-            if(this.cursors.up.isDown){
-                if(this.player.spd < this.player.spdMax){
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
-                }
-            } else if (this.cursors.down.isDown) {
-                if (this.player.spd > 0) {
-                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
-                }
-                this.player.spd = Math.max(0, this.player.spd);
-            }else{
-                if(this.player.spd > 0){
-                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
-                }
-            }
-            if(this.player.spd > this.player.spdMax){
-                this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
-            }
+            this.ui.deltaTxt.setText("DEL " + String(_delta));
 
-            if(this.cursors.left.isDown){
-                this.player.roll -= this.player.stats.roll;
-            }
-            if (this.cursors.right.isDown) {
-                this.player.roll += this.player.stats.roll;
-            }
-
-            /*if(this.keys.w.isDown){
-
-            }else if(this.keys.s.isDown){
-
-            }else{
-
-            }
-
-            if (this.keys.a.isDown) {
-
-            } else if (this.keys.d.isDown) {
-
-            } else {
-
-            }*/
-        }else{
-            //MOUSE CONTROLS
-            if (this.hand.pos.y < this.game.config.height * 0.25) {
-                if (this.player.spd < this.player.spdMax) {
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
-                }
-            } else{
-                if (this.player.spd > 0) {
-                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
-                }
-                this.player.spd = Math.max(0, this.player.spd);
-            }
-
-            if (this.player.spd > this.player.spdMax) {
-                this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
-            }
-
-            let amt = this.hand.start.x - this.hand.pos.x;
-            //console.log(amt);
-            if (Math.abs(amt) > 8) {
-                let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
-                this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
-            }
-        }
-
-        //keep roll within PI
-        if (this.player.roll > Math.PI) {
-            this.player.roll -= Math.PI * 2;
-        }else if(this.player.roll <= Math.PI * -1){
-            this.player.roll += Math.PI * 2;
-        }
-
-        if (this.segments.length > 0) {
-            let overZero = this.spawner.pos.x > 0 ? true : false;
-            this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * 1;
-            if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
-                this.spawner.pos.x = 0;
-            }
-
-            overZero = this.spawner.pos.y > 0 ? true : false;
-            this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z + 64)) * 1;
-            if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
-                this.spawner.pos.y = 0;
-            }
-
-            //CHECK MAX SPEED
-            let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
-            let modify = Math.round(checkY * -0.01);
-
-            //adaptivespeed
-            this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
-
-            //this.deb.setText(this.player.spdMax.toFixed(2) + " | " + modify);
-
-
-            /*this.skybox.x = 0;
-            this.skybox.y = 0;
-            this.skybox.rotation = this.player.roll;*/
-        }
-
-        //UPDATE
-        for(let i = this.segments.length-1 ; i >= 0 ; i--){
-            let s = this.segments[i];
-
-            let overZero = s.pos.x > 0 ? true : false;
-            s.pos.x -= (this.segments[0].pos.x * s.pos.z) * 1;
-            if ((s.pos.x < 0 && overZero === true) || (s.pos.x > 0 && overZero === false)) {
-                s.pos.x = 0;
-            }
-
-            overZero = s.pos.y > 0 ? true : false;
-            s.pos.y -= (this.segments[0].pos.y * s.pos.z) * 1;
-            if ((s.y < 0 && overZero === true) || (s.pos.y > 0 && overZero === false)) {
-                s.pos.y = 0;
-            }
-
-            s.pos.z -= this.player.spd;
-            s.update();
-
-            if(s.toKill === true){
-                //feed spawener data to segment and jump it to the far end
-                s.pos.x = this.spawner.pos.x;
-                s.pos.y = this.spawner.pos.y;
-                s.pos.z += 64;
-                s.curve.x = this.spawner.yaw;
-                s.curve.y = this.spawner.pitch;
-                s.dir = this.spawner.roll;
-                s.toKill = false;
-
-                s.sprite.setTexture(this.spawner.asset + String(this.spawner.subimage));
-                if(this.spawner.imgSpd !== -1){
-                    this.spawner.subimgJumper += this.spawner.imgSpd;
-                    if(this.spawner.subimgJumper >= 1){
-                        this.spawner.subimgJumper = 0;
-                        this.spawner.subimgArrPos += 1;
-                        if(this.spawner.subimgArrPos >= this.spawner.subimgArr.length){
-                            this.spawner.subimgArrPos = 0;
-                        }
-                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
+            if(this.hand.pressed === false){
+                //KEYBOARD CONTROLS
+                if(this.cursors.up.isDown){
+                    if(this.player.spd < this.player.spdMax){
+                        this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                     }
+                } else if (this.cursors.down.isDown) {
+                    if (this.player.spd > 0) {
+                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                    }
+                    this.player.spd = Math.max(0, this.player.spd);
                 }else{
-                    /*this.spawner.subimgJumper += this.spawner.imgSpd;
-                    if (this.spawner.subimgJumper >= 1) {
-                        this.spawner.subimgJumper = 0;
-                    }*/
-                    this.spawner.subimage = Math.floor(Math.random() * this.spawner.subimgArr.length);
-                }
-
-                this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
-
-                this.player.trackPos += 1;
-                if (this.player.trackPos >= this.trackLength){
-                    console.log("new LAP");
-                    this.player.trackPos = 0;
-                    this.player.laps += 1;
-                }
-
-                this.spawner.trackPos += 1;
-                if(this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units){
-                    this.spawner.trackPos = 0;
-                    this.spawner.trackArrPos += 1;
-                    this.spawner.subimage = 0;
-                    this.spawner.subimgArrPos = 0;
-                    if(this.spawner.trackArrPos >= this.trackData.length){
-                        this.spawner.trackArrPos = 0;
+                    if(this.player.spd > 0){
+                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
                     }
                 }
-
-                this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
-                this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
-                this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
-                //absolute curving
-                this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
-                this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
-                this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
-
-                let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
-                if (this.spawner.roll < this.spawner.toRoll) {
-                    this.spawner.roll += Math.min(0.025, dif);
-                }
-                if (this.spawner.roll > this.spawner.toRoll) {
-                    this.spawner.roll -= Math.min(0.025, dif);
+                if(this.player.spd > this.player.spdMax){
+                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
                 }
 
-                this.spawner.yaw += this.spawner.curve.x;
-                this.spawner.pitch += this.spawner.curve.y;
+                if(this.cursors.left.isDown){
+                    this.player.roll -= this.player.stats.roll;
+                }
+                if (this.cursors.right.isDown) {
+                    this.player.roll += this.player.stats.roll;
+                }
 
-                this.spawner.pos.x += this.spawner.yaw * 100;
-                this.spawner.pos.y += this.spawner.pitch * 100;
+                /*if(this.keys.w.isDown){
+
+                }else if(this.keys.s.isDown){
+
+                }else{
+
+                }
+
+                if (this.keys.a.isDown) {
+
+                } else if (this.keys.d.isDown) {
+
+                } else {
+
+                }*/
+            }else{
+                //MOUSE CONTROLS
+                if (this.hand.pos.y < this.game.config.height * 0.25) {
+                    if (this.player.spd < this.player.spdMax) {
+                        this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+                    }
+                } else{
+                    if (this.player.spd > 0) {
+                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                    }
+                    this.player.spd = Math.max(0, this.player.spd);
+                }
+
+                if (this.player.spd > this.player.spdMax) {
+                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
+                }
+
+                let amt = this.hand.start.x - this.hand.pos.x;
+                //console.log(amt);
+                if (Math.abs(amt) > 8) {
+                    let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
+                    this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
+                }
             }
-        }
 
-        if(this.playersData !== null){
-            socket.emit("updatePlayer", {
-                id: this.you.id,
-                spd: this.player.spd,
-                roll: this.player.roll,
-                trackPos: this.player.trackPos
-            });
-        }
-
-        //UPDATE OTHER PLAYERRS and STUFF
-        let adjPlayerTrackPos = this.player.trackPos;
-        if (adjPlayerTrackPos + 64 > this.trackLength) {
-            adjPlayerTrackPos -= this.trackLength;
-        }
-        this.updateOtherPlayers(adjPlayerTrackPos);
-        this.updateObstacles(adjPlayerTrackPos);
-
-        //UPDATE START FINISH TEXT
-        if (this.startFinishTxt.trackPos < adjPlayerTrackPos + 64 && this.startFinishTxt.trackPos > adjPlayerTrackPos) {
-            this.startFinishTxt.txt.setText((Math.max(1, this.player.laps)) + "/5 LAPS");
-            let parent = this.segments[this.startFinishTxt.trackPos - adjPlayerTrackPos];
-
-            let pos = {
-                x: parent.pos.x,
-                y: parent.pos.y,
-                z: this.startFinishTxt.trackPos - adjPlayerTrackPos
+            //keep roll within PI
+            if (this.player.roll > Math.PI) {
+                this.player.roll -= Math.PI * 2;
+            }else if(this.player.roll <= Math.PI * -1){
+                this.player.roll += Math.PI * 2;
             }
 
-            let dz = 1 / pos.z;
-            let shade = Math.max(0, 255 - (pos.z * 4));
+            if (this.segments.length > 0) {
+                let overZero = this.spawner.pos.x > 0 ? true : false;
+                this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * 1;
+                if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
+                    this.spawner.pos.x = 0;
+                }
 
-            this.startFinishTxt.txt.x = (parent.screenPos.x + Math.cos((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
-            this.startFinishTxt.txt.y = (parent.screenPos.y + Math.sin((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+                overZero = this.spawner.pos.y > 0 ? true : false;
+                this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z + 64)) * 1;
+                if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
+                    this.spawner.pos.y = 0;
+                }
 
-            this.startFinishTxt.txt.rotation = this.player.roll - this.startFinishTxt.roll;
+                //CHECK MAX SPEED
+                let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
+                let modify = Math.round(checkY * -0.01);
 
-            this.startFinishTxt.txt.setFontSize((dz * this.zoom) * 8);
-            this.startFinishTxt.txt.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
-            this.startFinishTxt.txt.depth = dz;
-            this.startFinishTxt.txt.alpha = 1;
-        } else {
-            this.startFinishTxt.txt.alpha = 0;
+                //adaptivespeed
+                this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
+
+                //this.deb.setText(this.player.spdMax.toFixed(2) + " | " + modify);
+
+
+                /*this.skybox.x = 0;
+                this.skybox.y = 0;
+                this.skybox.rotation = this.player.roll;*/
+            }
+
+            //UPDATE
+            for(let i = this.segments.length-1 ; i >= 0 ; i--){
+                let s = this.segments[i];
+
+                let overZero = s.pos.x > 0 ? true : false;
+                s.pos.x -= (this.segments[0].pos.x * s.pos.z) * 1;
+                if ((s.pos.x < 0 && overZero === true) || (s.pos.x > 0 && overZero === false)) {
+                    s.pos.x = 0;
+                }
+
+                overZero = s.pos.y > 0 ? true : false;
+                s.pos.y -= (this.segments[0].pos.y * s.pos.z) * 1;
+                if ((s.y < 0 && overZero === true) || (s.pos.y > 0 && overZero === false)) {
+                    s.pos.y = 0;
+                }
+
+                s.pos.z -= this.player.spd;
+                s.update();
+
+                if(s.toKill === true){
+                    //feed spawener data to segment and jump it to the far end
+                    s.pos.x = this.spawner.pos.x;
+                    s.pos.y = this.spawner.pos.y;
+                    s.pos.z += 64;
+                    s.curve.x = this.spawner.yaw;
+                    s.curve.y = this.spawner.pitch;
+                    s.dir = this.spawner.roll;
+                    s.toKill = false;
+
+                    s.sprite.setTexture(this.spawner.asset + String(this.spawner.subimage));
+                    if(this.spawner.imgSpd !== -1){
+                        this.spawner.subimgJumper += this.spawner.imgSpd;
+                        if(this.spawner.subimgJumper >= 1){
+                            this.spawner.subimgJumper = 0;
+                            this.spawner.subimgArrPos += 1;
+                            if(this.spawner.subimgArrPos >= this.spawner.subimgArr.length){
+                                this.spawner.subimgArrPos = 0;
+                            }
+                            this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
+                        }
+                    }else{
+                        /*this.spawner.subimgJumper += this.spawner.imgSpd;
+                        if (this.spawner.subimgJumper >= 1) {
+                            this.spawner.subimgJumper = 0;
+                        }*/
+                        this.spawner.subimage = Math.floor(Math.random() * this.spawner.subimgArr.length);
+                    }
+
+                    this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
+
+                    this.player.trackPos += 1;
+                    if (this.player.trackPos >= this.trackLength){
+                        console.log("new LAP");
+                        this.player.trackPos = 0;
+                        this.player.laps += 1;
+                    }
+
+                    this.spawner.trackPos += 1;
+                    if(this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units){
+                        this.spawner.trackPos = 0;
+                        this.spawner.trackArrPos += 1;
+                        this.spawner.subimage = 0;
+                        this.spawner.subimgArrPos = 0;
+                        if(this.spawner.trackArrPos >= this.trackData.length){
+                            this.spawner.trackArrPos = 0;
+                        }
+                    }
+
+                    this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
+                    this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
+                    this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
+                    //absolute curving
+                    this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
+                    this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
+                    this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
+
+                    let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
+                    if (this.spawner.roll < this.spawner.toRoll) {
+                        this.spawner.roll += Math.min(0.025, dif);
+                    }
+                    if (this.spawner.roll > this.spawner.toRoll) {
+                        this.spawner.roll -= Math.min(0.025, dif);
+                    }
+
+                    this.spawner.yaw += this.spawner.curve.x;
+                    this.spawner.pitch += this.spawner.curve.y;
+
+                    this.spawner.pos.x += this.spawner.yaw * 100;
+                    this.spawner.pos.y += this.spawner.pitch * 100;
+                }
+            }
+
+            if(this.playersData !== null){
+                socket.emit("updatePlayer", {
+                    id: this.you.id,
+                    spd: this.player.spd,
+                    roll: this.player.roll,
+                    trackPos: this.player.trackPos
+                });
+            }
+
+            //UPDATE OTHER PLAYERRS and STUFF
+            let adjPlayerTrackPos = this.player.trackPos;
+            if (adjPlayerTrackPos + 64 > this.trackLength) {
+                adjPlayerTrackPos -= this.trackLength;
+            }
+            this.updateOtherPlayers(adjPlayerTrackPos);
+            this.updateObstacles(adjPlayerTrackPos);
+
+            //UPDATE START FINISH TEXT
+            if (this.startFinishTxt.trackPos < adjPlayerTrackPos + 64 && this.startFinishTxt.trackPos > adjPlayerTrackPos) {
+                this.startFinishTxt.txt.setText((Math.max(1, this.player.laps)) + "/5 LAPS");
+                let parent = this.segments[this.startFinishTxt.trackPos - adjPlayerTrackPos];
+
+                let pos = {
+                    x: parent.pos.x,
+                    y: parent.pos.y,
+                    z: this.startFinishTxt.trackPos - adjPlayerTrackPos
+                }
+
+                let dz = 1 / pos.z;
+                let shade = Math.max(0, 255 - (pos.z * 4));
+
+                this.startFinishTxt.txt.x = (parent.screenPos.x + Math.cos((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+                this.startFinishTxt.txt.y = (parent.screenPos.y + Math.sin((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+
+                this.startFinishTxt.txt.rotation = this.player.roll - this.startFinishTxt.roll;
+
+                this.startFinishTxt.txt.setFontSize((dz * this.zoom) * 8);
+                this.startFinishTxt.txt.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
+                this.startFinishTxt.txt.depth = dz;
+                this.startFinishTxt.txt.alpha = 1;
+            } else {
+                this.startFinishTxt.txt.alpha = 0;
+            }
         }
 
         this.ui.update();
