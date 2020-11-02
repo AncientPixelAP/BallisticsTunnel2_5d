@@ -287,7 +287,7 @@ export default class ScnMain extends Phaser.Scene {
         if (this.delta.current >= this.delta.treshold){
             this.delta.current -= this.delta.treshold;
 
-            this.ui.deltaTxt.setText("DEL " + String(_delta));
+            //this.ui.deltaTxt.setText("DEL " + String(_delta));
 
             if(this.hand.pressed === false){
                 //KEYBOARD CONTROLS

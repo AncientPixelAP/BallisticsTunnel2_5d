@@ -14,9 +14,9 @@ export default class Ui{
 
         
         //create stats text
-        this.deltaTxt = this.scene.add.bitmapText(this.scene.left + 32, -64, "pixelmix", "DELT ", 8, 1).setOrigin(0, 0.5);
+        /*this.deltaTxt = this.scene.add.bitmapText(this.scene.left + 32, -64, "pixelmix", "DELT ", 8, 1).setOrigin(0, 0.5);
         this.deltaTxt.depth = 10000;
-        this.deltaTxt.setTint(0x00ff00);
+        this.deltaTxt.setTint(0x00ff00);*/
 
         this.spdTxt = this.scene.add.bitmapText(this.scene.left + 32, -32, "pixelmix", "SPD ", 8, 1).setOrigin(0, 0.5);
         this.spdTxt.depth = 10000;
