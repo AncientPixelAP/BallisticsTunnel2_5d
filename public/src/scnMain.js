@@ -279,6 +279,8 @@ export default class ScnMain extends Phaser.Scene {
 
         this.hand.update();
 
+        this.ui.deltaTxt.setText("DEL " + String(_delta));
+
         if(this.hand.pressed === false){
             //KEYBOARD CONTROLS
             if(this.cursors.up.isDown){
