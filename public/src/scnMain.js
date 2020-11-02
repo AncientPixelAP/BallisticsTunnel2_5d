@@ -147,7 +147,7 @@ export default class ScnMain extends Phaser.Scene {
         this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
 
-        this.obstacles.push(this.createObstacle(1167, Math.PI * 0.25, 32, "sprObsVentDoor00_", [0], 0, Math.PI * 0.5));
+        //this.obstacles.push(this.createObstacle(1167, Math.PI * 0.25, 32, "sprObsVentDoor00_", [0], 0, Math.PI * 0.5));
         this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
         this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
         this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));

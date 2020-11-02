@@ -80,12 +80,12 @@ export default class ScnLogin extends Phaser.Scene {
                 description: "Daito´s Asynch asymmetrical design allows for nimble manoeuveurs and excellent cornering speeds, but the offcenter engine it is hard to control for its pilots.",
                 acceleration: 0.009,
                 spd: 0.34,
-                curveMod: 0.52,
+                curveMod: 0.51,
                 slipMax: 0.25,
                 slipZone: 0.3,
                 brake: 0.1,
                 friction: 0.01,
-                speedDeg: 0.001,
+                speedDeg: 0.0012,
                 roll: 0.06
             }, {
                 model: "Kite",
@@ -95,7 +95,7 @@ export default class ScnLogin extends Phaser.Scene {
                 description: "Inspired by speedboat racing, Tinnemann´s Kite rides the walls of the loop like it would be water and is sometimes equally sluggish.\nThe Kite profits from slipstreaming and the perfect racing line.",
                 acceleration: 0.008,
                 spd: 0.33,
-                curveMod: 0.55,
+                curveMod: 0.52,
                 slipMax: 0.27,
                 slipZone: 0.3,
                 brake: 0.1,
