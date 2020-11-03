@@ -203,7 +203,6 @@ export default class ScnLogin extends Phaser.Scene {
     }
 
     gotoMain(){
-        console.log(OPTIONS);
         localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
         this.scene.start("ScnMain", { 
             bikeData: this.shipStats[this.shipSelect.currentBike],

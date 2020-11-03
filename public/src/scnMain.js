@@ -1,4 +1,5 @@
 import Hand from "./hand.js";
+import MusicPlayer from "./musicPlayer.js";
 import Segment from "./segment.js";
 import Ui from "./ui.js";
 
@@ -54,6 +55,8 @@ export default class ScnMain extends Phaser.Scene {
         }, this);
 
         this.hand = new Hand(this);
+        this.musicPlayer = new MusicPlayer(this);
+        this.musicPlayer.playTrackRandom();
         
         //Phaser.Math.RND.sow(["seed"]);
         //console.log(Phaser.Math.RND);
@@ -704,9 +707,23 @@ export default class ScnMain extends Phaser.Scene {
                             this.player.roll += (rollDif) * 0.25;
                         }
                     }
+
+                    if (o.trackPos < _adjPlayerPosition + 3) {
+                        if(o.sndTriggered !== undefined){
+                            if(o.sndTriggered === false){
+                                o.sndTriggered = true;
+                                o.snd.rate = Math.max(0.01, Math.min(1, this.player.spd));
+                                o.snd.volume = Math.max(0, Math.min(1, this.player.spd)) * OPTIONS.sound.sfx;
+                                o.snd.play();
+                            }
+                        }
+                    }
                 }
             } else {
                 o.sprite.alpha = 0;
+                if (o.sndTriggered !== undefined) {
+                    o.sndTriggered = false;
+                }
             }
         }
     }
@@ -775,6 +792,8 @@ export default class ScnMain extends Phaser.Scene {
             subimgArr: _subimgArr,
             subimgArrPos: 0,
             collisionZone: _collisionZone,
+            snd: this.sound.add("sndSwoosh01", { loop: false, volume: OPTIONS.sound.sfx }),
+            sndTriggered: false,
             update: () => { }
         }
     }

@@ -147,6 +147,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.audio("sndEngine00", "sounds/jetengine.mp3");
         this.load.audio("sndWhoo00", "sounds/whoo00.mp3");
         this.load.audio("sndPew00", "sounds/finalmoan.mp3");
+        this.load.audio("sndSwoosh00", "sounds/Swoosh1.mp3");
+        this.load.audio("sndSwoosh01", "sounds/Swoosh3.mp3");
 
         this.load.audio("sndNewRecord", "sounds/af_newrecord.mp3");
         this.load.audio("sndFinalLap", "sounds/af_finallap.mp3");
@@ -161,7 +163,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.audio("musTrack3", "sounds/music/Lantriperc-AmazingSelector.mp3");
         this.load.audio("musTrack4", "sounds/music/Lantriperc-PeopleMachine.mp3");
         this.load.audio("musTrack5", "sounds/music/Lantriperc-TechniqueMecha.mp3");
-        this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3.mp3");
+        this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3");
 
         this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);
