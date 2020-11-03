@@ -5,7 +5,7 @@ export default class Button{
         this.func = _func;
 
         this.colors = {
-            out: 0xffffff,
+            out: 0xfff1e8,
             over: 0x29adff,
             on: 0x00e436
         }

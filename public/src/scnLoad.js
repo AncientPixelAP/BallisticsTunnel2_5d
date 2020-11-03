@@ -18,6 +18,10 @@ export default class ScnLoad extends Phaser.Scene {
         //this.load.atlas("tilesGrass", "sprites/tiles/grassDirt.png", "sprites/tiles/tilesGround_atlas.json");
 
         this.load.image("sprBtn00", "sprites/sprBtn00.png");
+        this.load.image("sprBtnSlider00", "sprites/sprBtnSlider00.png");
+        this.load.image("sprSliderLeft00", "sprites/sprSliderLeft00.png");
+        this.load.image("sprSliderRight00", "sprites/sprSliderRight00.png");
+        this.load.image("sprSliderHighlight00", "sprites/sprSliderHighlight00.png");
 
         this.load.image("sprSkybox00", "sprites/sprSkybox00.png");
 

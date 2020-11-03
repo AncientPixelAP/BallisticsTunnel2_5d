@@ -1,5 +1,6 @@
 import Hand from "./hand.js";
 import Button from "./button.js";
+import { SliderHorizontal } from "./slider.js";
 
 export default class ScnLogin extends Phaser.Scene {
 
@@ -21,11 +22,18 @@ export default class ScnLogin extends Phaser.Scene {
 
         if (localStorage.getItem(SAVEGAMENAME) === null || localStorage.getItem(SAVEGAMENAME) === "null") {
             localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
-            console.log("making a new savegame");
         } else {
             this.saveGame = JSON.parse(localStorage.getItem(SAVEGAMENAME));
-            console.log("loading savegame");
+            if(this.checkSaveGameInegrity() === false){
+                console.warn("found corrupt savegame, generating a new one")
+                this.saveGame = this.getFreshSaveGame();
+                localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
+            }
         }
+
+        OPTIONS.sound.music = this.saveGame.sound.music;
+        OPTIONS.sound.sfx = this.saveGame.sound.sfx;
+        OPTIONS.sound.speech = this.saveGame.sound.speech;
 
         this.hand = new Hand(this);
 
@@ -33,10 +41,49 @@ export default class ScnLogin extends Phaser.Scene {
             this.gotoMain();
         });
 
-        this.btnFullscreen = new Button(this, { x: -160, y: 48 }, "sprBtn00", "FULLSCRN", false, () => {
-            if(this.scale.isFullscreen){
+        this.btnOptions = new Button(this, { x: -160, y: 48 }, "sprBtn00", "OPTIONS", false, () => {
+            this.cameras.main.pan(0, this.game.config.height, 1000, "Cubic", false, () => {
+
+            });
+        });
+
+
+
+        //OPTIONS SCREEN
+        this.btnBack = new Button(this, { x: -160, y: this.game.config.height - 48 }, "sprBtn00", "BACK", false, () => {
+            this.cameras.main.pan(0, 0, 1000, "Cubic", false, () => {
+
+            });
+        });
+
+        this.btnMusic = new Button(this, { x: -160, y: this.game.config.height - 18 }, "sprBtn00", "MUSIC", false, () => {});
+        this.sliderMusic = new SliderHorizontal(this, {x: -16, y: this.game.config.height - 18}, OPTIONS.sound.music, 128);
+        this.sliderMusic.move(-16, this.game.config.height - 18);
+        this.sliderMusic.releaseFunc = () => {
+            OPTIONS.sound.music = this.sliderMusic.value;
+            this.saveGame.sound.music = this.sliderMusic.value;
+        }
+
+        this.btnSfx = new Button(this, { x: -160, y: this.game.config.height }, "sprBtn00", "SFX", false, () => { });
+        this.sliderSfx = new SliderHorizontal(this, { x: -16, y: this.game.config.height }, OPTIONS.sound.sfx, 128);
+        this.sliderSfx.move(-16, this.game.config.height);
+        this.sliderSfx.releaseFunc = () => {
+            OPTIONS.sound.sfx = this.sliderSfx.value;
+            this.saveGame.sound.sfx = this.sliderSfx.value;
+        }
+
+        this.btnSpeech = new Button(this, { x: -160, y: this.game.config.height + 18 }, "sprBtn00", "SPEECH", false, () => { });
+        this.sliderSpeech = new SliderHorizontal(this, { x: -16, y: this.game.config.height + 18 }, OPTIONS.sound.speech, 128);
+        this.sliderSpeech.move(-16, this.game.config.height + 18);
+        this.sliderSpeech.releaseFunc = () => {
+            OPTIONS.sound.speech = this.sliderSpeech.value;
+            this.saveGame.sound.speech = this.sliderSpeech.value;
+        }
+
+        this.btnFullscreen = new Button(this, { x: -160, y: this.game.config.height + 48 }, "sprBtn00", "FULLSCRN", false, () => {
+            if (this.scale.isFullscreen) {
                 this.scale.stopFullscreen();
-            }else{
+            } else {
                 this.scale.startFullscreen();
             }
         });
@@ -116,6 +163,7 @@ export default class ScnLogin extends Phaser.Scene {
                 if(this.shipSelect.currentBike >= 4){
                     this.shipSelect.currentBike = 0;
                 }
+                this.saveGame.multiplayer.bike = this.shipSelect.currentBike;
                 this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset + this.shipSelect.currentLivery);
                 this.shipSelect.logo.setTexture(this.shipStats[this.shipSelect.currentBike].logo);
                 this.shipSelect.description.setText(this.shipStats[this.shipSelect.currentBike].description);
@@ -125,6 +173,7 @@ export default class ScnLogin extends Phaser.Scene {
                 if (this.shipSelect.currentLivery >= 4) {
                     this.shipSelect.currentLivery = 0;
                 }
+                this.saveGame.multiplayer.livery = this.shipSelect.currentLivery;
                 this.shipSelect.bike.setTexture(this.shipStats[this.shipSelect.currentBike].asset + this.shipSelect.currentLivery);
             }),
             description: this.add.bitmapText(154, 0, "pixelmix", this.shipStats[this.saveGame.multiplayer.bike].description, 8, 1).setOrigin(0.5)
@@ -140,15 +189,22 @@ export default class ScnLogin extends Phaser.Scene {
     update(){
         this.hand.update();
 
-        this.btnFullscreen.update();
         this.btnPlay.update();
+        this.btnOptions.update();
+
+        this.btnFullscreen.update();
+        this.sliderMusic.update();
+        this.sliderSfx.update();
+        this.sliderSpeech.update();
+        this.btnBack.update();
 
         this.shipSelect.btnNext.update();
         this.shipSelect.btnLivery.update();
     }
 
     gotoMain(){
-        localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.setSaveGame()));
+        console.log(OPTIONS);
+        localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
         this.scene.start("ScnMain", { 
             bikeData: this.shipStats[this.shipSelect.currentBike],
             livery: this.shipSelect.currentLivery
@@ -158,6 +214,11 @@ export default class ScnLogin extends Phaser.Scene {
     getFreshSaveGame(){
         return {
             name: this.getRandomName(),
+            sound:{
+                music: OPTIONS.sound.music,
+                sfx: OPTIONS.sound.sfx,
+                speech: OPTIONS.sound.speech
+            },
             multiplayer: {
                 bike: 0,
                 livery: 0
@@ -166,15 +227,37 @@ export default class ScnLogin extends Phaser.Scene {
         }
     }
 
-    setSaveGame(){
-        return {
-            name: this.saveGame.name,
-            multiplayer: {
-                bike: this.shipSelect.currentBike,
-                livery: this.shipSelect.currentLivery
-            },
-            singleplayer: this.saveGame.singleplayer,
+    checkSaveGameInegrity(){
+        if(this.saveGame.name === undefined){
+            return false;
         }
+        if(this.saveGame.sound === undefined){
+            return false;
+        }else{
+            if(this.saveGame.sound.music === undefined){
+                return false;
+            }
+            if (this.saveGame.sound.sfx === undefined) {
+                return false;
+            }
+            if (this.saveGame.sound.speech === undefined) {
+                return false;
+            }
+        }
+        if(this.saveGame.multiplayer === undefined){
+            return false;
+        }else{
+            if(this.saveGame.multiplayer.bike === undefined){
+                return false;
+            }
+            if (this.saveGame.multiplayer.livery === undefined) {
+                return false;
+            }
+        }
+        if(this.saveGame.singleplayer === undefined){
+            return false;
+        }
+        return true;
     }
 
     getRandomName(){

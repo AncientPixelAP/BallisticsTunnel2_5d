@@ -216,7 +216,8 @@ export default class ScnMain extends Phaser.Scene {
                 current: 0,
                 best: -1,
                 start: -1
-            }
+            },
+            sndEngine: this.sound.add("sndEngine00", { loop: true, volume: OPTIONS.sound.sfx})
         }
 
         this.otherPlayers = [];
@@ -232,16 +233,12 @@ export default class ScnMain extends Phaser.Scene {
 
         this.ui = new Ui(this);
 
-        this.sndEngine = this.sound.add("sndEngine00");
-        this.sndEngine.play({
-            loop: true,
-            volume: 0.5
-        });
-        this.sndNewRecord = this.sound.add("sndNewRecord");
-        this.sndCountdownGo = this.sound.add("sndCountdownGo");
-        this.sndCountdownOne = this.sound.add("sndCountdownOne");
-        this.sndCountdownTwo = this.sound.add("sndCountdownTwo");
-        this.sndCountdownThree = this.sound.add("sndCountdownThree");
+        this.player.sndEngine.play();
+        this.sndNewRecord = this.sound.add("sndNewRecord", { volume: OPTIONS.sound.speech});
+        this.sndCountdownGo = this.sound.add("sndCountdownGo", { volume: OPTIONS.sound.speech});
+        this.sndCountdownOne = this.sound.add("sndCountdownOne", { volume: OPTIONS.sound.speech});
+        this.sndCountdownTwo = this.sound.add("sndCountdownTwo", { volume: OPTIONS.sound.speech});
+        this.sndCountdownThree = this.sound.add("sndCountdownThree", { volume: OPTIONS.sound.speech});
 
         this.countdown = {
             count: 3,
@@ -383,11 +380,6 @@ export default class ScnMain extends Phaser.Scene {
                 this.player.roll -= Math.PI * 2;
             }else if(this.player.roll <= Math.PI * -1){
                 this.player.roll += Math.PI * 2;
-            }
-
-            //engine sounds
-            if(this.sndEngine !== null){
-                this.sndEngine.rate = (this.player.spd * 0.25) + 0.5;
             }
 
             //move spawner
@@ -567,6 +559,9 @@ export default class ScnMain extends Phaser.Scene {
             } else {
                 this.startFinishTxt.txt.alpha = 0;
             }
+
+            //engine sounds
+            this.player.sndEngine.rate = (this.player.spd * 0.25) + 0.5;
         }
 
         this.ui.update();
@@ -583,24 +578,24 @@ export default class ScnMain extends Phaser.Scene {
                     o.trackPos = 0;
                 }
 
+                let difAdj = Math.max(-1, Math.min(1, (o.trackPos - _adjPlayerPosition) / 64));
+                o.sndEngine.rate = Math.max(0, Math.min((o.spd * 0.25) + 0.5 + ((difAdj) * -1)), 1);
+                o.sndEngine.volume = (1 - Math.abs(difAdj)) * OPTIONS.sound.sfx;
+
                 let flPos = Math.floor(o.trackPos);
                 if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
                     let parent = this.segments[flPos - _adjPlayerPosition];
-
                     let pos = {
                         x: parent.pos.x,
                         y: parent.pos.y,
                         z: flPos - _adjPlayerPosition
                     }
-
                     let dz = 1 / pos.z;
                     let shade = Math.max(0, 255 - (pos.z * 4));
 
                     o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
                     o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
-
                     o.sprite.rotation = this.player.roll - o.roll;
-
                     o.sprite.setScale(dz * this.zoom);
                     o.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
                     o.sprite.depth = dz;
@@ -618,7 +613,6 @@ export default class ScnMain extends Phaser.Scene {
                             }
                             if (Math.abs(rollDif) < this.player.stats.slipZone) {
                                 target = o;
-
                                 //slow down and avoid other player
                                 if (o.trackPos < _adjPlayerPosition + 3) {
                                     this.player.spd *= 0.5;
@@ -627,18 +621,19 @@ export default class ScnMain extends Phaser.Scene {
                             }
                         }
                     }
-                    /*if (o.trackPos + 64 < _adjPlayerPosition) {
-                        if (Math.abs(rollDif) < o.collisionZone) {
-                            this.ui.follower.push(o.roll);
-                            console.log("collision warning");
-                        } else {
-                            this.ui.follower.push(o.roll);
-                        }
-                    }*/
+
+                    if (o.sndEngine.isPlaying === false) {
+                        o.sndEngine.play();
+                    }
                 } else {
                     o.sprite.alpha = 0;
                     if (flPos < _adjPlayerPosition && flPos > _adjPlayerPosition - 64) {
                         this.ui.follower.push(o.roll);
+                        if(o.sndEngine.isPlaying === false){
+                            o.sndEngine.play();
+                        }
+                    }else{
+                        o.sndEngine.stop();
                     }
                 }
             }
@@ -687,12 +682,9 @@ export default class ScnMain extends Phaser.Scene {
                 }else{
                     o.sprite.setTexture(o.asset + String(o.subimgArr[Math.floor(Math.random() * o.subimgArr.length)]));
                 }
-
                 o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (o.len * this.zoom)) * dz;
                 o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (o.len * this.zoom)) * dz;
-
                 o.sprite.rotation = this.player.roll - o.roll;
-
                 o.sprite.setScale(dz * this.zoom);
                 o.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
                 o.sprite.depth = dz;
@@ -705,14 +697,6 @@ export default class ScnMain extends Phaser.Scene {
                     }else if(rollDif < Math.PI * -1){
                         rollDif += Math.PI * 2;
                     }
-                    /*if (o.trackPos < _adjPlayerPosition + 16) {
-                        //console.log(Math.abs(rollDif));
-                        if(Math.abs(rollDif) < o.collisionZone){
-                            console.log("collision warning")
-                        }else{
-                            //console.log(Math.PI - Math.abs(rollDif));
-                        }
-                    }*/
                     if (Math.abs(rollDif) < o.collisionZone) {   
                         //slow down and avoid obstacle
                         if (o.trackPos < _adjPlayerPosition + 3) {
@@ -747,8 +731,9 @@ export default class ScnMain extends Phaser.Scene {
                         spd: d.spd,
                         roll: d.roll,
                         trackPos: d.trackPos,
-                        sprite: this.add.sprite(0, 0, d.data.asset)
-                    })
+                        sprite: this.add.sprite(0, 0, d.data.asset),
+                        sndEngine: this.sound.add("sndEngine00", { loop: true, volume: OPTIONS.sound.sfx })
+                    });
                 }
             }
         }
