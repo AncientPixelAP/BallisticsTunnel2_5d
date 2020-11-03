@@ -145,12 +145,23 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");
 
         this.load.audio("sndEngine00", "sounds/jetengine.mp3");
+        this.load.audio("sndWhoo00", "sounds/whoo00.mp3");
+        this.load.audio("sndPew00", "sounds/finalmoan.mp3");
+
         this.load.audio("sndNewRecord", "sounds/af_newrecord.mp3");
         this.load.audio("sndFinalLap", "sounds/af_finallap.mp3");
         this.load.audio("sndCountdownGo", "sounds/af_countdown_go.mp3");
         this.load.audio("sndCountdownOne", "sounds/af_countdown_one.mp3");
         this.load.audio("sndCountdownTwo", "sounds/af_countdown_two.mp3");
         this.load.audio("sndCountdownThree", "sounds/af_countdown_three.mp3");
+
+        this.load.audio("musTrack0", "sounds/music/dejavu-Anima.mp3");
+        this.load.audio("musTrack1", "sounds/music/dejavu-Charger.mp3");
+        this.load.audio("musTrack2", "sounds/music/dejavu-stardust.mp3");
+        this.load.audio("musTrack3", "sounds/music/Lantriperc-AmazingSelector.mp3");
+        this.load.audio("musTrack4", "sounds/music/Lantriperc-PeopleMachine.mp3");
+        this.load.audio("musTrack5", "sounds/music/Lantriperc-TechniqueMecha.mp3");
+        this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3.mp3");
 
         this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);
