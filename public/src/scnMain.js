@@ -57,14 +57,6 @@ export default class ScnMain extends Phaser.Scene {
         
         //Phaser.Math.RND.sow(["seed"]);
         //console.log(Phaser.Math.RND);
-        
-        //this.bsp = this.add.bitmapText(-124, -124, "pixelmix", "", 8, 1);//.setOrigin(0.5);
-        //this.bsp.depth = 10000;
-        /*this.deb = this.add.bitmapText(-124, -100, "pixelmix", "", 8, 1);//.setOrigin(0.5);
-        this.deb.depth = 10000;
-        this.deb.setTint(0xff0000);*/
-        //this.debugArrow = this.add.sprite(-124, -50, "sprDebugArrow00");
-        //this.debugArrow.depth = 10000;
 
         
         this.you = null;
@@ -195,6 +187,7 @@ export default class ScnMain extends Phaser.Scene {
         
         this.zoom = 16;
         this.player = {
+            controlEnabled: false,
             spd: 0,
             spdMax: 0.25,
             slipstream: 0,
@@ -221,7 +214,8 @@ export default class ScnMain extends Phaser.Scene {
             laps: 0,
             lapTime: {
                 current: 0,
-                best: 0
+                best: -1,
+                start: -1
             }
         }
 
@@ -237,7 +231,44 @@ export default class ScnMain extends Phaser.Scene {
         this.skybox.depth = -10000;*/
 
         this.ui = new Ui(this);
-        
+
+        this.sndEngine = this.sound.add("sndEngine00");
+        this.sndEngine.play({
+            loop: true,
+            volume: 0.5
+        });
+        this.sndNewRecord = this.sound.add("sndNewRecord");
+        this.sndCountdownGo = this.sound.add("sndCountdownGo");
+        this.sndCountdownOne = this.sound.add("sndCountdownOne");
+        this.sndCountdownTwo = this.sound.add("sndCountdownTwo");
+        this.sndCountdownThree = this.sound.add("sndCountdownThree");
+
+        this.countdown = {
+            count: 3,
+            timer: setInterval(() => {
+                switch(this.countdown.count){
+                    case 3:
+                        this.sndCountdownThree.play();
+                        break;
+                    case 2:
+                        this.sndCountdownTwo.play();
+                        break;
+                    case 1:
+                        this.sndCountdownOne.play();
+                        break;
+                    case 0:
+                        this.sndCountdownGo.play();
+                        break;
+                    default:
+                        break;
+                }
+                this.countdown.count -= 1;
+                if(this.countdown.count === -1){
+                    this.player.controlEnabled = true;
+                    clearInterval(this.countdown.timer);
+                }
+            }, 1000)
+        }
 
         //console.log(socket);
         socket.on("pongTest", (_data) => {
@@ -287,72 +318,63 @@ export default class ScnMain extends Phaser.Scene {
         if (this.delta.current >= this.delta.treshold){
             this.delta.current -= this.delta.treshold;
 
-            //this.ui.deltaTxt.setText("DEL " + String(_delta));
+            this.player.lapTime.current = new Date().getTime();
 
-            if(this.hand.pressed === false){
-                //KEYBOARD CONTROLS
-                if(this.cursors.up.isDown){
-                    if(this.player.spd < this.player.spdMax){
-                        this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+            if(this.player.controlEnabled === true){
+                if(this.hand.pressed === false){
+                    //KEYBOARD CONTROLS
+                    if(this.cursors.up.isDown){
+                        if(this.player.spd < this.player.spdMax){
+                            this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+                        }
+                    } else if (this.cursors.down.isDown) {
+                        if (this.player.spd > 0) {
+                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                        }
+                        this.player.spd = Math.max(0, this.player.spd);
+                    }else{
+                        if(this.player.spd > 0){
+                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
+                        }
                     }
-                } else if (this.cursors.down.isDown) {
-                    if (this.player.spd > 0) {
-                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                    if(this.player.spd > this.player.spdMax){
+                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
                     }
-                    this.player.spd = Math.max(0, this.player.spd);
+
+                    if(this.cursors.left.isDown){
+                        this.player.roll -= this.player.stats.roll;
+                    }
+                    if (this.cursors.right.isDown) {
+                        this.player.roll += this.player.stats.roll;
+                    }
                 }else{
-                    if(this.player.spd > 0){
-                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
+                    //MOUSE CONTROLS
+                    if (this.hand.pos.y < this.game.config.height * 0.25) {
+                        if (this.player.spd < this.player.spdMax) {
+                            this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+                        }
+                    } else{
+                        if (this.player.spd > 0) {
+                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                        }
+                        this.player.spd = Math.max(0, this.player.spd);
+                    }
+
+                    if (this.player.spd > this.player.spdMax) {
+                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
+                    }
+
+                    let amt = this.hand.start.x - this.hand.pos.x;
+                    //console.log(amt);
+                    if (Math.abs(amt) > 8) {
+                        let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
+                        this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
                     }
                 }
-                if(this.player.spd > this.player.spdMax){
-                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
-                }
-
-                if(this.cursors.left.isDown){
-                    this.player.roll -= this.player.stats.roll;
-                }
-                if (this.cursors.right.isDown) {
-                    this.player.roll += this.player.stats.roll;
-                }
-
-                /*if(this.keys.w.isDown){
-
-                }else if(this.keys.s.isDown){
-
-                }else{
-
-                }
-
-                if (this.keys.a.isDown) {
-
-                } else if (this.keys.d.isDown) {
-
-                } else {
-
-                }*/
             }else{
-                //MOUSE CONTROLS
-                if (this.hand.pos.y < this.game.config.height * 0.25) {
-                    if (this.player.spd < this.player.spdMax) {
-                        this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
-                    }
-                } else{
-                    if (this.player.spd > 0) {
-                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
-                    }
-                    this.player.spd = Math.max(0, this.player.spd);
-                }
-
-                if (this.player.spd > this.player.spdMax) {
-                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
-                }
-
-                let amt = this.hand.start.x - this.hand.pos.x;
-                //console.log(amt);
-                if (Math.abs(amt) > 8) {
-                    let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
-                    this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
+                //autostart
+                if (this.player.spd < this.player.spdMax) {
+                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                 }
             }
 
@@ -363,6 +385,12 @@ export default class ScnMain extends Phaser.Scene {
                 this.player.roll += Math.PI * 2;
             }
 
+            //engine sounds
+            if(this.sndEngine !== null){
+                this.sndEngine.rate = (this.player.spd * 0.25) + 0.5;
+            }
+
+            //move spawner
             if (this.segments.length > 0) {
                 let overZero = this.spawner.pos.x > 0 ? true : false;
                 this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * 1;
@@ -383,15 +411,12 @@ export default class ScnMain extends Phaser.Scene {
                 //adaptivespeed
                 this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
 
-                //this.deb.setText(this.player.spdMax.toFixed(2) + " | " + modify);
-
-
                 /*this.skybox.x = 0;
                 this.skybox.y = 0;
                 this.skybox.rotation = this.player.roll;*/
             }
 
-            //UPDATE
+            //UPDATE THE REST
             for(let i = this.segments.length-1 ; i >= 0 ; i--){
                 let s = this.segments[i];
 
@@ -446,6 +471,22 @@ export default class ScnMain extends Phaser.Scene {
                         console.log("new LAP");
                         this.player.trackPos = 0;
                         this.player.laps += 1;
+
+                        if (this.player.lapTime.best !== -1){
+                            if(this.player.lapTime.current - this.player.lapTime.start < this.player.lapTime.best){
+                                //set a new record
+                                this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
+                                this.ui.setBestTime(this.player.lapTime.best);
+                                this.sndNewRecord.play();
+                            }
+                        }else{
+                            if(this.player.lapTime.start !== -1){
+                                //set first lap delta
+                                this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
+                                this.ui.setBestTime(this.player.lapTime.best);
+                            }
+                        }
+                        this.player.lapTime.start = new Date().getTime();
                     }
 
                     this.spawner.trackPos += 1;
@@ -534,61 +575,72 @@ export default class ScnMain extends Phaser.Scene {
     updateOtherPlayers(_adjPlayerPosition){
         let target = null;
         for (let o of this.otherPlayers) {
+            if(o.id !== this.you.id){
+                let rec = 9999999;
 
-            let rec = 9999999;
-
-            o.trackPos += o.spd;
-            if (o.trackPos >= this.trackLength) {
-                o.trackPos = 0;
-            }
-
-            let flPos = Math.floor(o.trackPos);
-
-            if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
-                let parent = this.segments[flPos - _adjPlayerPosition];
-
-                let pos = {
-                    x: parent.pos.x,
-                    y: parent.pos.y,
-                    z: flPos - _adjPlayerPosition
+                o.trackPos += o.spd;
+                if (o.trackPos >= this.trackLength) {
+                    o.trackPos = 0;
                 }
 
-                let dz = 1 / pos.z;
-                let shade = Math.max(0, 255 - (pos.z * 4));
+                let flPos = Math.floor(o.trackPos);
+                if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
+                    let parent = this.segments[flPos - _adjPlayerPosition];
 
-                o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
-                o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
+                    let pos = {
+                        x: parent.pos.x,
+                        y: parent.pos.y,
+                        z: flPos - _adjPlayerPosition
+                    }
 
-                o.sprite.rotation = this.player.roll - o.roll;
+                    let dz = 1 / pos.z;
+                    let shade = Math.max(0, 255 - (pos.z * 4));
 
-                o.sprite.setScale(dz * this.zoom);
-                o.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
-                o.sprite.depth = dz;
-                o.sprite.alpha = 1;
+                    o.sprite.x = (parent.screenPos.x + Math.cos((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
+                    o.sprite.y = (parent.screenPos.y + Math.sin((o.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (24 * this.zoom)) * dz;
 
-                //get nearest enemy that is in front and player is in its slipstream
-                if (pos.z < rec) {
-                    if (o.trackPos > _adjPlayerPosition) {
-                        rec = pos.z;
-                        let rollDif = (this.player.roll - o.roll);// + Math.PI;
-                        if (rollDif > Math.PI) {
-                            rollDif -= Math.PI * 2;
-                        } else if (rollDif < Math.PI * -1) {
-                            rollDif += Math.PI * 2;
-                        }
-                        if (Math.abs(rollDif) < this.player.stats.slipZone) {
-                            target = o;
+                    o.sprite.rotation = this.player.roll - o.roll;
 
-                            //slow down and avoid other player
-                            if (o.trackPos < _adjPlayerPosition + 3) {
-                                this.player.spd *= 0.5;
-                                this.player.roll += (rollDif) * 0.25;
+                    o.sprite.setScale(dz * this.zoom);
+                    o.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
+                    o.sprite.depth = dz;
+                    o.sprite.alpha = 1;
+
+                    //get nearest enemy that is in front and player is in its slipstream
+                    let rollDif = (this.player.roll - o.roll);
+                    if (pos.z < rec) {
+                        if (o.trackPos > _adjPlayerPosition) {
+                            rec = pos.z;
+                            if (rollDif > Math.PI) {
+                                rollDif -= Math.PI * 2;
+                            } else if (rollDif < Math.PI * -1) {
+                                rollDif += Math.PI * 2;
+                            }
+                            if (Math.abs(rollDif) < this.player.stats.slipZone) {
+                                target = o;
+
+                                //slow down and avoid other player
+                                if (o.trackPos < _adjPlayerPosition + 3) {
+                                    this.player.spd *= 0.5;
+                                    this.player.roll += (rollDif) * 0.25;
+                                }
                             }
                         }
                     }
+                    /*if (o.trackPos + 64 < _adjPlayerPosition) {
+                        if (Math.abs(rollDif) < o.collisionZone) {
+                            this.ui.follower.push(o.roll);
+                            console.log("collision warning");
+                        } else {
+                            this.ui.follower.push(o.roll);
+                        }
+                    }*/
+                } else {
+                    o.sprite.alpha = 0;
+                    if (flPos < _adjPlayerPosition && flPos > _adjPlayerPosition - 64) {
+                        this.ui.follower.push(o.roll);
+                    }
                 }
-            } else {
-                o.sprite.alpha = 0;
             }
         }
 

@@ -140,6 +140,14 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprDebugTarget00", "sprites/sprDebugTarget00.png");
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");
 
+        this.load.audio("sndEngine00", "sounds/jetengine.mp3");
+        this.load.audio("sndNewRecord", "sounds/af_newrecord.mp3");
+        this.load.audio("sndFinalLap", "sounds/af_finallap.mp3");
+        this.load.audio("sndCountdownGo", "sounds/af_countdown_go.mp3");
+        this.load.audio("sndCountdownOne", "sounds/af_countdown_one.mp3");
+        this.load.audio("sndCountdownTwo", "sounds/af_countdown_two.mp3");
+        this.load.audio("sndCountdownThree", "sounds/af_countdown_three.mp3");
+
         this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);
         this.pixel = this.add.sprite(0, -48, "sprPixelTurn").setScale(2);

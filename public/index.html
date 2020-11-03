@@ -21,6 +21,14 @@
             }
             return d;
         }
+
+        function zeroPad(_num, _pad){
+            let str = String(_num);
+            for(let i = str.length ; i < _pad ; i++){
+                str = "0" + str;
+            }
+            return str;
+        }
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
         /*var socket = io("192.168.80.1:3000");
         if(socket.connected === false){
