@@ -18,6 +18,10 @@ export default class Ui{
             }
         });
 
+        this.btnMenu = new Button(this.scene, { x: this.scene.right - 16, y: this.scene.top + 48 }, "sprUiMenu", "", false, () => {
+            this.scene.gotoMenu();
+        });
+
         this.bstTxt = this.scene.add.bitmapText(this.scene.left + 32, -80, "pixelmix", "00:00:000", 8, 1).setOrigin(0, 0.5);
         this.bstTxt.depth = 10000;
         this.bstTxt.setTint(this.colors.default);
@@ -134,6 +138,7 @@ export default class Ui{
 
     update(){
         this.btnFullscreen.update();
+        this.btnMenu.update();
     
         if(this.scene.player.lapTime.start !== -1){
             let dif = this.scene.player.lapTime.current - this.scene.player.lapTime.start;

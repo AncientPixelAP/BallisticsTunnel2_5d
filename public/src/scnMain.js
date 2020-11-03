@@ -271,10 +271,10 @@ export default class ScnMain extends Phaser.Scene {
         }
 
         //console.log(socket);
-        socket.on("pongTest", (_data) => {
+        socket.on("pongTest", (_data) => {pongTest
             console.log(_data);
         });
-
+        
         socket.on("getPlayers", (_data) => {
             console.log(_data);
             this.you = _data.you;
@@ -821,5 +821,22 @@ export default class ScnMain extends Phaser.Scene {
             txt: this.add.bitmapText(0, 0, "pixelmix", _text, 8, 1).setOrigin(0.5),
             update: () => { }
         }
+    }
+
+    gotoMenu(){
+        clearInterval(this.countdown.timer);
+        this.musicPlayer.stop();
+        this.sound.stopAll();
+
+        socket.emit("leavePlayer", {
+            id: this.you.id
+        });
+
+        socket.off("pongTest");
+        socket.off("getPlayers");
+        socket.off("synchUpdate");
+        socket.off("kickPlayer");
+
+        this.scene.start("ScnLogin");
     }
 }

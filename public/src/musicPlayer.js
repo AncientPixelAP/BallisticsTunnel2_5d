@@ -6,10 +6,10 @@ export default class MusicPlayer{
         this.tracks.push(this.scene.sound.add("musTrack0", { volume: OPTIONS.sound.music }));
         this.tracks.push(this.scene.sound.add("musTrack1", { volume: OPTIONS.sound.music }));
         this.tracks.push(this.scene.sound.add("musTrack2", { volume: OPTIONS.sound.music }));
-        this.tracks.push(this.scene.sound.add("musTrack3", { volume: OPTIONS.sound.music }));
+        /*this.tracks.push(this.scene.sound.add("musTrack3", { volume: OPTIONS.sound.music }));
         this.tracks.push(this.scene.sound.add("musTrack4", { volume: OPTIONS.sound.music }));
         this.tracks.push(this.scene.sound.add("musTrack5", { volume: OPTIONS.sound.music }));
-        this.tracks.push(this.scene.sound.add("musTrack6", { volume: OPTIONS.sound.music }));
+        this.tracks.push(this.scene.sound.add("musTrack6", { volume: OPTIONS.sound.music }));*/
 
         for(let t of this.tracks){
             t.on("complete", () => this.playTrackRandom());
@@ -39,5 +39,11 @@ export default class MusicPlayer{
             t.stop();
         }
         this.tracks[this.currentTrack].play();
+    }
+
+    stop(){
+        for (let t of this.tracks) {
+            t.stop();
+        }
     }
 }

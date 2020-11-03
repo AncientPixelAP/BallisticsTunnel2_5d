@@ -54,6 +54,13 @@ io.on("connection", socket => {
         });
     });
 
+    socket.on("leavePlayer", () => {
+        gameData.removePlayer(id);
+        io.emit("kickPlayer", {
+            id: id
+        })
+    });
+
     socket.on("updatePlayer", (_data) => {
         let p = getPlayerById(_data.id);
         if(p !== null){

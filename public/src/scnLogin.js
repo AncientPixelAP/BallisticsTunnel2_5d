@@ -8,10 +8,25 @@ export default class ScnLogin extends Phaser.Scene {
         super("ScnLogin");
     }
 
+    /*preload(){
+        this.load.setBaseURL("./assets/");
+        this.load.audio("musTrack0", "sounds/music/dejavu-Anima.mp3");
+        this.load.audio("musTrack1", "sounds/music/dejavu-Charger.mp3");
+        this.load.audio("musTrack2", "sounds/music/dejavu-stardust.mp3");
+        this.load.audio("musTrack3", "sounds/music/Lantriperc-AmazingSelector.mp3");
+        this.load.audio("musTrack4", "sounds/music/Lantriperc-PeopleMachine.mp3");
+        this.load.audio("musTrack5", "sounds/music/Lantriperc-TechniqueMecha.mp3");
+        this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3");
+        this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
+        this.load.on('progress', this.updateProgressDisplay, this);
+    }*/
+
     create() {
         //console.log(this);
         this.cameras.main.setScroll(-this.game.config.width * 0.5, -this.game.config.height * 0.5);
         this.cameras.main.setBackgroundColor(0x000000);
+
+        
 
         this.left = this.game.config.width * -0.5;
         this.right = this.game.config.width * 0.5;
@@ -204,6 +219,7 @@ export default class ScnLogin extends Phaser.Scene {
 
     gotoMain(){
         localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
+        
         this.scene.start("ScnMain", { 
             bikeData: this.shipStats[this.shipSelect.currentBike],
             livery: this.shipSelect.currentLivery
@@ -257,6 +273,10 @@ export default class ScnLogin extends Phaser.Scene {
             return false;
         }
         return true;
+    }
+
+    updateProgressDisplay(_pct) {
+        this.loadTxt.setText("LOADING: " + String(Math.floor(_pct * 100)) + "%");
     }
 
     getRandomName(){

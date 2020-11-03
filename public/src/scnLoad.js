@@ -33,6 +33,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprUiTrackLinePlayer", "sprites/sprUiTrackLinePlayer.png");
         this.load.image("sprUiTrackLineBike", "sprites/sprUiTrackLineBike.png");
         this.load.image("sprUiFullscreen", "sprites/sprUiFullscreen.png");
+        this.load.image("sprUiMenu", "sprites/sprUiMenu.png");
 
         this.load.image("sprSegDebug00_0", "sprites/sprSegDebug00.png");
         this.load.image("sprSegDebug01_0", "sprites/sprSegDebug01.png");
@@ -160,10 +161,10 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.audio("musTrack0", "sounds/music/dejavu-Anima.mp3");
         this.load.audio("musTrack1", "sounds/music/dejavu-Charger.mp3");
         this.load.audio("musTrack2", "sounds/music/dejavu-stardust.mp3");
-        this.load.audio("musTrack3", "sounds/music/Lantriperc-AmazingSelector.mp3");
+        /*this.load.audio("musTrack3", "sounds/music/Lantriperc-AmazingSelector.mp3");
         this.load.audio("musTrack4", "sounds/music/Lantriperc-PeopleMachine.mp3");
         this.load.audio("musTrack5", "sounds/music/Lantriperc-TechniqueMecha.mp3");
-        this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3");
+        this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3");*/
 
         this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);
@@ -181,11 +182,11 @@ export default class ScnLoad extends Phaser.Scene {
             this.logoDidRepeat += 1;
         }, this);
 
-        this.load.on('progress', this.update_progress_display, this);
+        this.load.on('progress', this.updateProgressDisplay, this);
     }
 
     create(){
-        this.load.off("progress", this.update_progress_display, this);
+        this.load.off("progress", this.updateProgressDisplay, this);
         this.cache.bitmapFont.get("pixelmix").data.lineHeight = 40;  
     }
 
@@ -195,7 +196,11 @@ export default class ScnLoad extends Phaser.Scene {
         }
     }
 
-    update_progress_display(_pct) {
-        this.loadTxt.setText("LOADING: " + String(Math.floor(_pct * 100)) + "%");
+    updateProgressDisplay(_pct) {
+        let txt = "LOADING: " + String(Math.floor(_pct * 100)) + "%\n";
+        if(_pct === 1){
+            txt += "decoding audio";
+        }
+        this.loadTxt.setText(txt);
     }
 }
