@@ -67,98 +67,10 @@ export default class ScnMain extends Phaser.Scene {
         this.segments = [];
         this.obstacles = [];
         this.clutter = [];
-        this.trackData = [
-            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
-            this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
-            this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
-
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-            this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", [0], 0, 64),
-            this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-            this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-            this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", [0], 0, 64),
-            this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad04_", [0, 1, 2, 3, 4, 5], 1, 60),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-
-            this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-            this.createSegment(0, 0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-            this.createSegment(0, -0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-
-            this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
-            this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 0, 2),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 0, 30),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-
-            this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
-            this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
-            this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
-            this.createSegment(0.01, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
-
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8), 
-
-            this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", [0], 0, 96),
-            this.createSegment(-0.01, 0, 0, "sprSegAirVent00_", [0], 0, 96),
-            this.createSegment(0, 0.025, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-            this.createSegment(0, 0.025, 0, "sprSegMetalRoad00_", [0], 0, 88),
-
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-            this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8), 
-        ];
+        this.trackData = [];
         this.trackLength = 0;
-        for(let s of this.trackData){
-            this.trackLength += s.units;
-        }
 
-        this.obstacles.push(this.createObstacle(78, Math.PI * 0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
-        this.obstacles.push(this.createObstacle(78, Math.PI * -0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
-
-        /*this.obstacles.push(this.createObstacle(64, 0, 32, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(64, Math.PI * 0.66, 32, "sprObsBlade01_0", 0.3));
-        this.obstacles.push(this.createObstacle(64, Math.PI * -0.66, 32, "sprObsBlade01_0", 0.3));*/
-
-        this.obstacles.push(this.createObstacle(486, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
-        this.obstacles.push(this.createObstacle(678, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
-
-        this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_", [0], 0, 0.3));
-        this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_", [0], 0, 0.3));
-        this.obstacles.push(this.createObstacle(854, Math.PI * -0.33, 32, "sprObsBlade01_", [0], 0, 0.3));
-
-        this.obstacles.push(this.createObstacle(992, 0, 32, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.5));
-
-        this.obstacles.push(this.createObstacle(1072, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length-1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1072, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-
-        //this.obstacles.push(this.createObstacle(1167, Math.PI * 0.25, 32, "sprObsVentDoor00_", [0], 0, Math.PI * 0.5));
-        this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-        this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-        this.obstacles.push(this.createObstacle(1168, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-
-        this.obstacles.push(this.createObstacle(1264, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1264, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-        this.obstacles.push(this.createObstacle(1264, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
-        this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-
-        this.obstacles.push(this.createObstacle(1368, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
-        this.obstacles.push(this.createObstacle(1368, Math.PI, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+        this.createTrackData(1);
         
         this.startFinishTxt = this.createTextClutter(18, 0, 10, "NEW LAP");
 
@@ -185,8 +97,11 @@ export default class ScnMain extends Phaser.Scene {
             subimgArr: [0],
             subimage: 0,
             subimageMax: 1,
-            imgSpd: 0
+            imgSpd: 0,
+            sprite: this.add.sprite(0, 0, "sprDebugTarget00")
         }
+        this.spawner.sprite.depth = 11000;
+        this.spawner.sprite.alpha = 0;
         
         this.zoom = 16;
         this.player = {
@@ -385,8 +300,11 @@ export default class ScnMain extends Phaser.Scene {
                 this.player.roll += Math.PI * 2;
             }
 
+
+
             //move spawner
             if (this.segments.length > 0) {
+                //OLD SPAWN MOVE
                 let overZero = this.spawner.pos.x > 0 ? true : false;
                 this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * 1;
                 if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
@@ -398,6 +316,8 @@ export default class ScnMain extends Phaser.Scene {
                 if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
                     this.spawner.pos.y = 0;
                 }
+
+                this.spawner.pos.x -= this.segments[0].curve.x * 10;
 
                 //CHECK MAX SPEED
                 let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
@@ -415,6 +335,7 @@ export default class ScnMain extends Phaser.Scene {
             for(let i = this.segments.length-1 ; i >= 0 ; i--){
                 let s = this.segments[i];
 
+                //OLD SPAWN MOVE
                 let overZero = s.pos.x > 0 ? true : false;
                 s.pos.x -= (this.segments[0].pos.x * s.pos.z) * 1;
                 if ((s.pos.x < 0 && overZero === true) || (s.pos.x > 0 && overZero === false)) {
@@ -426,6 +347,8 @@ export default class ScnMain extends Phaser.Scene {
                 if ((s.y < 0 && overZero === true) || (s.pos.y > 0 && overZero === false)) {
                     s.pos.y = 0;
                 }
+                
+                s.pos.x -= this.segments[0].curve.x * 10;
 
                 s.pos.z -= this.player.spd;
                 s.update();
@@ -484,38 +407,58 @@ export default class ScnMain extends Phaser.Scene {
                         this.player.lapTime.start = new Date().getTime();
                     }
 
+                    
+
                     this.spawner.trackPos += 1;
                     if(this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units){
+                        //jump to next segment
                         this.spawner.trackPos = 0;
                         this.spawner.trackArrPos += 1;
                         this.spawner.subimage = 0;
                         this.spawner.subimgArrPos = 0;
+                        //new lap
                         if(this.spawner.trackArrPos >= this.trackData.length){
                             this.spawner.trackArrPos = 0;
                         }
                     }
 
-                    this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
-                    this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
-                    this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
-                    //absolute curving
-                    this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
-                    this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
-                    this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
+                    //start of segment
+                    if (this.spawner.trackPos === 0) {
+                        this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
+                        this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
+                        this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
+                        //absolute curving
+                        this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
+                        this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
+                        this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
+                    }
 
                     let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
                     if (this.spawner.roll < this.spawner.toRoll) {
-                        this.spawner.roll += Math.min(0.025, dif);
+                        this.spawner.roll += Math.min(0.025, dif);//0.025
                     }
                     if (this.spawner.roll > this.spawner.toRoll) {
-                        this.spawner.roll -= Math.min(0.025, dif);
+                        this.spawner.roll -= Math.min(0.025, dif);//0.025
+                    }
+                    //correct roll
+                    if(this.spawner.roll > Math.PI){
+                        this.spawner.roll -= Math.PI * 2;
+                        this.spawner.toRoll -= Math.PI * 2;
+                    }
+                    if(this.spawner.roll <= Math.PI * -1){
+                        this.spawner.roll += Math.PI * 2;
+                        this.spawner.toRoll += Math.PI * 2;
                     }
 
+                    //OLD SPAWN MOVE
                     this.spawner.yaw += this.spawner.curve.x;
                     this.spawner.pitch += this.spawner.curve.y;
 
                     this.spawner.pos.x += this.spawner.yaw * 100;
                     this.spawner.pos.y += this.spawner.pitch * 100;
+
+                    this.spawner.sprite.x = this.spawner.pos.x;
+                    this.spawner.sprite.y = this.spawner.pos.y;
                 }
             }
 
@@ -823,6 +766,120 @@ export default class ScnMain extends Phaser.Scene {
         }
     }
 
+    createTrackData(_no){
+        switch(_no){
+            case 0:
+                this.trackData = [
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", [0], 0, 64),
+                    this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", [0], 0, 64),
+                    this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad04_", [0, 1, 2, 3, 4, 5], 1, 60),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, 0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, -0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 0, 2),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 0, 30),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(0.01, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", [0], 0, 96),
+                    this.createSegment(-0.01, 0, 0, "sprSegAirVent00_", [0], 0, 96),
+                    this.createSegment(0, 0.025, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0.025, 0, "sprSegMetalRoad00_", [0], 0, 88),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                ];
+
+                this.obstacles.push(this.createObstacle(78, Math.PI * 0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(78, Math.PI * -0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+
+                this.obstacles.push(this.createObstacle(486, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(678, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(854, Math.PI, 32, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(854, Math.PI * 0.33, 32, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(854, Math.PI * -0.33, 32, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(992, 0, 32, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.5));
+
+                this.obstacles.push(this.createObstacle(1072, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+                this.obstacles.push(this.createObstacle(1072, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+                this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+
+                this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
+                this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
+                this.obstacles.push(this.createObstacle(1168, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
+
+                this.obstacles.push(this.createObstacle(1264, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+                this.obstacles.push(this.createObstacle(1264, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+                this.obstacles.push(this.createObstacle(1264, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+
+                this.obstacles.push(this.createObstacle(1368, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(1368, Math.PI, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+            break;
+            case 1:
+                this.trackData = [
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+
+                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
+                    this.createSegment(Math.PI * 0.5, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
+                    //this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 16),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 16),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
+                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
+                ];
+            break;
+            default:
+            break;
+        }
+
+        //sum up track length
+        this.trackLength = 0;
+        for (let s of this.trackData) {
+            this.trackLength += s.units;
+        }
+    }
+
     gotoMenu(){
         clearInterval(this.countdown.timer);
         this.musicPlayer.stop();
@@ -838,5 +895,9 @@ export default class ScnMain extends Phaser.Scene {
         socket.off("kickPlayer");
 
         this.scene.start("ScnLogin");
+    }
+
+    getAngleFromLen(_str, _len){
+        
     }
 }
