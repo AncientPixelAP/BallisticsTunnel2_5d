@@ -70,7 +70,7 @@ export default class ScnMain extends Phaser.Scene {
         this.trackData = [];
         this.trackLength = 0;
 
-        this.createTrackData(1);
+        this.createTrackData(0);
         
         this.startFinishTxt = this.createTextClutter(18, 0, 10, "NEW LAP");
 
@@ -306,18 +306,16 @@ export default class ScnMain extends Phaser.Scene {
             if (this.segments.length > 0) {
                 //OLD SPAWN MOVE
                 let overZero = this.spawner.pos.x > 0 ? true : false;
-                this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * 1;
+                this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * this.player.spd;
                 if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
                     this.spawner.pos.x = 0;
                 }
 
                 overZero = this.spawner.pos.y > 0 ? true : false;
-                this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z + 64)) * 1;
+                this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z + 64)) * this.player.spd;
                 if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
                     this.spawner.pos.y = 0;
                 }
-
-                this.spawner.pos.x -= this.segments[0].curve.x * 10;
 
                 //CHECK MAX SPEED
                 let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
@@ -337,18 +335,16 @@ export default class ScnMain extends Phaser.Scene {
 
                 //OLD SPAWN MOVE
                 let overZero = s.pos.x > 0 ? true : false;
-                s.pos.x -= (this.segments[0].pos.x * s.pos.z) * 1;
+                s.pos.x -= (this.segments[0].pos.x * s.pos.z) * this.player.spd;
                 if ((s.pos.x < 0 && overZero === true) || (s.pos.x > 0 && overZero === false)) {
                     s.pos.x = 0;
                 }
 
                 overZero = s.pos.y > 0 ? true : false;
-                s.pos.y -= (this.segments[0].pos.y * s.pos.z) * 1;
+                s.pos.y -= (this.segments[0].pos.y * s.pos.z) * this.player.spd;
                 if ((s.y < 0 && overZero === true) || (s.pos.y > 0 && overZero === false)) {
                     s.pos.y = 0;
                 }
-                
-                s.pos.x -= this.segments[0].curve.x * 10;
 
                 s.pos.z -= this.player.spd;
                 s.update();
@@ -384,55 +380,8 @@ export default class ScnMain extends Phaser.Scene {
 
                     this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
 
-                    this.player.trackPos += 1;
-                    if (this.player.trackPos >= this.trackLength){
-                        console.log("new LAP");
-                        this.player.trackPos = 0;
-                        this.player.laps += 1;
-
-                        if (this.player.lapTime.best !== -1){
-                            if(this.player.lapTime.current - this.player.lapTime.start < this.player.lapTime.best){
-                                //set a new record
-                                this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
-                                this.ui.setBestTime(this.player.lapTime.best);
-                                this.sndNewRecord.play();
-                            }
-                        }else{
-                            if(this.player.lapTime.start !== -1){
-                                //set first lap delta
-                                this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
-                                this.ui.setBestTime(this.player.lapTime.best);
-                            }
-                        }
-                        this.player.lapTime.start = new Date().getTime();
-                    }
-
                     
-
-                    this.spawner.trackPos += 1;
-                    if(this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units){
-                        //jump to next segment
-                        this.spawner.trackPos = 0;
-                        this.spawner.trackArrPos += 1;
-                        this.spawner.subimage = 0;
-                        this.spawner.subimgArrPos = 0;
-                        //new lap
-                        if(this.spawner.trackArrPos >= this.trackData.length){
-                            this.spawner.trackArrPos = 0;
-                        }
-                    }
-
-                    //start of segment
-                    if (this.spawner.trackPos === 0) {
-                        this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
-                        this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
-                        this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
-                        //absolute curving
-                        this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
-                        this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
-                        this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
-                    }
-
+                    //MOVE SPAWNER
                     let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
                     if (this.spawner.roll < this.spawner.toRoll) {
                         this.spawner.roll += Math.min(0.025, dif);//0.025
@@ -459,6 +408,55 @@ export default class ScnMain extends Phaser.Scene {
 
                     this.spawner.sprite.x = this.spawner.pos.x;
                     this.spawner.sprite.y = this.spawner.pos.y;
+
+
+                    //advance player and check if new lap
+                    this.player.trackPos += 1;
+                    if (this.player.trackPos >= this.trackLength) {
+                        console.log("new LAP");
+                        this.player.trackPos = 0;
+                        this.player.laps += 1;
+
+                        if (this.player.lapTime.best !== -1) {
+                            if (this.player.lapTime.current - this.player.lapTime.start < this.player.lapTime.best) {
+                                //set a new record
+                                this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
+                                this.ui.setBestTime(this.player.lapTime.best);
+                                this.sndNewRecord.play();
+                            }
+                        } else {
+                            if (this.player.lapTime.start !== -1) {
+                                //set first lap delta
+                                this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
+                                this.ui.setBestTime(this.player.lapTime.best);
+                            }
+                        }
+                        this.player.lapTime.start = new Date().getTime();
+                    }
+
+                    this.spawner.trackPos += 1;
+                    if (this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units) {
+                        //jump to next segment
+                        this.spawner.trackPos = 0;
+                        this.spawner.trackArrPos += 1;
+                        this.spawner.subimage = 0;
+                        this.spawner.subimgArrPos = 0;
+                        //new lap
+                        if (this.spawner.trackArrPos >= this.trackData.length) {
+                            this.spawner.trackArrPos = 0;
+                        }
+                    }
+
+                    //start of segment
+                    if (this.spawner.trackPos === 0) {
+                        this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
+                        this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
+                        this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
+                        //absolute curving
+                        this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
+                        this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
+                        this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
+                    }
                 }
             }
 
@@ -860,7 +858,7 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
 
                     this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
-                    this.createSegment(Math.PI * 0.5, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
+                    this.createSegment(0.01, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
                     //this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 16),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 16),
