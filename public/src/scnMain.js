@@ -776,9 +776,9 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
                     this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", [0], 0, 64),
                     this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0, -0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
                     this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", [0], 0, 64),
-                    this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(-0.05, 0.025, 0, "sprSegMetalRoad00_", [0], 0, 64),
 
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad04_", [0, 1, 2, 3, 4, 5], 1, 60),
@@ -805,10 +805,11 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", [0], 0, 96),
-                    this.createSegment(-0.01, 0, 0, "sprSegAirVent00_", [0], 0, 96),
-                    this.createSegment(0, 0.025, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0.025, 0, "sprSegMetalRoad00_", [0], 0, 88),
+                    this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", [0], 0, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegAirVent00_", [0], 0, 64),//x-0.01
+                    this.createSegment(0 , 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),//8
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 56),//88
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
 
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
@@ -834,22 +835,22 @@ export default class ScnMain extends Phaser.Scene {
                 this.obstacles.push(this.createObstacle(1072, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
 
-                this.obstacles.push(this.createObstacle(1168, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1136, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-                this.obstacles.push(this.createObstacle(1168, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1136, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
-                this.obstacles.push(this.createObstacle(1168, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1136, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = -0.025;
 
-                this.obstacles.push(this.createObstacle(1264, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1200, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-                this.obstacles.push(this.createObstacle(1264, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1200, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
-                this.obstacles.push(this.createObstacle(1264, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1200, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
                 this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
 
-                this.obstacles.push(this.createObstacle(1368, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
-                this.obstacles.push(this.createObstacle(1368, Math.PI, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(1304, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(1304, Math.PI, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
             break;
             case 1:
                 this.trackData = [
@@ -858,10 +859,9 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
 
                     this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
-                    this.createSegment(0.01, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
-                    //this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 16),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 16),
+                    this.createSegment(0.05, 0, 0, "sprSegMetalRoad01_", [0], 1, 64),
+                    this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", [0], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 24),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
                     this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
