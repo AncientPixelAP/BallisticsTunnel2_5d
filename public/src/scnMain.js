@@ -302,20 +302,32 @@ export default class ScnMain extends Phaser.Scene {
 
 
 
+            let root = {
+                x: 0,
+                y: 0,
+                z: 0
+            }
             //move spawner
             if (this.segments.length > 0) {
+                root = {
+                    x: this.segments[0].pos.x,
+                    y: this.segments[0].pos.y,
+                    z: this.segments[0].pos.z
+                }
+
                 //OLD SPAWN MOVE
                 let overZero = this.spawner.pos.x > 0 ? true : false;
-                this.spawner.pos.x -= (this.segments[0].pos.x * (this.segments[0].pos.z + 64)) * this.player.spd;
+                this.spawner.pos.x -= (root.x * (root.z + 64)) * this.player.spd;
                 if ((this.spawner.pos.x < 0 && overZero === true) || (this.spawner.pos.x > 0 && overZero === false)){
                     this.spawner.pos.x = 0;
                 }
 
                 overZero = this.spawner.pos.y > 0 ? true : false;
-                this.spawner.pos.y -= (this.segments[0].pos.y * (this.segments[0].pos.z + 64)) * this.player.spd;
+                this.spawner.pos.y -= (root.y * (root.z + 64)) * this.player.spd;
                 if ((this.spawner.pos.y < 0 && overZero === true) || (this.spawner.pos.y > 0 && overZero === false)) {
                     this.spawner.pos.y = 0;
                 }
+                
 
                 //CHECK MAX SPEED
                 let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
@@ -335,13 +347,13 @@ export default class ScnMain extends Phaser.Scene {
 
                 //OLD SPAWN MOVE
                 let overZero = s.pos.x > 0 ? true : false;
-                s.pos.x -= (this.segments[0].pos.x * s.pos.z) * this.player.spd;
+                s.pos.x -= (root.x * s.pos.z) * this.player.spd;
                 if ((s.pos.x < 0 && overZero === true) || (s.pos.x > 0 && overZero === false)) {
                     s.pos.x = 0;
                 }
 
                 overZero = s.pos.y > 0 ? true : false;
-                s.pos.y -= (this.segments[0].pos.y * s.pos.z) * this.player.spd;
+                s.pos.y -= (root.y * s.pos.z) * this.player.spd;
                 if ((s.y < 0 && overZero === true) || (s.pos.y > 0 && overZero === false)) {
                     s.pos.y = 0;
                 }
@@ -350,9 +362,37 @@ export default class ScnMain extends Phaser.Scene {
                 s.update();
 
                 if(s.toKill === true){
+                    //MOVE SPAWNER
+                    let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
+                    if (this.spawner.roll < this.spawner.toRoll) {
+                        this.spawner.roll += Math.min(0.025, dif);//0.025
+                    }
+                    if (this.spawner.roll > this.spawner.toRoll) {
+                        this.spawner.roll -= Math.min(0.025, dif);//0.025
+                    }
+                    //correct roll
+                    if (this.spawner.roll > Math.PI) {
+                        this.spawner.roll -= Math.PI * 2;
+                        this.spawner.toRoll -= Math.PI * 2;
+                    }
+                    if (this.spawner.roll <= Math.PI * -1) {
+                        this.spawner.roll += Math.PI * 2;
+                        this.spawner.toRoll += Math.PI * 2;
+                    }
+
+                    //OLD SPAWN MOVE
+                    this.spawner.yaw += this.spawner.curve.x;
+                    this.spawner.pitch += this.spawner.curve.y;
+
+                    this.spawner.pos.x += this.spawner.yaw.toFixed(2) * 100;
+                    this.spawner.pos.y += this.spawner.pitch.toFixed(2) * 100;
+
+                    this.spawner.sprite.x = this.spawner.pos.x;
+                    this.spawner.sprite.y = this.spawner.pos.y;
+
                     //feed spawener data to segment and jump it to the far end
-                    s.pos.x = this.spawner.pos.x;
-                    s.pos.y = this.spawner.pos.y;
+                    s.pos.x = this.spawner.pos.x;//this.segments[this.segments.length-1].pos.x + (this.spawner.yaw * 100)//this.spawner.pos.x;
+                    s.pos.y = this.spawner.pos.y;//this.segments[this.segments.length-1].pos.y + (this.spawner.pitch * 100)//this.spawner.pos.y;
                     s.pos.z += 64;
                     s.curve.x = this.spawner.yaw;
                     s.curve.y = this.spawner.pitch;
@@ -378,37 +418,10 @@ export default class ScnMain extends Phaser.Scene {
                         this.spawner.subimage = Math.floor(Math.random() * this.spawner.subimgArr.length);
                     }
 
-                    this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
+                    //this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
 
                     
-                    //MOVE SPAWNER
-                    let dif = Math.abs(this.spawner.roll - this.spawner.toRoll);
-                    if (this.spawner.roll < this.spawner.toRoll) {
-                        this.spawner.roll += Math.min(0.025, dif);//0.025
-                    }
-                    if (this.spawner.roll > this.spawner.toRoll) {
-                        this.spawner.roll -= Math.min(0.025, dif);//0.025
-                    }
-                    //correct roll
-                    if(this.spawner.roll > Math.PI){
-                        this.spawner.roll -= Math.PI * 2;
-                        this.spawner.toRoll -= Math.PI * 2;
-                    }
-                    if(this.spawner.roll <= Math.PI * -1){
-                        this.spawner.roll += Math.PI * 2;
-                        this.spawner.toRoll += Math.PI * 2;
-                    }
-
-                    //OLD SPAWN MOVE
-                    this.spawner.yaw += this.spawner.curve.x;
-                    this.spawner.pitch += this.spawner.curve.y;
-
-                    this.spawner.pos.x += this.spawner.yaw * 100;
-                    this.spawner.pos.y += this.spawner.pitch * 100;
-
-                    this.spawner.sprite.x = this.spawner.pos.x;
-                    this.spawner.sprite.y = this.spawner.pos.y;
-
+                    
 
                     //advance player and check if new lap
                     this.player.trackPos += 1;
@@ -459,6 +472,8 @@ export default class ScnMain extends Phaser.Scene {
                     }
                 }
             }
+
+            this.segments = this.segments.sort((a, b) => a.pos.z - b.pos.z);
 
             if(this.playersData !== null){
                 socket.emit("updatePlayer", {
@@ -858,13 +873,33 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
                     this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
 
-                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
-                    this.createSegment(0.05, 0, 0, "sprSegMetalRoad01_", [0], 1, 64),
-                    this.createSegment(-0.05, 0, 0, "sprSegMetalRoad00_", [0], 1, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 1, 24),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 1, 96),
-                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 32),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(-0.05, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0.05, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),//56
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0.02, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, -0.02, 0, "sprSegMetalRoad00_", [0], 0, 64),
+
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad01_", [0], 0, 72),
+                    this.createSegment(0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 72),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    //this.createSegment(-0.02, 0.02, Math.PI * -0.5, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    //this.createSegment(0.02, -0.02, Math.PI * -1, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    //this.createSegment(0, -0.01, Math.PI * 0.5, "sprSegAirVent00_", [0], 0, 64),
+                    //this.createSegment(0, 0.01, 0, "sprSegAirVent00_", [0], 0, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
                 ];
             break;
             default:

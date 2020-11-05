@@ -5,7 +5,7 @@ export default class Ui{
         this.scene = _scene;
 
         this.colors = {
-            default: 0xd1d15b,
+            default: 0x00e436,//0xd1d15b 0x29adff
             alert: 0xff004d,
             warning: 0xffa300
         }
@@ -54,15 +54,15 @@ export default class Ui{
             slp: this.scene.add.sprite(this.scene.left + 56, 0, "sprUiTextWrap"),
             res: this.scene.add.sprite(this.scene.left + 56, 32, "sprUiTextWrap"),
         }
-        this.textWrap.bst.depth = 10000;
+        this.textWrap.bst.depth = 9999;
         this.textWrap.bst.setTintFill(this.colors.default);
-        this.textWrap.lap.depth = 10000;
+        this.textWrap.lap.depth = 9999;
         this.textWrap.lap.setTintFill(this.colors.default);
-        this.textWrap.spd.depth = 10000;
+        this.textWrap.spd.depth = 9999;
         this.textWrap.spd.setTintFill(this.colors.default);
-        this.textWrap.slp.depth = 10000;
+        this.textWrap.slp.depth = 9999;
         this.textWrap.slp.setTintFill(this.colors.default);
-        this.textWrap.res.depth = 10000;
+        this.textWrap.res.depth = 9999;
         this.textWrap.res.setTintFill(this.colors.default);
 
         //create grav meter
@@ -78,7 +78,7 @@ export default class Ui{
                 this.scene.add.sprite(this.scene.left + 56, 64, "sprUiRoll")
             ],
         }
-        this.grav.circle.depth = 10000;
+        this.grav.circle.depth = 9999;
         this.grav.roll.depth = 10000;
         this.grav.yaw.depth = 10000;
         this.grav.pitch.depth = 10000;
