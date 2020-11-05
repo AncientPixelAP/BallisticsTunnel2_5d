@@ -16,14 +16,18 @@ let gameData = new GameData();
 let tick = setInterval(() => { 
     gameData.update();
 
+    if (gameData.allFinished === true && gameData.players.length > 0) {
+        gameData.switchToNextTrack();
+        console.log("players finished");
+    }
+
     for(let p of gameData.players){
-        //get sector update
-        /*io.to(p.id).emit("sectorUpdate", {
-            sectorData: p.sector, 
-            playersAtLocation: getPlayersAtLocation(p.locationId),
-            npcsAtLocation: getNPCsAtLocation(p.locationId),
-            groupData: gameData.group
-        });*/
+        if(gameData.allFinished === true){
+            io.to(p.id).emit("switchTrack", {
+                track: gameData.currentTrack
+            });
+        }
+
         io.to(p.id).emit("synchUpdate", {
             playersData: gameData.players
         })
@@ -50,7 +54,8 @@ io.on("connection", socket => {
         gameData.addPlayer(id, _data.bikeData);
         io.to(id).emit("getPlayers", {
             you: gameData.players[gameData.players.length-1],
-            playersData: gameData.players
+            playersData: gameData.players,
+            track: gameData.currentTrack
         });
     });
 
@@ -67,6 +72,7 @@ io.on("connection", socket => {
             p.spd = _data.spd;
             p.roll = _data.roll;
             p.trackPos = _data.trackPos;
+            p.laps = _data.laps;
         }
     })
 

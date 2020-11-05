@@ -6,6 +6,7 @@ class Player {
         this.sprite = "sprBike00";
         this.roll = Math.PI * -0.5;
         this.spd = 0;
+        this.laps = 0;
 
         this.data = _data;
     }

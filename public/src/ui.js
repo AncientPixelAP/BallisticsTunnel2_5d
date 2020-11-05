@@ -104,27 +104,7 @@ export default class Ui{
         }
 
         this.lapLine = this.scene.add.graphics({ x: this.lapLineRoot.x + 0.5, y: this.lapLineRoot.y});
-        this.lapLine.lineStyle(1, this.colors.default);
-        this.lapLine.beginPath();
-        this.lapLine.moveTo(0, 0);
-        this.lapLine.lineTo(0, (this.scene.trackLength / this.magnifier) * -1);
-        this.lapLine.strokePath();
-        this.lapLine.depth = 10000;
-
         this.sectors = [];
-        let prev = {
-            x: this.lapLineRoot.x,
-            y: this.lapLineRoot.y
-        }
-        for(let d of this.scene.trackData){
-            let amt = d.units / this.magnifier;
-            this.sectors.push(this.scene.add.sprite(prev.x, prev.y - amt, "sprUiTrackLine").setOrigin(0, 0.5));
-            this.sectors[this.sectors.length-1].setTintFill(this.colors.default);
-            prev.y -= amt;
-        }
-        for(let s of this.sectors){
-            s.depth = 10000;
-        }
 
         this.playerLine = this.scene.add.sprite(this.lapLineRoot.x, this.lapLineRoot.y, "sprUiTrackLinePlayer").setOrigin(1, 0.5);
         this.playerLine.depth = 10000;
@@ -246,5 +226,42 @@ export default class Ui{
 
     getSlipstreamed(){
 
+    }
+
+    createMiniMap(){
+        this.lapLine.clear();
+        for(let s of this.sectors){
+            s.destroy();
+        }
+
+        this.screenHeightModified = this.scene.game.config.height * 0.8;
+        this.magnifier = this.scene.trackLength / this.screenHeightModified;
+        this.lapLineRoot = {
+            x: this.scene.right - 56,
+            y: this.screenHeightModified * 0.5,
+        }
+
+        this.lapLine = this.scene.add.graphics({ x: this.lapLineRoot.x + 0.5, y: this.lapLineRoot.y });
+        this.lapLine.lineStyle(1, this.colors.default);
+        this.lapLine.beginPath();
+        this.lapLine.moveTo(0, 0);
+        this.lapLine.lineTo(0, (this.scene.trackLength / this.magnifier) * -1);
+        this.lapLine.strokePath();
+        this.lapLine.depth = 10000;
+
+        this.sectors = [];
+        let prev = {
+            x: this.lapLineRoot.x,
+            y: this.lapLineRoot.y
+        }
+        for (let d of this.scene.trackData) {
+            let amt = d.units / this.magnifier;
+            this.sectors.push(this.scene.add.sprite(prev.x, prev.y - amt, "sprUiTrackLine").setOrigin(0, 0.5));
+            this.sectors[this.sectors.length - 1].setTintFill(this.colors.default);
+            prev.y -= amt;
+        }
+        for (let s of this.sectors) {
+            s.depth = 10000;
+        }
     }
 }

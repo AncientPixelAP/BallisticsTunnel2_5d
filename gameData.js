@@ -3,10 +3,26 @@ let Player = require("./player");
 class GameData {
     constructor() {
         this.players = [];
+        this.lapsToFinish = 5;
+        this.currentTrack = 0;
+        this.maxTracks = 2;
+        this.allFinished = false;
     }
 
     update(){
-        
+        this.allFinished = true;
+        for(let p of this.players){
+            if (p.laps <= this.lapsToFinish){
+                this.allFinished = false;
+            }
+        }
+    }
+
+    switchToNextTrack(){
+        this.currentTrack += 1;
+        if(this.currentTrack >= this.maxTracks){
+            this.currentTrack = 0;
+        }
     }
 
     addPlayer(_id, _data){
