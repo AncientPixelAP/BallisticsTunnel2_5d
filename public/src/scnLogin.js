@@ -53,7 +53,11 @@ export default class ScnLogin extends Phaser.Scene {
         this.hand = new Hand(this);
 
         this.btnPlay = new Button(this, { x: -160, y: -48 }, "sprBtn00", "PLAY", false, () => {
-            this.gotoMain();
+            this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
+                if(_pct >= 1){
+                    this.gotoMain();
+                }
+            }, this);
         });
 
         this.btnOptions = new Button(this, { x: -160, y: 48 }, "sprBtn00", "OPTIONS", false, () => {

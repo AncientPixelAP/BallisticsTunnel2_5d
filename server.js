@@ -86,6 +86,17 @@ io.on("connection", socket => {
         }
     });
 
+    //ORDERS
+    socket.on("forceSwitchTrack", (_data) => {
+        gameData.switchToTrack(_data.track);
+
+        for (let p of gameData.players) {
+            io.to(p.id).emit("switchTrack", {
+                track: gameData.currentTrack
+            });
+        }
+    });
+
     //DISCONNECT
     socket.on("disconnect", () => {
         console.log("disconnected a client "+ id);

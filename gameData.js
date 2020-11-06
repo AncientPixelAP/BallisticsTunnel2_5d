@@ -25,6 +25,10 @@ class GameData {
         }
     }
 
+    switchToTrack(_no){
+        this.currentTrack = _no;
+    }
+
     addPlayer(_id, _data){
         this.players.push(new Player(_id, _data));
     }

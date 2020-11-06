@@ -46,6 +46,15 @@ export default class ScnMain extends Phaser.Scene {
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
         }
 
+        this.keyNumber = [this.keys.one, this.keys.two, this.keys.three];
+        for(let [i, k] of this.keyNumber.entries()){
+            k.on("up", (_key, _event) => {
+                socket.emit("forceSwitchTrack", {
+                    track: i
+                });
+            }, this);
+        }
+
         this.keys.w.on('down', function (key, event) {
             // event.stopPropagation();
         }, this);
@@ -207,6 +216,10 @@ export default class ScnMain extends Phaser.Scene {
             current: 0,
             treshold: 16,
         }
+
+        this.cameras.main.fadeFrom(500, 0, 0, 0, false, (_cam, _pct) => {
+
+        }, this);
     }
 
     update(_time, _delta){
@@ -412,14 +425,14 @@ export default class ScnMain extends Phaser.Scene {
                             if (this.player.lapTime.current - this.player.lapTime.start < this.player.lapTime.best) {
                                 //set a new record
                                 this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
-                                this.ui.setBestTime(this.player.lapTime.best);
+                                this.ui.tacho.setBestTime(this.player.lapTime.best);
                                 this.sndNewRecord.play();
                             }
                         } else {
                             if (this.player.lapTime.start !== -1) {
                                 //set first lap delta
                                 this.player.lapTime.best = this.player.lapTime.current - this.player.lapTime.start;
-                                this.ui.setBestTime(this.player.lapTime.best);
+                                this.ui.tacho.setBestTime(this.player.lapTime.best);
                             }
                         }
                         this.player.lapTime.start = new Date().getTime();
@@ -427,6 +440,7 @@ export default class ScnMain extends Phaser.Scene {
                         //finished? reset evrything to a waaiting start tunnel
                         if (this.player.laps > 5) {
                             this.jumpToWaitTunnel();
+                            //TODO show pilot placements laps, best imes
                         }
                     }
 
@@ -526,12 +540,16 @@ export default class ScnMain extends Phaser.Scene {
                 if (o.trackPos >= this.trackLength) {
                     o.trackPos = 0;
                 }
+                let adjTrackPos = o.trackPos;
+                if (adjTrackPos + 64 > this.trackLength) {
+                    adjTrackPos -= this.trackLength;
+                }
 
-                let difAdj = Math.max(-1, Math.min(1, (o.trackPos - _adjPlayerPosition) / 64));
+                let difAdj = Math.max(-1, Math.min(1, (adjTrackPos - _adjPlayerPosition) / 64));
                 o.sndEngine.rate = Math.max(0, Math.min((o.spd * 0.25) + 0.5 + ((difAdj) * -1)), 1);
                 o.sndEngine.volume = (1 - Math.abs(difAdj)) * OPTIONS.sound.sfx;
 
-                let flPos = Math.floor(o.trackPos);
+                let flPos = Math.floor(adjTrackPos);
                 if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
                     let parent = this.segments[flPos - _adjPlayerPosition];
                     let pos = {
@@ -554,7 +572,7 @@ export default class ScnMain extends Phaser.Scene {
                         //get nearest enemy that is in front and player is in its slipstream
                         let rollDif = (this.player.roll - o.roll);
                         if (pos.z < rec) {
-                            if (o.trackPos > _adjPlayerPosition) {
+                            if (adjTrackPos > _adjPlayerPosition) {
                                 rec = pos.z;
                                 if (rollDif > Math.PI) {
                                     rollDif -= Math.PI * 2;
@@ -564,7 +582,7 @@ export default class ScnMain extends Phaser.Scene {
                                 if (Math.abs(rollDif) < this.player.stats.slipZone) {
                                     target = o;
                                     //slow down and avoid other player
-                                    if (o.trackPos < _adjPlayerPosition + 3) {
+                                    if (adjTrackPos < _adjPlayerPosition + 3) {
                                         this.player.spd *= 0.5;
                                         this.player.roll += (rollDif) * 0.25;
                                     }
@@ -579,7 +597,7 @@ export default class ScnMain extends Phaser.Scene {
                 } else {
                     o.sprite.alpha = 0;
                     if (flPos < _adjPlayerPosition && flPos > _adjPlayerPosition - 64) {
-                        this.ui.follower.push(o.roll);
+                        this.ui.tacho.follower.push(o.roll);
                         if(o.sndEngine.isPlaying === false){
                             o.sndEngine.play();
                         }
@@ -591,11 +609,11 @@ export default class ScnMain extends Phaser.Scene {
         }
 
         if (target !== null) {
-            this.ui.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - _adjPlayerPosition));
+            this.ui.tacho.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - _adjPlayerPosition));
             this.player.slipstream = this.player.stats.slipMax;
         } else {
             this.player.slipstream = 0;
-            this.ui.setTargetPos(99999, 9999, 0);
+            this.ui.tacho.setTargetPos(99999, 9999, 0);
         }
     }
 
@@ -605,6 +623,10 @@ export default class ScnMain extends Phaser.Scene {
             if (o.trackPos >= this.trackLength) {
                 o.trackPos = 0;
             }
+            let adjTrackPos = o.trackPos;
+            if (adjTrackPos + 64 > this.trackLength) {
+                adjTrackPos -= this.trackLength;
+            }
             
             o.roll += o.rollSpd;
             if(o.roll > Math.PI){
@@ -613,13 +635,13 @@ export default class ScnMain extends Phaser.Scene {
                 o.roll += Math.PI * 2;
             }
 
-            let flPos = Math.floor(o.trackPos);
+            let flPos = Math.floor(adjTrackPos);
             if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
                 let parent = this.segments[flPos - _adjPlayerPosition];
                 let pos = {
                     x: parent.pos.x,
                     y: parent.pos.y,
-                    z: o.trackPos - _adjPlayerPosition
+                    z: adjTrackPos - _adjPlayerPosition
                 }
                 let dz = 1 / pos.z;
                 let shade = Math.max(0, 255 - (pos.z * 4));
@@ -642,28 +664,30 @@ export default class ScnMain extends Phaser.Scene {
                 o.sprite.alpha = 1;
 
                 if (this.player.waitingTunnel === false) {
-                    if (o.trackPos > _adjPlayerPosition) {
+                    if (adjTrackPos > _adjPlayerPosition) {
                         let rollDif = (this.player.roll - o.roll);// + Math.PI;
                         if(rollDif > Math.PI){
                             rollDif -= Math.PI * 2;
                         }else if(rollDif < Math.PI * -1){
                             rollDif += Math.PI * 2;
                         }
-                        if (Math.abs(rollDif) < o.collisionZone) {   
-                            //slow down and avoid obstacle
-                            if (o.trackPos < _adjPlayerPosition + 3) {
+                        if (adjTrackPos < _adjPlayerPosition + 3) {
+                            if (Math.abs(rollDif) < o.collisionZone) {   
+                                //slow down and avoid obstacle
+                                this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, () => { }, this);
                                 this.player.spd *= 0.5;
                                 this.player.roll += (rollDif) * 0.25;
-                            }
-                        }
-
-                        if (o.trackPos < _adjPlayerPosition + 3) {
-                            if(o.sndTriggered !== undefined){
-                                if(o.sndTriggered === false){
-                                    o.sndTriggered = true;
-                                    o.snd.rate = Math.max(0.01, Math.min(1, this.player.spd));
-                                    o.snd.volume = Math.max(0, Math.min(1, this.player.spd)) * OPTIONS.sound.sfx;
-                                    o.snd.play();
+                            }else if(Math.abs(rollDif) < o.collisionZone + (Math.PI * 0.25)) {
+                                //near miss
+                                this.cameras.main.shake(250, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, () => { }, this);
+                                this.player.spd = Math.min(this.player.spd * 1.035, 0.9);
+                                if (o.sndTriggered !== undefined) {
+                                    if (o.sndTriggered === false) {
+                                        o.sndTriggered = true;
+                                        o.snd.rate = Math.max(0.01, Math.min(1, this.player.spd));
+                                        o.snd.volume = Math.max(0, Math.min(1, this.player.spd)) * OPTIONS.sound.sfx;
+                                        o.snd.play();
+                                    }
                                 }
                             }
                         }
@@ -773,12 +797,12 @@ export default class ScnMain extends Phaser.Scene {
 
     createTrackData(_no){
         switch(_no){
-            case -1:
+            case -1: //WAITINGTUNNEL
                 this.trackData = [
                     this.createSegment(0, 0, 0, "sprSegStartTunnel_", [0], 0, 256),
                 ]
             break;
-            case 0:
+            case 0: //TESTTRACK
                 this.trackData = [
                     this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
                     this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
@@ -864,7 +888,7 @@ export default class ScnMain extends Phaser.Scene {
                 this.obstacles.push(this.createObstacle(1304, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
                 this.obstacles.push(this.createObstacle(1304, Math.PI, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
             break;
-            case 1:
+            case 1: //LABORATORY AND ORATORY
                 this.trackData = [
                     this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
                     this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
@@ -913,6 +937,50 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
                 ];
+
+                this.obstacles.push(this.createObstacle(98, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+
+                this.obstacles.push(this.createObstacle(170, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(226, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+
+                this.obstacles.push(this.createObstacle(298, 0, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(298, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(330, Math.PI * 0.25, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(330, Math.PI * -0.75, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(346, Math.PI * -0.25, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(346, Math.PI * 0.75, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(362, Math.PI * 0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(362, Math.PI * -0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+
+                this.obstacles.push(this.createObstacle(432, Math.PI * 0.5, 36, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.5));
+
+                this.obstacles.push(this.createObstacle(514, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(578, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(706, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(834, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(906, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+                this.obstacles.push(this.createObstacle(906, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+                this.obstacles.push(this.createObstacle(906, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.045;
+
+                this.obstacles.push(this.createObstacle(1162, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.065;
+                this.obstacles.push(this.createObstacle(1162, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.065;
+                this.obstacles.push(this.createObstacle(1162, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.065;
+
+                this.obstacles.push(this.createObstacle(1170, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1298, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(1378, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(1498, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
             break;
             default:
             break;
@@ -924,7 +992,7 @@ export default class ScnMain extends Phaser.Scene {
             this.trackLength += s.units;
         }
 
-        this.ui.createMiniMap();
+        this.ui.minimap.createMiniMap();
     }
 
     resetTrack() {
