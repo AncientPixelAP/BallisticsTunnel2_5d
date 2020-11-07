@@ -366,6 +366,28 @@ export default class TrackGenerator{
                 this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.035;
 
                 break;
+            case 3:
+                this.scene.trackData = [
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00_", [0], 0, 56),
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegNothing00_", [0], 0, 64),
+
+                    this.createSegment(0, -0.025, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+
+                    this.createSegment(0.25, 0, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+                    this.createSegment(-0.25, 0, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+                ];
+
+                this.scene.obstacles.push(this.createObstacle(154, 0, 0, "sprClownFace00_", [0], 0, -1));
+                break;
             default:
                 break;
         }

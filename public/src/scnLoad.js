@@ -42,6 +42,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprStoryLoop00", "sprites/story/storyLoop00.png");
         this.load.image("sprStoryRacing01", "sprites/story/storyRacing01.png");
 
+        //SEGMENTS
         this.load.image("sprSegDebug00_0", "sprites/sprSegDebug00.png");
         this.load.image("sprSegDebug01_0", "sprites/sprSegDebug01.png");
         this.load.image("sprSegDebug02_0", "sprites/sprSegDebug02.png");
@@ -106,10 +107,18 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSegTreeRoad00_6", "sprites/sprSegTreeRoad01_2.png");
         this.load.image("sprSegTreeRoad00_7", "sprites/sprSegTreeRoad01_3.png");
 
+        this.load.image("sprSegCircusRoad00_0", "sprites/sprSegCircusRoad00_0.png");
+        this.load.image("sprSegCircusRoad00_1", "sprites/sprSegCircusRoad00_1.png");
+        this.load.image("sprSegCircusRoad00_2", "sprites/sprSegCircusRoad00_2.png");
+        this.load.image("sprSegCircusRoad00_3", "sprites/sprSegCircusRoad00_3.png");
+
+        this.load.image("sprSegNothing00_0", "sprites/sprSegNothing00_0.png");
+
         this.load.image("sprSegFinishLineClamp_0", "sprites/sprSegFinishLineClamp_0.png");
         this.load.image("sprSegFinishLine_0", "sprites/sprSegFinishLine00.png");
         this.load.image("sprSegFinishLine_1", "sprites/sprSegFinishLine01.png");
 
+        //OBSTCLES
         this.load.image("sprObsBlade00_0", "sprites/obstacles/sprObsBlade00_0.png");
         this.load.image("sprObsBlade00_1", "sprites/obstacles/sprObsBlade00_1.png");
         this.load.image("sprObsBlade00_2", "sprites/obstacles/sprObsBlade00_2.png");
@@ -127,6 +136,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprObsVentBlade00_0", "sprites/obstacles/sprObsVentBlade00_0.png");
 
         this.load.image("sprObsVentDoor00_0", "sprites/obstacles/sprObsVentDoor00_0.png");
+
+        //CLUTTER
+        this.load.image("sprClownFace00_0", "sprites/clutter/sprClownFace00.png");
 
         this.load.image("sprAdvertTeamArashi", "sprites/clutter/sprAdvertTeamArashi.png");
         this.load.image("sprAdvertTeamDaito", "sprites/clutter/sprAdvertTeamDaito.png");

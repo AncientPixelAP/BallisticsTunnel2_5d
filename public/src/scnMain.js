@@ -48,7 +48,7 @@ export default class ScnMain extends Phaser.Scene {
             tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
         }
 
-        this.keyNumber = [this.keys.one, this.keys.two, this.keys.three];
+        this.keyNumber = [this.keys.one, this.keys.two, this.keys.three, this.keys.four];
         for(let [i, k] of this.keyNumber.entries()){
             k.on("up", (_key, _event) => {
                 socket.emit("forceSwitchTrack", {
