@@ -8,6 +8,9 @@ class Player {
         this.spd = 0;
         this.laps = 0;
 
+        this.lapTime = 0;
+        this.bestLapTime = 0;
+
         this.data = _data;
     }
 }

@@ -73,6 +73,8 @@ io.on("connection", socket => {
             p.roll = _data.roll;
             p.trackPos = _data.trackPos;
             p.laps = _data.laps;
+            p.lapTime = _data.lapTime;
+            p.bestLapTime = _data.bestLapTime;
         }
     })
 

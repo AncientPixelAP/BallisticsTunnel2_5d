@@ -39,6 +39,19 @@
             }
             return str;
         }
+
+        function dateToLapTime(_time){
+            let min = Math.floor(_time / (1000 * 60));
+            _time -= min * 60;
+            let sec = Math.floor(_time / (1000)) - (min * 60);
+            _time -= sec * 1000;
+            let mil = _time - (min * 60000);
+            return{
+                min: min,
+                sec: sec,
+                mil: mil
+            }
+        }
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
         /*var socket = io("192.168.80.1:3000");
         if(socket.connected === false){

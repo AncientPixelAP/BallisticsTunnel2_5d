@@ -3,6 +3,7 @@ export default class Button{
         this.scene = _scene;
         this.pos = _pos;
         this.func = _func;
+        this.toggleOffFunc = () => {};
 
         this.colors = {
             out: 0xfff1e8,
@@ -49,6 +50,7 @@ export default class Button{
                         this.func();
                     }else{
                         this.active = false;
+                        this.toggleOffFunc();
                     }
                 }else{
                     this.func();
@@ -70,6 +72,7 @@ export default class Button{
                 this.func();
             } else {
                 this.active = false;
+                this.toggleOffFunc();
             }
         } else {
             this.func();

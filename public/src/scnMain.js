@@ -44,6 +44,7 @@ export default class ScnMain extends Phaser.Scene {
             eight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT),
             nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE),
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
+            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
         }
 
         this.keyNumber = [this.keys.one, this.keys.two, this.keys.three];
@@ -55,8 +56,20 @@ export default class ScnMain extends Phaser.Scene {
             }, this);
         }
 
-        this.keys.w.on('down', function (key, event) {
-            // event.stopPropagation();
+        this.keys.tab.on('down', function (_key, _event) {
+            _event.stopPropagation();
+            this.ui.minimap.move(this.ui.positions.minimap.out.x, this.ui.positions.minimap.out.y);
+            this.ui.tacho.move(this.ui.positions.tacho.out.x, this.ui.positions.tacho.out.y);
+            this.ui.standings.move(this.ui.positions.standings.in.x, this.ui.positions.standings.in.y);
+        }, this);
+        this.keys.tab.on('up', function (_key, _event) {
+            _event.stopPropagation();
+            this.ui.minimap.move(this.ui.positions.minimap.in.x, this.ui.positions.minimap.in.y);
+            this.ui.tacho.move(this.ui.positions.tacho.in.x, this.ui.positions.tacho.in.y);
+            this.ui.standings.move(this.ui.positions.standings.out.x, this.ui.positions.standings.out.y);
+            if (this.ui.btnScore.active === true) {
+                this.ui.btnScore.simulateClick();
+            }
         }, this);
 
         this.keys.space.on('down', function (key, event) {
@@ -78,6 +91,7 @@ export default class ScnMain extends Phaser.Scene {
         this.clutter = [];
         this.trackData = [];
         this.trackLength = 0;
+        this.lapsMax = 5;
 
         //this.createTrackData(-1);
         
@@ -196,6 +210,9 @@ export default class ScnMain extends Phaser.Scene {
         
         socket.on("switchTrack", (_data) => {
             this.switchToTrack(_data.track);
+            if (this.ui.btnScore.active === true) {
+                this.ui.btnScore.simulateClick();
+            }
         });
 
         socket.on("kickPlayer", (_data) => {
@@ -258,13 +275,6 @@ export default class ScnMain extends Phaser.Scene {
                     if (this.cursors.right.isDown) {
                         this.player.roll += this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.right.getDuration() * 0.005));
                     }
-
-                    /*let amt = this.hand.start.x - this.hand.pos.x;
-                    //console.log(amt);
-                    if (Math.abs(amt) > 8) {
-                        let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
-                        this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
-                    }*/
                 }else{
                     //MOUSE CONTROLS
                     if (this.hand.pos.y < this.game.config.height * 0.25) {
@@ -293,6 +303,17 @@ export default class ScnMain extends Phaser.Scene {
                 //autostart
                 if (this.player.spd < this.player.spdMax) {
                     this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+                }
+                if (this.player.spd > this.player.spdMax) {
+                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg * 10);
+                }
+
+                //TODO CHECK IF THIS LEADS TO PLAYER COLLISIONS maybe fan out in standings order
+                if(this.player.roll > 0){
+                    this.player.roll -= Math.min(this.player.stats.roll, this.player.roll);
+                }
+                if (this.player.roll < 0) {
+                    this.player.roll += Math.min(this.player.stats.roll, this.player.roll);
                 }
             }
 
@@ -438,9 +459,11 @@ export default class ScnMain extends Phaser.Scene {
                         this.player.lapTime.start = new Date().getTime();
 
                         //finished? reset evrything to a waaiting start tunnel
-                        if (this.player.laps > 5) {
+                        if (this.player.laps > this.lapsMax) {
                             this.jumpToWaitTunnel();
-                            //TODO show pilot placements laps, best imes
+                            if(this.ui.btnScore.active === false){
+                                this.ui.btnScore.simulateClick();
+                            }
                         }
                     }
 
@@ -463,6 +486,7 @@ export default class ScnMain extends Phaser.Scene {
                     if (this.spawner.trackPos === 0) {
                         this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
                         this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
+                        this.spawner.subimgArrPos = 0;
                         this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
                         //absolute curving
                         this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
@@ -480,35 +504,40 @@ export default class ScnMain extends Phaser.Scene {
                     spd: this.player.spd,
                     roll: this.player.roll,
                     trackPos: this.player.trackPos,
-                    laps: this.player.laps
+                    laps: this.player.laps,
+                    lapTime: this.player.lapTime.start !== -1 ? this.player.lapTime.current - this.player.lapTime.start : 0,
+                    bestLapTime: this.player.lapTime.best !== -1 ? this.player.lapTime.best : 0
                 });
             }
 
-            //UPDATE OTHER PLAYERRS and STUFF
-            let adjPlayerTrackPos = this.player.trackPos;
-            if (adjPlayerTrackPos + 64 > this.trackLength) {
-                adjPlayerTrackPos -= this.trackLength;
-            }
-            this.updateOtherPlayers(adjPlayerTrackPos);
-            this.updateObstacles(adjPlayerTrackPos);
+        }
 
-            //UPDATE START FINISH TEXT
+        //UPDATE OTHER PLAYERRS and STUFF
+        let adjPlayerTrackPos = this.player.trackPos;
+        if (adjPlayerTrackPos + 64 > this.trackLength) {
+            adjPlayerTrackPos -= this.trackLength;
+        }
+        this.updateOtherPlayers(adjPlayerTrackPos);
+        this.updateObstacles(adjPlayerTrackPos);
+
+        //UPDATE START FINISH TEXT
+        if (this.countdown === null) {
             if (this.startFinishTxt.trackPos < adjPlayerTrackPos + 64 && this.startFinishTxt.trackPos > adjPlayerTrackPos) {
-                if(this.player.waitingTunnel === false){
-                    this.startFinishTxt.txt.setText((Math.max(1, this.player.laps)) + "/5 LAPS");
-                }else{
+                if (this.player.waitingTunnel === false) {
+                    this.startFinishTxt.txt.setText((Math.max(1, this.player.laps)) + "/" + String(this.lapsMax) + " LAPS");
+                } else {
                     this.startFinishTxt.txt.setText("");
                 }
                 let parent = this.segments[this.startFinishTxt.trackPos - adjPlayerTrackPos];
-
                 let pos = {
                     x: parent.pos.x,
                     y: parent.pos.y,
                     z: this.startFinishTxt.trackPos - adjPlayerTrackPos
                 }
-
                 let dz = 1 / pos.z;
                 let shade = Math.max(0, 255 - (pos.z * 4));
+
+                this.startFinishTxt.roll -= ((this.startFinishTxt.roll - this.player.roll) * 0.05);
 
                 this.startFinishTxt.txt.x = (parent.screenPos.x + Math.cos((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
                 this.startFinishTxt.txt.y = (parent.screenPos.y + Math.sin((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
@@ -522,10 +551,34 @@ export default class ScnMain extends Phaser.Scene {
             } else {
                 this.startFinishTxt.txt.alpha = 0;
             }
+        } else {
+            //this.startFinishTxt.trackPos = this.player.trackPos;
+            if (this.segments.length > 0) {
+                let parent = this.segments[16];
+                let pos = {
+                    x: parent.pos.x,
+                    y: parent.pos.y,
+                    z: 16
+                }
+                let dz = 1 / pos.z;
+                let shade = Math.max(0, 255 - (pos.z * 4));
 
-            //engine sounds
-            this.player.sndEngine.rate = (this.player.spd * 0.25) + 0.5;
+                this.startFinishTxt.roll -= ((this.startFinishTxt.roll - this.player.roll) * 0.25);
+
+                this.startFinishTxt.txt.x = (parent.screenPos.x + Math.cos((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+                this.startFinishTxt.txt.y = (parent.screenPos.y + Math.sin((this.startFinishTxt.roll * -1) + (Math.PI * 0.5) + this.player.roll) * (this.startFinishTxt.len * this.zoom)) * dz;
+
+                this.startFinishTxt.txt.rotation = this.player.roll - this.startFinishTxt.roll;
+
+                this.startFinishTxt.txt.setFontSize((dz * this.zoom) * 8);
+                this.startFinishTxt.txt.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
+                this.startFinishTxt.txt.depth = dz;
+                this.startFinishTxt.txt.alpha = 1;
+            }
         }
+
+        //engine sounds
+        this.player.sndEngine.rate = (this.player.spd * 0.25) + 0.5;
 
         this.ui.update();
     }
@@ -609,11 +662,11 @@ export default class ScnMain extends Phaser.Scene {
         }
 
         if (target !== null) {
-            this.ui.tacho.setTargetPos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - _adjPlayerPosition));
+            this.ui.tacho.setReticlePos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - _adjPlayerPosition));
             this.player.slipstream = this.player.stats.slipMax;
         } else {
             this.player.slipstream = 0;
-            this.ui.tacho.setTargetPos(99999, 9999, 0);
+            this.ui.tacho.setReticlePos(99999, 9999, 0);
         }
     }
 
@@ -713,6 +766,7 @@ export default class ScnMain extends Phaser.Scene {
                         op.spd = d.spd;
                         op.roll = d.roll;
                         op.trackPos = d.trackPos;
+                        op.laps = d.laps;
                     }
                 }
 
@@ -935,14 +989,14 @@ export default class ScnMain extends Phaser.Scene {
                     this.createSegment(-0.01, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
 
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-
+                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 72),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                 ];
 
                 this.obstacles.push(this.createObstacle(98, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
 
                 this.obstacles.push(this.createObstacle(170, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
                 this.obstacles.push(this.createObstacle(226, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
-
 
                 this.obstacles.push(this.createObstacle(298, 0, 28, "sprObsBlade01_", [0], 0, 0.3));
                 this.obstacles.push(this.createObstacle(298, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
@@ -981,6 +1035,124 @@ export default class ScnMain extends Phaser.Scene {
 
                 this.obstacles.push(this.createObstacle(1378, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
                 this.obstacles.push(this.createObstacle(1498, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+            break;
+            case 2:
+                this.trackData = [
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0.01, -0.01, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+                    this.createSegment(-0.01, 0.01, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
+
+                    this.createSegment(0, 0, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(-0.02, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.02, 0.01, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(0.02, 0.01, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
+                    this.createSegment(0, -0.01, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 32),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0.05, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00_", [0], 0, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(-0.02, 0, Math.PI * 0.075, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
+                    this.createSegment(0, 0, Math.PI * 0.015, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0.02, 0.05, Math.PI * 1.5, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(0.01, -0.05, Math.PI * 1.5, "sprSegMetalRoad02_", [0, 1], 1, 64),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 17),
+                    this.createSegment(-0.01, 0, 0, "sprSegAirVent00_", [0], 0, 40),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 7),
+                    this.createSegment(-0.02, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                ];
+
+                this.obstacles.push(this.createObstacle(24, Math.PI * 0.5, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
+                this.obstacles.push(this.createObstacle(24, Math.PI * -0.5, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
+
+                this.obstacles.push(this.createObstacle(121, 0, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(169, Math.PI * 0.21, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(244, 0, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(244, Math.PI * 1, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(260, Math.PI * 0.25, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(260, Math.PI * 1.25, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(276, Math.PI * 0.5, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(276, Math.PI * 1.5, 28, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.obstacles.push(this.createObstacle(433, Math.PI * 0.9, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+
+                this.obstacles.push(this.createObstacle(514, Math.PI * 0.55, 34, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.45));
+                this.obstacles.push(this.createObstacle(514, Math.PI * -0.45, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
+                this.obstacles.push(this.createObstacle(546, Math.PI * 0.4, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(546, Math.PI * -0.6, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+                this.obstacles.push(this.createObstacle(578, Math.PI * 0.1, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
+                this.obstacles.push(this.createObstacle(578, Math.PI * -0.9, 34, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.45));
+
+                this.obstacles.push(this.createObstacle(641, Math.PI * -0.05, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
+                this.obstacles.push(this.createObstacle(641, Math.PI * 0.95, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
+
+                this.obstacles.push(this.createObstacle(778, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(842, Math.PI, 28, "sprObsBlade01_", [0], 0, 0.3));
+                this.obstacles.push(this.createObstacle(842, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
+
+                this.obstacles.push(this.createObstacle(1044, 0, 32, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.5));
+
+                this.obstacles.push(this.createObstacle(1197, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1197, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1197, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+
+                this.obstacles.push(this.createObstacle(1207, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1207, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1207, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+
+                this.obstacles.push(this.createObstacle(1217, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1217, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1217, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+
+                this.obstacles.push(this.createObstacle(1227, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1227, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1227, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+
+                this.obstacles.push(this.createObstacle(1237, Math.PI, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1237, Math.PI * 0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+                this.obstacles.push(this.createObstacle(1237, Math.PI * -0.33, 24, "sprObsVentBlade00_", [0], 0, 0.3));
+                this.obstacles[this.obstacles.length - 1].rollSpd = 0.035;
+
             break;
             default:
             break;
@@ -1034,7 +1206,7 @@ export default class ScnMain extends Phaser.Scene {
 
     resetPlayer() {
         this.player.trackPos = this.trackLength - 64,
-            this.player.laps = 0;
+        this.player.laps = 0;
         this.player.lapTime.current = 0;
         this.player.lapTime.best = -1;
         this.player.lapTime.start = -1;
@@ -1047,7 +1219,6 @@ export default class ScnMain extends Phaser.Scene {
         this.createTrackData(-1);
         this.resetSpawner();
         this.startFinishTxt.txt.setText("please\nwait");
-        console.log(this.player);
     }
 
     switchToTrack(_no){
@@ -1067,15 +1238,20 @@ export default class ScnMain extends Phaser.Scene {
                 switch (this.countdown.count) {
                     case 3:
                         this.sndCountdownThree.play();
+                        this.startFinishTxt.txt.setText("THREE");
                         break;
                     case 2:
                         this.sndCountdownTwo.play();
+                        this.startFinishTxt.txt.setText("TWO");
                         break;
                     case 1:
                         this.sndCountdownOne.play();
+
+                        this.startFinishTxt.txt.setText("ONE");
                         break;
                     case 0:
                         this.sndCountdownGo.play();
+                        this.startFinishTxt.txt.setText("GO!");
                         break;
                     default:
                         break;
@@ -1084,13 +1260,16 @@ export default class ScnMain extends Phaser.Scene {
                 if (this.countdown.count === -1) {
                     this.player.controlEnabled = true;
                     clearInterval(this.countdown.timer);
+                    this.countdown = null;
                 }
             }, 1000)
         }
     }
 
     gotoMenu(){
-        clearInterval(this.countdown.timer);
+        if(this.countdown !== null){
+            clearInterval(this.countdown.timer);
+        }
         this.musicPlayer.stop();
         this.sound.stopAll();
 
