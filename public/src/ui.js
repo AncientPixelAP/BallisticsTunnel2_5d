@@ -25,11 +25,13 @@ export default class Ui{
         this.btnScore = new Button(this.scene, { x: this.scene.right - 16, y: this.scene.top + 80 }, "sprUiScore", "", true, () => {
             this.tacho.move(this.positions.tacho.out.x, this.positions.tacho.out.y);
             this.minimap.move(this.positions.minimap.out.x, this.positions.minimap.out.y);
+            this.binaryDisplay.move(this.positions.binaryDisplay.out.x, this.positions.binaryDisplay.out.y);
             this.standings.move(this.positions.standings.in.x, this.positions.standings.in.y);
         });
         this.btnScore.toggleOffFunc = () => {
             this.tacho.move(this.positions.tacho.in.x, this.positions.tacho.in.y);
             this.minimap.move(this.positions.minimap.in.x, this.positions.minimap.in.y);
+            this.binaryDisplay.move(this.positions.binaryDisplay.in.x, this.positions.binaryDisplay.in.y);
             this.standings.move(this.positions.standings.out.x, this.positions.standings.out.y);
         }
 
@@ -63,15 +65,34 @@ export default class Ui{
                     x: 0,
                     y: this.scene.game.config.height
                 }
+            },
+            binaryDisplay: {
+                in: {
+                    x: 0,
+                    y: this.scene.top + 24
+                },
+                out: {
+                    x: 0,
+                    y: this.scene.top - 100
+                }
             }
         }
 
         this.tacho = new Tacho(this.scene, this, this.positions.tacho.out.x, this.positions.tacho.out.y);
         this.minimap = new Minimap(this.scene, this, this.positions.minimap.out.x, this.positions.minimap.out.y);
         this.standings = new Standings(this.scene, this, this.positions.standings.out.x, this.positions.standings.out.y);
+        this.binaryDisplay = new BinaryDisplay(this.scene, this, this.positions.binaryDisplay.out.x, this.positions.binaryDisplay.out.y);
 
         this.tacho.move(this.positions.tacho.in.x, this.positions.tacho.in.y);
         this.minimap.move(this.positions.minimap.in.x, this.positions.minimap.in.y);
+        this.binaryDisplay.move(this.positions.binaryDisplay.in.x, this.positions.binaryDisplay.in.y);
+
+        //count for only updating visuals sometimes or alert blink and stuff
+        //just use for fancy stuff
+        this.count = {
+            current: 0,
+            threshold: 1
+        }
     }
 
     update(){
@@ -82,6 +103,13 @@ export default class Ui{
         this.tacho.update();
         this.minimap.update();
         this.standings.update();
+
+        this.count.current += 0.02;
+        if(this.count.current >= this.count.threshold){
+            this.binaryDisplay.setNumber(Math.floor(this.scene.player.trackPos + (this.scene.trackLength * (this.scene.player.laps-1))));
+            this.count.current = 0;
+        }
+        this.binaryDisplay.update();
     }
 }
 
@@ -451,6 +479,9 @@ class Standings {
                         l.lapsTxt.setText(String(Math.min(op.laps, this.scene.lapsMax)) + "/" + String(this.scene.lapsMax));
 
                         let time = dateToLapTime(op.lapTime);
+                        /*if(op.id !== this.scene.you.id){
+                            time = dateToLapTime(op.lapTime - (this.scene.player.lapTime.current - this.scene.player.lapTime.start));
+                        }*/
                         l.lapTxt.setText(zeroPad(time.min, 2) + ":" + zeroPad(time.sec, 2) + ":" + zeroPad(time.mil, 3));
                         time = dateToLapTime(op.bestLapTime);
                         l.bstTxt.setText(zeroPad(time.min, 2) + ":" + zeroPad(time.sec, 2) + ":" + zeroPad(time.mil, 3));
@@ -494,16 +525,16 @@ class Standings {
                         posWrap: this.scene.add.sprite(this.pos.x, this.pos.y, "sprUiShortWrap"),
                     });
                     let col = this.parent.colors.default;
-                    if(op.id === this.scene.you.id){
+                    if(op.id !== this.scene.you.id){
                         col = this.parent.colors.warning;
 
-                        this.list[this.list.length - 1].posTxt.alpha = 0.75;
+                        this.list[this.list.length - 1].posTxt.alpha = 1;//0.75;
                         this.list[this.list.length - 1].posWrap.alpha = 0.5;
-                        this.list[this.list.length - 1].lapsTxt.alpha = 0.75;
+                        this.list[this.list.length - 1].lapsTxt.alpha = 1;//0.75;
                         this.list[this.list.length - 1].lapsWrap.alpha = 0.5;
-                        this.list[this.list.length - 1].lapTxt.alpha = 0.75;
+                        this.list[this.list.length - 1].lapTxt.alpha = 1;//0.75;
                         this.list[this.list.length - 1].lapWrap.alpha = 0.5;
-                        this.list[this.list.length - 1].bstTxt.alpha = 0.75;
+                        this.list[this.list.length - 1].bstTxt.alpha = 1;//0.75;
                         this.list[this.list.length - 1].bstWrap.alpha = 0.5;
                     }
                     this.list[this.list.length - 1].sprite.depth = 10000;
@@ -561,5 +592,64 @@ class Standings {
                 this.list.splice(i, 1);
             }
         }
+    }
+}
+
+class BinaryDisplay{
+    constructor(_scene, _parent, _x, _y) {
+        this.scene = _scene;
+        this.parent = _parent;
+        this.pos = {
+            x: _x,
+            y: _y
+        }
+        this.target = {
+            x: _x,
+            y: _y
+        }
+
+        this.number = 0;
+        this.bits = [];
+        for(let i = 0 ; i < 16 ; i++){
+            this.bits.push({
+                bit: i,
+                sprite: this.scene.add.sprite(this.pos.x, this.pos.y, "sprUiBit")
+            });
+            this.bits[this.bits.length-1].sprite.depth = 10000;
+            this.bits[this.bits.length - 1].sprite.setTintFill(this.parent.colors.default);
+        }
+
+        this.tween = this.scene.tweens.add({
+            targets: this.pos,
+            x: { value: () => this.target.x },
+            y: { value: () => this.target.y },
+            ease: "Sine.easeInOut",
+            duration: 500,
+            callbackScope: this
+        });
+    }
+
+    update(){
+        let strNum = this.number.toString(2);
+        for(let [i, b] of this.bits.entries()){
+            b.sprite.x = this.pos.x + (7.5 * 12) - (i * 12);
+            b.sprite.y = this.pos.y;
+            b.sprite.rotation = 0;
+            if(strNum[strNum.length - i - 1] === "1"){
+                b.sprite.rotation = Math.PI * 0.5;
+            }
+        }
+    }
+
+    move(_x, _y) {
+        this.target.x = _x;
+        this.target.y = _y;
+        this.tween.updateTo("x", this.target.x, true);
+        this.tween.updateTo("y", this.target.y, true);
+        this.tween.restart();
+    }
+
+    setNumber(_no){
+        this.number = _no;
     }
 }

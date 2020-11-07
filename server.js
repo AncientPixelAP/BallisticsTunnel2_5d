@@ -16,13 +16,13 @@ let gameData = new GameData();
 let tick = setInterval(() => { 
     gameData.update();
 
-    if (gameData.allFinished === true && gameData.players.length > 0) {
+    if (gameData.state === gameData.states.finished) {
         gameData.switchToNextTrack();
         console.log("players finished");
     }
 
     for(let p of gameData.players){
-        if(gameData.allFinished === true){
+        if (gameData.state === gameData.states.finished){
             io.to(p.id).emit("switchTrack", {
                 track: gameData.currentTrack
             });
@@ -31,6 +31,10 @@ let tick = setInterval(() => {
         io.to(p.id).emit("synchUpdate", {
             playersData: gameData.players
         })
+    }
+
+    if (gameData.state === gameData.states.finished) {
+        gameData.goRacing();
     }
 }, 100);
 

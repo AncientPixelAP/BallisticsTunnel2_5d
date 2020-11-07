@@ -26,6 +26,9 @@ export default class ScnLogin extends Phaser.Scene {
         this.cameras.main.setScroll(-this.game.config.width * 0.5, -this.game.config.height * 0.5);
         this.cameras.main.setBackgroundColor(0x000000);
 
+        this.cameras.main.fadeFrom(500, 0, 0, 0, false, (_cam, _pct) => {
+
+        }, this);
         
 
         this.left = this.game.config.width * -0.5;
@@ -52,7 +55,7 @@ export default class ScnLogin extends Phaser.Scene {
 
         this.hand = new Hand(this);
 
-        this.btnPlay = new Button(this, { x: -160, y: -48 }, "sprBtn00", "PLAY", false, () => {
+        this.btnPlay = new Button(this, { x: -160, y: -66 }, "sprBtn00", "PLAY", false, () => {
             this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
                 if(_pct >= 1){
                     this.gotoMain();
@@ -60,7 +63,15 @@ export default class ScnLogin extends Phaser.Scene {
             }, this);
         });
 
-        this.btnOptions = new Button(this, { x: -160, y: 48 }, "sprBtn00", "OPTIONS", false, () => {
+        this.btnSingleplayer = new Button(this, { x: -160, y: -48 }, "sprBtn00", "STORY", false, () => {
+            this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
+                if (_pct >= 1) {
+                    this.gotoSingleplayer();
+                }
+            }, this);
+        });
+
+        this.btnOptions = new Button(this, { x: -160, y: 66 }, "sprBtn00", "OPTIONS", false, () => {
             this.cameras.main.pan(0, this.game.config.height, 1000, "Cubic", false, () => {
 
             });
@@ -69,37 +80,46 @@ export default class ScnLogin extends Phaser.Scene {
 
 
         //OPTIONS SCREEN
-        this.btnBack = new Button(this, { x: -160, y: this.game.config.height - 48 }, "sprBtn00", "BACK", false, () => {
+        this.btnBack = new Button(this, { x: -160, y: this.game.config.height - 66 }, "sprBtn00", "BACK", false, () => {
             this.cameras.main.pan(0, 0, 1000, "Cubic", false, () => {
 
             });
         });
 
-        this.btnMusic = new Button(this, { x: -160, y: this.game.config.height - 18 }, "sprBtn00", "MUSIC", false, () => {});
-        this.sliderMusic = new SliderHorizontal(this, {x: -16, y: this.game.config.height - 18}, OPTIONS.sound.music, 128);
-        this.sliderMusic.move(-16, this.game.config.height - 18);
+        this.btnMusic = new Button(this, { x: -160, y: this.game.config.height - 36 }, "sprBtn00", "MUSIC", false, () => {});
+        this.sliderMusic = new SliderHorizontal(this, {x: -16, y: this.game.config.height - 36}, OPTIONS.sound.music, 128);
+        this.sliderMusic.move(-64, this.game.config.height - 36);
         this.sliderMusic.releaseFunc = () => {
             OPTIONS.sound.music = this.sliderMusic.value;
             this.saveGame.sound.music = this.sliderMusic.value;
         }
 
-        this.btnSfx = new Button(this, { x: -160, y: this.game.config.height }, "sprBtn00", "SFX", false, () => { });
-        this.sliderSfx = new SliderHorizontal(this, { x: -16, y: this.game.config.height }, OPTIONS.sound.sfx, 128);
-        this.sliderSfx.move(-16, this.game.config.height);
+        this.btnSfx = new Button(this, { x: -160, y: this.game.config.height - 18}, "sprBtn00", "SFX", false, () => { });
+        this.sliderSfx = new SliderHorizontal(this, { x: -16, y: this.game.config.height -  18}, OPTIONS.sound.sfx, 128);
+        this.sliderSfx.move(-64, this.game.config.height - 18);
         this.sliderSfx.releaseFunc = () => {
             OPTIONS.sound.sfx = this.sliderSfx.value;
             this.saveGame.sound.sfx = this.sliderSfx.value;
         }
 
-        this.btnSpeech = new Button(this, { x: -160, y: this.game.config.height + 18 }, "sprBtn00", "SPEECH", false, () => { });
-        this.sliderSpeech = new SliderHorizontal(this, { x: -16, y: this.game.config.height + 18 }, OPTIONS.sound.speech, 128);
-        this.sliderSpeech.move(-16, this.game.config.height + 18);
+        this.btnSpeech = new Button(this, { x: -160, y: this.game.config.height }, "sprBtn00", "SPEECH", false, () => { });
+        this.sliderSpeech = new SliderHorizontal(this, { x: -16, y: this.game.config.height }, OPTIONS.sound.speech, 128);
+        this.sliderSpeech.move(-64, this.game.config.height);
         this.sliderSpeech.releaseFunc = () => {
             OPTIONS.sound.speech = this.sliderSpeech.value;
             this.saveGame.sound.speech = this.sliderSpeech.value;
         }
 
-        this.btnFullscreen = new Button(this, { x: -160, y: this.game.config.height + 48 }, "sprBtn00", "FULLSCRN", false, () => {
+        this.btnScreenshake = new Button(this, { x: -160, y: this.game.config.height + 36 }, "sprBtn00", "SCRNSHAKE", false, () => {});
+        this.sliderScreenshake = new SliderHorizontal(this, { x: -16, y: this.game.config.height + 36 }, OPTIONS.effects.screenshake, 128);
+        this.sliderScreenshake.move(-64, this.game.config.height + 36);
+        this.sliderScreenshake.releaseFunc = () => {
+            OPTIONS.effects.screenshake = this.sliderScreenshake.value;
+            this.saveGame.effects.screenshake = this.sliderScreenshake.value;
+            this.cameras.main.shake(150, (0.01) * OPTIONS.effects.screenshake, true, () => { }, this);
+        }
+
+        this.btnFullscreen = new Button(this, { x: -160, y: this.game.config.height + 66 }, "sprBtn00", "FULLSCRN", false, () => {
             if (this.scale.isFullscreen) {
                 this.scale.stopFullscreen();
             } else {
@@ -177,7 +197,7 @@ export default class ScnLogin extends Phaser.Scene {
             currentLivery: this.saveGame.multiplayer.livery,
             bike: this.add.sprite(-16, 48, this.shipStats[this.saveGame.multiplayer.bike].asset + this.saveGame.multiplayer.livery),
             logo: this.add.sprite(-16, 0, this.shipStats[this.saveGame.multiplayer.bike].logo),
-            btnNext: new Button(this, { x: -160, y: -12 }, "sprBtn00", "SHIP", false, () => {
+            btnNext: new Button(this, { x: -160, y: -9 }, "sprBtn00", "SHIP", false, () => {
                 this.shipSelect.currentBike += 1;
                 if(this.shipSelect.currentBike >= 4){
                     this.shipSelect.currentBike = 0;
@@ -187,7 +207,7 @@ export default class ScnLogin extends Phaser.Scene {
                 this.shipSelect.logo.setTexture(this.shipStats[this.shipSelect.currentBike].logo);
                 this.shipSelect.description.setText(this.shipStats[this.shipSelect.currentBike].description);
             }),
-            btnLivery: new Button(this, { x: -160, y: 12 }, "sprBtn00", "LVRY", false, () => {
+            btnLivery: new Button(this, { x: -160, y: 9 }, "sprBtn00", "LVRY", false, () => {
                 this.shipSelect.currentLivery += 1;
                 if (this.shipSelect.currentLivery >= 4) {
                     this.shipSelect.currentLivery = 0;
@@ -209,12 +229,14 @@ export default class ScnLogin extends Phaser.Scene {
         this.hand.update();
 
         this.btnPlay.update();
+        this.btnSingleplayer.update();
         this.btnOptions.update();
 
         this.btnFullscreen.update();
         this.sliderMusic.update();
         this.sliderSfx.update();
         this.sliderSpeech.update();
+        this.sliderScreenshake.update();
         this.btnBack.update();
 
         this.shipSelect.btnNext.update();
@@ -230,6 +252,12 @@ export default class ScnLogin extends Phaser.Scene {
         });
     }
 
+    gotoSingleplayer() {
+        localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
+
+        this.scene.start("ScnIntro");
+    }
+
     getFreshSaveGame(){
         return {
             name: this.getRandomName(),
@@ -237,6 +265,9 @@ export default class ScnLogin extends Phaser.Scene {
                 music: OPTIONS.sound.music,
                 sfx: OPTIONS.sound.sfx,
                 speech: OPTIONS.sound.speech
+            },
+            effects: {
+                screenshake: OPTIONS.effects.screenshake
             },
             multiplayer: {
                 bike: 0,
@@ -260,6 +291,13 @@ export default class ScnLogin extends Phaser.Scene {
                 return false;
             }
             if (this.saveGame.sound.speech === undefined) {
+                return false;
+            }
+        }
+        if(this.saveGame.effects === undefined){
+            return false;
+        }else{
+            if(this.saveGame.effects.screenshake === undefined){
                 return false;
             }
         }
