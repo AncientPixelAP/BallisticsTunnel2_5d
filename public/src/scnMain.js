@@ -851,6 +851,10 @@ export default class ScnMain extends Phaser.Scene {
     }
 
     startCountdown(){
+        if (this.countdown !== null) {
+            clearInterval(this.countdown.timer);
+            this.countdown = null;
+        }
         this.countdown = {
             count: 3,
             timer: setInterval(() => {

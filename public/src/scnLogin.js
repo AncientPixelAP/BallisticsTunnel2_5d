@@ -141,7 +141,7 @@ export default class ScnLogin extends Phaser.Scene {
                 slipZone: 0.4,
                 brake: 0.1,
                 friction: 0.009,
-                speedDeg: 0.00075,
+                speedDeg: 0.00085,
                 roll: 0.05
             }, {
                 model: "Dart",
@@ -186,7 +186,7 @@ export default class ScnLogin extends Phaser.Scene {
                 slipZone: 0.4,
                 brake: 0.1,
                 friction: 0.009,
-                speedDeg: 0.00085,
+                speedDeg: 0.00095,
                 roll: 0.04
             }
         ]
