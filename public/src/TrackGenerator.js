@@ -262,9 +262,9 @@ export default class TrackGenerator{
 
                     this.createSegment(0, 0, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd00_", [0], 0, 2),
                     this.createSegment(-0.02, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
-                    this.createSegment(0.02, 0.01, 0, "sprSegMetroPlatform01_", [0], 0, 2),
+                    this.createSegment(0.02, 0.01, 0, "sprSegMetroPlatformEnd00_", [0], 0, 2),
                     this.createSegment(0.02, 0.01, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
                     this.createSegment(0, -0.01, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
                     this.createSegment(0, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 32),
@@ -280,11 +280,11 @@ export default class TrackGenerator{
                     this.createSegment(0, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
-                    this.createSegment(-0.02, 0, Math.PI * 0.075, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
-                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroPlatform01_", [0], 0, 2),
-                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
-                    this.createSegment(0, 0, Math.PI * 0.015, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd01_", [0], 0, 2),
+                    this.createSegment(-0.02, 0, Math.PI * 0.075, "sprSegMetroPlatform01_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroPlatformEnd01_", [0], 0, 2),
+                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroLine01_", [0, 0, 0, 3], 0.5, 62),
+                    this.createSegment(0, 0, Math.PI * 0.015, "sprSegMetroLine01_", [0, 0, 0, 3], 0.5, 64),
 
                     this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 

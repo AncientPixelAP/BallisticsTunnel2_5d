@@ -90,11 +90,22 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSegMetroPlatform00_5", "sprites/sprSegMetroPlatform00_5.png");
         this.load.image("sprSegMetroPlatform00_6", "sprites/sprSegMetroPlatform00_6.png");
         this.load.image("sprSegMetroPlatform00_7", "sprites/sprSegMetroPlatform00_7.png");
-
         this.load.image("sprSegMetroPlatform01_0", "sprites/sprSegMetroPlatform01_0.png");
+        this.load.image("sprSegMetroPlatform01_1", "sprites/sprSegMetroPlatform01_1.png");
+        this.load.image("sprSegMetroPlatform01_2", "sprites/sprSegMetroPlatform01_2.png");
+        this.load.image("sprSegMetroPlatform01_3", "sprites/sprSegMetroPlatform01_3.png");
+        this.load.image("sprSegMetroPlatform01_4", "sprites/sprSegMetroPlatform01_4.png");
+        this.load.image("sprSegMetroPlatform01_5", "sprites/sprSegMetroPlatform01_5.png");
+        this.load.image("sprSegMetroPlatform01_6", "sprites/sprSegMetroPlatform01_6.png");
+        this.load.image("sprSegMetroPlatform01_7", "sprites/sprSegMetroPlatform01_7.png");
+
+        this.load.image("sprSegMetroPlatformEnd00_0", "sprites/sprSegMetroPlatformEnd00_0.png");
+        this.load.image("sprSegMetroPlatformEnd01_0", "sprites/sprSegMetroPlatformEnd01_0.png");
 
         this.load.image("sprSegMetroLine00_0", "sprites/sprSegMetroLine00_0.png");
         this.load.image("sprSegMetroLine00_3", "sprites/sprSegMetroLine00_3.png");
+        this.load.image("sprSegMetroLine01_0", "sprites/sprSegMetroLine01_0.png");
+        this.load.image("sprSegMetroLine01_3", "sprites/sprSegMetroLine00_3.png");
 
         this.load.image("sprSegAirVent00_0", "sprites/sprSegAirVent00_0.png");
 
