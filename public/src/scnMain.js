@@ -839,12 +839,14 @@ export default class ScnMain extends Phaser.Scene {
     }
 
     switchToTrack(_no){
+        console.log("switchting to track " + _no);
         this.player.waitingTunnel = false;
         this.player.controlEnabled = false;
         this.resetTrack();
         this.trackGenerator.createTrackData(_no);
         this.resetSpawner();
         this.resetPlayer();
+        this.startFinishTxt.txt.setText("please\nwait");
         this.startCountdown();
     }
 
@@ -863,7 +865,6 @@ export default class ScnMain extends Phaser.Scene {
                         break;
                     case 1:
                         this.sndCountdownOne.play();
-
                         this.startFinishTxt.txt.setText("ONE");
                         break;
                     case 0:

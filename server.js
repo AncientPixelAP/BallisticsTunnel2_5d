@@ -30,7 +30,7 @@ let tick = setInterval(() => {
 
         io.to(p.id).emit("synchUpdate", {
             playersData: gameData.players
-        })
+        });
     }
 
     if (gameData.state === gameData.states.finished) {

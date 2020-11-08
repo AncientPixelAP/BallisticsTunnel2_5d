@@ -45,12 +45,29 @@ class GameData {
             default:
                 break;
         }
+
+        let allF = true;
+        for (let p of this.players) {
+            if (p.laps <= this.lapsToFinish) {
+                allF = false;
+            }
+        }
+
+        if(allF === true){
+            this.allFinished = true;
+            this.state = this.states.finished;
+            if (this.finishTimer !== null) {
+                clearInterval(this.finishTimer);
+            }
+        }
     }
 
     goRacing(){
         this.state = this.states.racing;
         this.allFinished = false;
-        clearInterval(this.finishTimer);
+        if(this.finishTimer !== null){
+            clearInterval(this.finishTimer);
+        }
         this.finishTimer = null;
     }
 

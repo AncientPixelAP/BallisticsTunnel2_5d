@@ -111,7 +111,7 @@ export default class ScnIntro extends Phaser.Scene {
                 }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "Earths climate is on a runaway course and we are trapped underground.", 8, 1).setOrigin(0.5),
                 }, {
-                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "The rich elite secured their future. Some bought themselves a stasis chamber to outwait the catastrophe. Other left Earth to colonise Mars and start anew.", 8, 1).setOrigin(0.5),
+                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "The rich elite secured their future. Some bought themselves a stasis chamber to outwait the catastrophe. Others left Earth to colonise Mars and start anew.", 8, 1).setOrigin(0.5),
                 }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "People are unemployed and dying. They dance a dance macabre until all will come to an end.", 8, 1).setOrigin(0.5),
                 }, {
