@@ -1,5 +1,5 @@
 export default class Segment{
-    constructor(_scene, _pos, _dir, _asset){
+    constructor(_scene, _pos, _dir, _asset, _frame){
         this.scene = _scene;
         this.pos = _pos;
         this.screenPos = {
@@ -11,10 +11,11 @@ export default class Segment{
             x: 0,
             y: 0
         }
-        this.asset = _asset
+        this.asset = _asset;
+        this.frame = _frame;
         this.toKill = false;
 
-        this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, this.asset);
+        this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, this.asset, this.frame);
     }
 
     update(){

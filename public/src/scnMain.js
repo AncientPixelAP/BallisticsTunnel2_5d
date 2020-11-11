@@ -122,7 +122,7 @@ export default class ScnMain extends Phaser.Scene {
         this.zoom = 16;
         this.player = {
             waitingTunnel: false,
-            controlEnabled: false,
+            controls: SHIPCONTROLS.free,
             spd: 0,
             spdMax: 0.25,
             slipstream: 0,
@@ -239,73 +239,94 @@ export default class ScnMain extends Phaser.Scene {
 
             this.player.lapTime.current = new Date().getTime();
 
-            if(this.player.controlEnabled === true){
-                if(this.hand.pressed === false){
-                    //KEYBOARD CONTROLS
-                    if(this.cursors.up.isDown){
-                        if(this.player.spd < this.player.spdMax){
-                            this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+            switch(this.player.controls){
+                case SHIPCONTROLS.free:
+                    if (this.hand.pressed === false) {
+                        //KEYBOARD CONTROLS
+                        if (this.cursors.up.isDown) {
+                            if (this.player.spd < this.player.spdMax) {
+                                this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+                            }
+                        } else if (this.cursors.down.isDown) {
+                            if (this.player.spd > 0) {
+                                this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                            }
+                            this.player.spd = Math.max(0, this.player.spd);
+                        } else {
+                            if (this.player.spd > 0) {
+                                this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
+                            }
                         }
-                    } else if (this.cursors.down.isDown) {
-                        if (this.player.spd > 0) {
-                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                        if (this.player.spd > this.player.spdMax) {
+                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
                         }
-                        this.player.spd = Math.max(0, this.player.spd);
-                    }else{
-                        if(this.player.spd > 0){
-                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.friction);
+
+                        if (this.cursors.left.isDown) {
+                            this.player.roll -= this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.left.getDuration() * 0.005));
+                        }
+                        if (this.cursors.right.isDown) {
+                            this.player.roll += this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.right.getDuration() * 0.005));
+                        }
+                    } else {
+                        //MOUSE CONTROLS
+                        if (this.hand.pos.y < this.game.config.height * 0.25) {
+                            if (this.player.spd < this.player.spdMax) {
+                                this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
+                            }
+                        } else {
+                            if (this.player.spd > 0) {
+                                this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
+                            }
+                            this.player.spd = Math.max(0, this.player.spd);
+                        }
+
+                        if (this.player.spd > this.player.spdMax) {
+                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
+                        }
+
+                        let amt = this.hand.start.x - this.hand.pos.x;
+                        //console.log(amt);
+                        if (Math.abs(amt) > 8) {
+                            let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
+                            this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
                         }
                     }
-                    if(this.player.spd > this.player.spdMax){
-                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
+                    break;
+                case SHIPCONTROLS.jump:
+                    if (this.player.spd < this.player.spdMax) {
+                        this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                     }
 
-                    if(this.cursors.left.isDown){
-                        this.player.roll -= this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.left.getDuration() * 0.005));
+                    if (this.player.roll > 0) {
+                        this.player.roll -= Math.min(this.player.stats.roll, this.player.roll);
                     }
-                    if (this.cursors.right.isDown) {
-                        this.player.roll += this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.right.getDuration() * 0.005));
+                    if (this.player.roll < 0) {
+                        this.player.roll += Math.min(this.player.stats.roll, this.player.roll);
                     }
-                }else{
-                    //MOUSE CONTROLS
-                    if (this.hand.pos.y < this.game.config.height * 0.25) {
-                        if (this.player.spd < this.player.spdMax) {
-                            this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
-                        }
-                    } else{
-                        if (this.player.spd > 0) {
-                            this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
-                        }
-                        this.player.spd = Math.max(0, this.player.spd);
+                    break;
+                case SHIPCONTROLS.autopilot:
+                    break;
+                case SHIPCONTROLS.autoZero:
+                    //autostart
+                    if (this.player.spd < this.player.spdMax) {
+                        this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                     }
-
                     if (this.player.spd > this.player.spdMax) {
-                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
+                        this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg * 10);
                     }
 
-                    let amt = this.hand.start.x - this.hand.pos.x;
-                    //console.log(amt);
-                    if (Math.abs(amt) > 8) {
-                        let modAmt = (this.hand.start.x - this.hand.pos.x) - (Math.sign(amt) * 8);
-                        this.player.roll -= Math.max(-this.player.stats.roll, Math.min(this.player.stats.roll, modAmt * 0.001));
+                    //TODO CHECK IF THIS LEADS TO PLAYER COLLISIONS maybe fan out in standings order
+                    if (this.player.roll > 0) {
+                        this.player.roll -= Math.min(this.player.stats.roll, this.player.roll);
                     }
-                }
-            }else{
-                //autostart
-                if (this.player.spd < this.player.spdMax) {
-                    this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
-                }
-                if (this.player.spd > this.player.spdMax) {
-                    this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg * 10);
-                }
-
-                //TODO CHECK IF THIS LEADS TO PLAYER COLLISIONS maybe fan out in standings order
-                if(this.player.roll > 0){
-                    this.player.roll -= Math.min(this.player.stats.roll, this.player.roll);
-                }
-                if (this.player.roll < 0) {
-                    this.player.roll += Math.min(this.player.stats.roll, this.player.roll);
-                }
+                    if (this.player.roll < 0) {
+                        this.player.roll += Math.min(this.player.stats.roll, this.player.roll);
+                    }
+                    break;
+                case SHIPCONTROLS.stopZero:
+                    break;
+                default:
+                    break;
             }
 
             //keep roll within PI
@@ -410,7 +431,11 @@ export default class ScnMain extends Phaser.Scene {
                     s.dir = this.spawner.roll;
                     s.toKill = false;
 
-                    s.sprite.setTexture(this.spawner.asset + String(this.spawner.subimage));
+                    if(s.sprite.texture.key !== this.spawner.asset){
+                        s.sprite.setTexture(this.spawner.asset);
+                    }
+                    s.sprite.setFrame(this.spawner.subimage);
+                    //s.sprite.setTexture(this.spawner.asset, this.spawner.subimage);
                     if(this.spawner.imgSpd !== -1){
                         this.spawner.subimgJumper += this.spawner.imgSpd;
                         if(this.spawner.subimgJumper >= 1){
@@ -463,13 +488,13 @@ export default class ScnMain extends Phaser.Scene {
                         //jump to next segment
                         this.spawner.trackPos = 0;
                         this.spawner.trackArrPos += 1;
-                        this.spawner.subimage = 0;
                         this.spawner.subimgArrPos = 0;
+                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
                         //new lap
                         if (this.spawner.trackArrPos >= this.trackData.length) {
                             this.spawner.trackArrPos = 0;
 
-                            
+                            //TODO maybe spawn waittunnel here?                            
                         }
                     }
 
@@ -478,6 +503,7 @@ export default class ScnMain extends Phaser.Scene {
                         this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
                         this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
                         this.spawner.subimgArrPos = 0;
+                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
                         this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
                         //absolute curving
                         this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
@@ -625,6 +651,8 @@ export default class ScnMain extends Phaser.Scene {
                                 }
                                 if (Math.abs(rollDif) < this.player.stats.slipZone) {
                                     target = o;
+                                }
+                                if (Math.abs(rollDif) < o.collisionZone) {
                                     //slow down and avoid other player
                                     if (adjTrackPos < _adjPlayerPosition + 3) {
                                         this.player.spd *= 0.5;
@@ -716,22 +744,31 @@ export default class ScnMain extends Phaser.Scene {
                             rollDif += Math.PI * 2;
                         }
                         if (adjTrackPos < _adjPlayerPosition + 3) {
-                            if (Math.abs(rollDif) < o.collisionZone) {   
-                                //slow down and avoid obstacle
-                                this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, () => { }, this);
-                                this.player.spd *= 0.5;
-                                this.player.roll += (rollDif) * 0.25;
-                            }else if(Math.abs(rollDif) < o.collisionZone + (Math.PI * 0.25)) {
-                                //near miss
-                                this.cameras.main.shake(250, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, () => { }, this);
-                                this.player.spd = Math.min(this.player.spd * 1.035, 0.9);
-                                if (o.sndTriggered !== undefined) {
-                                    if (o.sndTriggered === false) {
-                                        o.sndTriggered = true;
-                                        o.snd.rate = Math.max(0.01, Math.min(1, this.player.spd));
-                                        o.snd.volume = Math.max(0, Math.min(1, this.player.spd)) * OPTIONS.sound.sfx;
-                                        o.snd.play();
+                            if(o.trigger === false){
+                                //trigger is false by default and means the object is collidable
+                                if (Math.abs(rollDif) < o.collisionZone) {   
+                                    //slow down and avoid obstacle
+                                    this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, () => { }, this);
+                                    this.player.spd *= 0.5;
+                                    this.player.roll += (rollDif) * 0.25;
+                                    o.collisionFunc();
+                                }else if(Math.abs(rollDif) < o.collisionZone + (Math.PI * 0.25)) {
+                                    //near miss
+                                    this.cameras.main.shake(250, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, () => { }, this);
+                                    this.player.spd = Math.min(this.player.spd * 1.035, 0.9);
+                                    if (o.sndTriggered !== undefined) {
+                                        if (o.sndTriggered === false) {
+                                            o.sndTriggered = true;
+                                            o.snd.rate = Math.max(0.01, Math.min(1, this.player.spd));
+                                            o.snd.volume = Math.max(0, Math.min(1, this.player.spd)) * OPTIONS.sound.sfx;
+                                            o.snd.play();
+                                        }
                                     }
+                                }
+                            }else{
+                                //if trigger === true only fire collisionFunc as a trigger visible or not
+                                if (Math.abs(rollDif) < o.collisionZone) {
+                                    o.collisionFunc();
                                 }
                             }
                         }
@@ -776,9 +813,9 @@ export default class ScnMain extends Phaser.Scene {
     }
 
     createTrack(){
-        this.segments.push(new Segment(this, { x: 0, y: 0, z: 0 }, 0, "sprSegStartTunnel_0"));
+        this.segments.push(new Segment(this, { x: 0, y: 0, z: 0 }, 0, "sprSegStartTunnel00", 0));
         for(let i = 1 ; i < 64 ; i++){
-            this.segments.push(new Segment(this, { x: 0, y: 0, z: (i * 1) }, 0, "sprSegStartTunnel_0"));
+            this.segments.push(new Segment(this, { x: 0, y: 0, z: (i * 1) }, 0, "sprSegStartTunnel00", (i % 4 === 0 ? 0 : 1)));
         }
     }
 
@@ -790,7 +827,7 @@ export default class ScnMain extends Phaser.Scene {
             s.pos.y = 0;
             s.pos.z = i;
             s.dir = 0;
-            s.sprite.setTexture("sprSegStartTunnel_0");
+            s.sprite.setTexture("sprSegStartTunnel00", (i % 4 === 0 ? 0 : 1));
         }
 
         for (let o of this.obstacles) {
@@ -807,7 +844,7 @@ export default class ScnMain extends Phaser.Scene {
         this.spawner.pitch = 0;
         this.spawner.roll = 0;
         this.spawner.toRoll = 0;
-        this.spawner.asset = "sprSegStartTunnel_",
+        this.spawner.asset = "sprSegStartTunnel00",
         this.spawner.curve.x = 0;
         this.spawner.curve.y = 0;
         this.spawner.pos.x = 0;
@@ -831,20 +868,20 @@ export default class ScnMain extends Phaser.Scene {
 
     jumpToWaitTunnel() {
         this.player.waitingTunnel = true;
-        this.player.controlEnabled = false;
+        this.player.controls = SHIPCONTROLS.autoZero;
         this.resetTrack();
-        this.trackGenerator.createTrackData(-1);
         this.resetSpawner();
+        this.trackGenerator.createTrackData(-1);
         this.startFinishTxt.txt.setText("please\nwait");
     }
 
     switchToTrack(_no){
         console.log("switchting to track " + _no);
         this.player.waitingTunnel = false;
-        this.player.controlEnabled = false;
+        this.player.controls = SHIPCONTROLS.autoZero;
         this.resetTrack();
-        this.trackGenerator.createTrackData(_no);
         this.resetSpawner();
+        this.trackGenerator.createTrackData(_no);
         this.resetPlayer();
         this.startFinishTxt.txt.setText("please\nwait");
         this.startCountdown();
@@ -880,7 +917,7 @@ export default class ScnMain extends Phaser.Scene {
                 }
                 this.countdown.count -= 1;
                 if (this.countdown.count === -1) {
-                    this.player.controlEnabled = true;
+                    this.player.controls = SHIPCONTROLS.free;
                     clearInterval(this.countdown.timer);
                     this.countdown = null;
                 }

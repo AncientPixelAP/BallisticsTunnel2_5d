@@ -32,7 +32,9 @@ export default class TrackGenerator{
             collisionZone: _collisionZone,
             snd: this.scene.sound.add("sndSwoosh01", { loop: false, volume: OPTIONS.sound.sfx }),
             sndTriggered: false,
-            update: () => { }
+            trigger: false,
+            update: () => { },
+            collisionFunc: () => { }
         }
     }
 
@@ -65,57 +67,57 @@ export default class TrackGenerator{
         switch (_no) {
             case -1: //WAITINGTUNNEL
                 this.scene.trackData = [
-                    this.createSegment(0, 0, 0, "sprSegStartTunnel_", [0], 0, 256),
+                    this.createSegment(0, 0, 0, "sprSegStartTunnel00", [0, 1, 1, 1], 0, 256),
                 ]
                 break;
             case 0: //TESTTRACK
                 this.scene.trackData = [
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
-                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-                    this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01_", [0], 0, 64),
-                    this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0, -0.025, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01_", [0], 0, 64),
-                    this.createSegment(-0.05, 0.025, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
+                    this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01", [0], 0, 64),
+                    this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(0, -0.025, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(0.05, -0.025, 0, "sprSegMetalRoad01", [0], 0, 64),
+                    this.createSegment(-0.05, 0.025, 0, "sprSegMetalRoad00", [0], 0, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad04_", [0, 1, 2, 3, 4, 5], 1, 60),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad04", [0, 1, 2, 3, 4, 5], 1, 60),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(0, 0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(0, -0.1, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, 0.1, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, -0.1, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 0, 2),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad01_", [0], 0, 30),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 0, 2),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad01", [0], 0, 30),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
-                    this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
-                    this.createSegment(0.01, 0, 0, "sprSegMetroPlatform01_", [0], 0, 2),
-                    this.createSegment(0.01, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd00", [0], 0, 2),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetroPlatform00", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.01, 0, 0, "sprSegMetroPlatformEnd00", [0], 0, 2),
+                    this.createSegment(0.01, 0, 0, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 62),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00_", [0], 0, 64),
-                    this.createSegment(0, 0.025, 0, "sprSegAirVent00_", [0], 0, 64),//x-0.01
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),//8
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 56),//88
-                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00", [0], 0, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegAirVent00", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 56),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                 ];
 
                 this.scene.obstacles.push(this.createObstacle(78, Math.PI * 0.5, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
@@ -156,53 +158,53 @@ export default class TrackGenerator{
                 break;
             case 1: //LABORATORY AND ORATORY
                 this.scene.trackData = [
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
-                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(-0.05, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
-                    this.createSegment(0.05, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0.05, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 56),//56
+                    this.createSegment(-0.05, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0.05, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0.05, 0, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 56),//56
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0.02, 0, "sprSegMetalRoad00_", [0], 0, 64),
-                    this.createSegment(0, -0.02, Math.PI * 0.5, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0.02, 0, "sprSegMetalRoad00", [0], 0, 64),
+                    this.createSegment(0, -0.02, Math.PI * 0.5, "sprSegMetalRoad00", [0], 0, 64),
 
-                    this.createSegment(-0.01, 0, Math.PI * 0.5, "sprSegMetalRoad01_", [0], 0, 72),
-                    this.createSegment(0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 72),
+                    this.createSegment(-0.01, 0, Math.PI * 0.5, "sprSegMetalRoad01", [0], 0, 72),
+                    this.createSegment(0.01, 0, 0, "sprSegMetalRoad00", [0], 0, 72),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, -0.02, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(0.05, 0.02, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
-                    this.createSegment(-0.05, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
-                    this.createSegment(0, -0.02, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(-0.02, 0.02, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(0.02, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0, -0.02, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0.05, 0.02, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(-0.05, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0, -0.02, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(-0.02, 0.02, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0.02, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(-0.01, -0.025, 0, "sprSegAirVent00_", [0], 0, 128),
-                    this.createSegment(0.01, 0.025, 0, "sprSegAirVent00_", [0], 0, 128),
+                    this.createSegment(-0.01, -0.025, 0, "sprSegAirVent00", [0], 0, 128),
+                    this.createSegment(0.01, 0.025, 0, "sprSegAirVent00", [0], 0, 128),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 128),
+                    this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 128),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, -0.05, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
-                    this.createSegment(0.01, 0.05, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0.01, 0.05, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 56),
-                    this.createSegment(-0.01, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, -0.05, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
+                    this.createSegment(0.01, 0.05, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0.01, 0.05, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 56),
+                    this.createSegment(-0.01, 0, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegLabRoad00_", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 72),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 72),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                 ];
 
                 this.scene.obstacles.push(this.createObstacle(98, 0, 42, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.4));
@@ -250,52 +252,52 @@ export default class TrackGenerator{
                 break;
             case 2:
                 this.scene.trackData = [
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
-                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0.01, -0.01, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
-                    this.createSegment(-0.01, 0.01, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
+                    this.createSegment(0.01, -0.01, Math.PI * -0.15, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 64),
+                    this.createSegment(-0.01, 0.01, Math.PI * -0.15, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 62),
 
-                    this.createSegment(0, 0, Math.PI * -0.15, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
+                    this.createSegment(0, 0, Math.PI * -0.15, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd00_", [0], 0, 2),
-                    this.createSegment(-0.02, 0, 0, "sprSegMetroPlatform00_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
-                    this.createSegment(0.02, 0.01, 0, "sprSegMetroPlatformEnd00_", [0], 0, 2),
-                    this.createSegment(0.02, 0.01, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 62),
-                    this.createSegment(0, -0.01, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetroLine00_", [0, 0, 0, 3], 0.5, 32),
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd00", [0], 0, 2),
+                    this.createSegment(-0.02, 0, 0, "sprSegMetroPlatform00", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.02, 0.01, 0, "sprSegMetroPlatformEnd00", [0], 0, 2),
+                    this.createSegment(0.02, 0.01, 0, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 62),
+                    this.createSegment(0, -0.01, 0, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 32),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0.05, 0, Math.PI * -1, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad00_", [0], 0, 64),
-                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(0.05, 0, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad00", [0], 0, 64),
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegTreeRoad00_", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd01_", [0], 0, 2),
-                    this.createSegment(-0.02, 0, Math.PI * 0.075, "sprSegMetroPlatform01_", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
-                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroPlatformEnd01_", [0], 0, 2),
-                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroLine01_", [0, 0, 0, 3], 0.5, 62),
-                    this.createSegment(0, 0, Math.PI * 0.015, "sprSegMetroLine01_", [0, 0, 0, 3], 0.5, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd01", [0], 0, 2),
+                    this.createSegment(-0.02, 0, Math.PI * 0.075, "sprSegMetroPlatform01", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
+                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroPlatformEnd01", [0], 0, 2),
+                    this.createSegment(0.02, 0, Math.PI * 0.15, "sprSegMetroLine01", [0, 0, 0, 1], 0.5, 62),
+                    this.createSegment(0, 0, Math.PI * 0.015, "sprSegMetroLine01", [0, 0, 0, 1], 0.5, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0.02, 0.05, Math.PI * 1.5, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(0.01, -0.05, Math.PI * 1.5, "sprSegMetalRoad02_", [0, 1], 1, 64),
-                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 17),
-                    this.createSegment(-0.01, 0, 0, "sprSegAirVent00_", [0], 0, 40),
-                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00_", [0], 0, 7),
-                    this.createSegment(-0.02, 0, 0, "sprSegMetalRoad00_", [0], 0, 64),
+                    this.createSegment(0.02, 0.05, Math.PI * 1.5, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(0.01, -0.05, Math.PI * 1.5, "sprSegMetalRoad02", [0, 1], 1, 64),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00", [0], 0, 17),
+                    this.createSegment(-0.01, 0, 0, "sprSegAirVent00", [0], 0, 40),
+                    this.createSegment(-0.01, 0, 0, "sprSegMetalRoad00", [0], 0, 7),
+                    this.createSegment(-0.02, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                 ];
 
                 this.scene.obstacles.push(this.createObstacle(24, Math.PI * 0.5, 50, "sprObsDoor00_", [0, 0, 0, 1, 2, 3, 4, 5], 0.1, Math.PI * 0.35));
@@ -368,25 +370,79 @@ export default class TrackGenerator{
                 break;
             case 3:
                 this.scene.trackData = [
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
-                    this.createSegment(0, 0, 0, "sprSegFinishLine_", [0, 1], 0.25, 16),
-                    this.createSegment(0, 0, 0, "sprSegFinishLineClamp_", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
 
-                    this.createSegment(0, 0, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
-                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00_", [0], 0, 56),
-                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad05_", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-                    this.createSegment(0, 0, 0, "sprSegNothing00_", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+                    
+                    this.createSegment(0.01, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
+                    this.createSegment(0.01, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+                    this.createSegment(0.01, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
+                    this.createSegment(0.01, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
 
-                    this.createSegment(0, -0.025, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
-                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
-                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+                    this.createSegment(-0.01, 0, 0, "sprSegNuclearRoomEnd00", [0], 0, 1),
+                    this.createSegment(-0.01, 0, 0, "sprSegNuclearRoom00", [0, 1, 0, 1, 0, 2, 0, 1, 0, 1, 0, 3], 1, 62),
+                    this.createSegment(-0.01, 0, 0, "sprSegNuclearRoomEnd00", [0], 0, 1),
 
-                    this.createSegment(0.25, 0, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
-                    this.createSegment(-0.25, 0, 0, "sprSegCircusRoad00_", [3, 0, 0, 1, 1, 0, 0, 3, 1, 1, 0, 0, 1, 1], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 15),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 16),
+
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoomEnd00", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegNuclearRoom00", [0, 1, 0, 1, 0, 2, 0, 1, 0, 1, 0, 3], 1, 63),
+                    this.createSegment(0.02, 0, 0, "sprSegNuclearRoom00", [0, 1, 0, 1, 0, 2, 0, 1, 0, 1, 0, 3], 1, 63),
+                    this.createSegment(0.02, 0, 0, "sprSegNuclearRoomEnd00", [0], 0, 1),
+
+                    this.createSegment(-0.02, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
+                    this.createSegment(-0.02, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+                    this.createSegment(-0.02, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
+                    this.createSegment(-0.02, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
+
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 56),
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegNothing00", [0], 0, 64),
+
+                    this.createSegment(0, -0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+
+                    this.createSegment(0.25, 0, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(-0.25, 0, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
                 ];
 
-                this.scene.obstacles.push(this.createObstacle(154, 0, 0, "sprClownFace00_", [0], 0, -1));
+                this.scene.obstacles.push(this.createObstacle(26, 0, 0, "sprRadioactive00_", [0], 0, -1));
+
+                this.scene.obstacles.push(this.createObstacle(90, -0.2, 34, "sprObsBlade01_", [0], 0, 0.3));
+                this.scene.obstacles.push(this.createObstacle(90, Math.PI * 1.2, 34, "sprObsBlade01_", [0], 0, 0.3));
+                this.scene.obstacles.push(this.createObstacle(120, Math.PI * -1.2, 34, "sprObsBlade01_", [0], 0, 0.3)); 
+
+                this.scene.obstacles.push(this.createObstacle(287, -0.2, 34, "sprObsBlade01_", [0], 0, 0.3));
+                this.scene.obstacles.push(this.createObstacle(287, Math.PI * 1.2, 34, "sprObsBlade01_", [0], 0, 0.3));
+                this.scene.obstacles.push(this.createObstacle(307, Math.PI * 1.8, 34, "sprObsBlade01_", [0], 0, 0.3));
+
+                this.scene.obstacles.push(this.createObstacle(323, Math.PI * -0.5, 32, "sprRadioactive00_", [0], 0, -1));
+                this.scene.obstacles.push(this.createObstacle(323, Math.PI * 0.5, 32, "sprRadioactive00_", [0], 0, -1));
+
+                this.scene.obstacles.push(this.createObstacle(502, 0, 0, "sprObsDebugTrigger_", [0], 0, Math.PI * 2));
+                this.scene.obstacles[this.scene.obstacles.length - 1].trigger = true;
+                this.scene.obstacles[this.scene.obstacles.length - 1].collisionFunc = () => {
+                    this.scene.player.controls = SHIPCONTROLS.jump;
+                };
+
+                this.scene.obstacles.push(this.createObstacle(571, 0, 0, "sprObsDebugTrigger_", [0], 0, Math.PI * 2));
+                this.scene.obstacles[this.scene.obstacles.length - 1].trigger = true;
+                this.scene.obstacles[this.scene.obstacles.length - 1].collisionFunc = () => {
+                    this.scene.player.controls = SHIPCONTROLS.free;
+                };
+
+                this.scene.obstacles.push(this.createObstacle(571, 0, 0, "sprClownFace00_", [0], 0, -1)); 
                 break;
             default:
                 break;

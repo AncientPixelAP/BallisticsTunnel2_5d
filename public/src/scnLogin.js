@@ -138,9 +138,10 @@ export default class ScnLogin extends Phaser.Scene {
                 spd: 0.32,
                 curveMod: 0.5,
                 slipMax: 0.3,
-                slipZone: 0.4,
-                brake: 0.1,
-                friction: 0.009,
+                slipZone: 0.5,
+                collisionZone: 0.3,
+                brake: 0.01,
+                friction: 0.0009,
                 speedDeg: 0.00085,
                 roll: 0.05
             }, {
@@ -154,8 +155,9 @@ export default class ScnLogin extends Phaser.Scene {
                 curveMod: 0.49,
                 slipMax: 0.15,
                 slipZone: 0.4,
-                brake: 0.1,
-                friction: 0.01,
+                collisionZone: 0.3,
+                brake: 0.01,
+                friction: 0.001,
                 speedDeg: 0.0011,
                 roll: 0.05
             }, {
@@ -168,9 +170,10 @@ export default class ScnLogin extends Phaser.Scene {
                 spd: 0.34,
                 curveMod: 0.51,
                 slipMax: 0.25,
-                slipZone: 0.4,
-                brake: 0.1,
-                friction: 0.01,
+                slipZone: 0.5,
+                collisionZone: 0.3,
+                brake: 0.01,
+                friction: 0.001,
                 speedDeg: 0.0012,
                 roll: 0.06
             }, {
@@ -183,16 +186,17 @@ export default class ScnLogin extends Phaser.Scene {
                 spd: 0.33,
                 curveMod: 0.52,
                 slipMax: 0.27,
-                slipZone: 0.4,
-                brake: 0.1,
-                friction: 0.009,
+                slipZone: 0.5,
+                collisionZone: 0.3,
+                brake: 0.01,
+                friction: 0.0009,
                 speedDeg: 0.00095,
                 roll: 0.04
             }
         ]
 
         this.shipSelect = {
-            bg: this.add.sprite(-16, 0, "sprSegStartTunnel_0"),
+            bg: this.add.sprite(-16, 0, "sprSegStartTunnel00", 0),
             currentBike: this.saveGame.multiplayer.bike,
             currentLivery: this.saveGame.multiplayer.livery,
             bike: this.add.sprite(-16, 48, this.shipStats[this.saveGame.multiplayer.bike].asset + this.saveGame.multiplayer.livery),

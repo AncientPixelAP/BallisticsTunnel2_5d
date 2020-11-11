@@ -38,6 +38,20 @@ class GameData {
                 }
                 break;
             case this.states.waitToFinish:
+                //if at least one finished look if everyone has finished to skip unnecessary waiting time
+                let allF = true;
+                for (let p of this.players) {
+                    if (p.laps <= this.lapsToFinish) {
+                        allF = false;
+                    }
+                }
+                if (allF === true) {
+                    this.allFinished = true;
+                    this.state = this.states.finished;
+                    if (this.finishTimer !== null) {
+                        clearInterval(this.finishTimer);
+                    }
+                }
                 break;
             case this.states.finished:
                 //this.allFinished = false;
@@ -46,20 +60,7 @@ class GameData {
                 break;
         }
 
-        let allF = true;
-        for (let p of this.players) {
-            if (p.laps <= this.lapsToFinish) {
-                allF = false;
-            }
-        }
-
-        if(allF === true){
-            this.allFinished = true;
-            this.state = this.states.finished;
-            if (this.finishTimer !== null) {
-                clearInterval(this.finishTimer);
-            }
-        }
+        
     }
 
     goRacing(){
