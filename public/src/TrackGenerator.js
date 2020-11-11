@@ -405,16 +405,22 @@ export default class TrackGenerator{
                     this.createSegment(-0.02, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 31),
                     this.createSegment(-0.02, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
 
-                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 56),
+                    this.createSegment(0, -0.025, 0, "sprSegNuclearRoad01", [0, 0, 1, 1, 0, 0, 1, 2], 0, 56),
                     this.createSegment(0, -0.025, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                     this.createSegment(0, 0, 0, "sprSegNothing00", [0], 0, 64),
 
-                    this.createSegment(0, -0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
-                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
-                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(0, -0.025, 0, "sprSegStartTunnel00", [0, 1, 1, 1], 1, 16),
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad01", [0], 0, 48),
+                    this.createSegment(0, 0.025, 0, "sprSegMetalRoad00", [0], 0, 64),
 
-                    this.createSegment(0.25, 0, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
-                    this.createSegment(-0.25, 0, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0.025, 0, "sprSegShaft01", [0], 0, 64),
+                    this.createSegment(0.06, 0, 0, "sprSegShaft01", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegShaft01", [0], 0, 64),
+                    this.createSegment(0, 0, 0, "sprSegShaft01", [0], 0, 64),
+                    this.createSegment(-0.06, 0, 0, "sprSegShaft01", [0], 0, 64),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                 ];
 
                 this.scene.obstacles.push(this.createObstacle(26, 0, 0, "sprRadioactive00_", [0], 0, -1));
@@ -442,7 +448,56 @@ export default class TrackGenerator{
                     this.scene.player.controls = SHIPCONTROLS.free;
                 };
 
-                this.scene.obstacles.push(this.createObstacle(571, 0, 0, "sprClownFace00_", [0], 0, -1)); 
+                this.scene.obstacles.push(this.createObstacle(571, Math.PI, 64, "sprNeonArrow00_", [0], 0, -1));
+                this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
+                this.scene.obstacles.push(this.createObstacle(571, Math.PI * 0.33, 64, "sprNeonArrow00_", [0], 0, -1));
+                this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
+                this.scene.obstacles.push(this.createObstacle(571, Math.PI * -0.33, 64, "sprNeonArrow00_", [0], 0, -1));
+                this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
+
+                this.scene.obstacles.push(this.createObstacle(571, 0, 64, "sprNeonArrow01_", [0], 0, -1));
+                this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
+                this.scene.obstacles.push(this.createObstacle(571, Math.PI * 0.66, 64, "sprNeonArrow01_", [0], 0, -1));
+                this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
+                this.scene.obstacles.push(this.createObstacle(571, Math.PI * -0.66, 64, "sprNeonArrow01_", [0], 0, -1));
+                this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
+
+                break;
+            case 4:
+                this.scene.trackData = [
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
+                    this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+
+                    this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 64),
+
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 56),
+                    this.createSegment(0, -0.025, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                    this.createSegment(0, 0, 0, "sprSegNothing00", [0], 0, 64),
+
+                    this.createSegment(0, -0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(0, 0.025, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+
+                    this.createSegment(0.25, 0, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                    this.createSegment(-0.25, 0, 0, "sprSegCircusRoad00", [2, 0, 0, 0, 1, 1, 1, 0, 0, 0, 2, 1, 1, 1, 0, 0, 0, 1, 1, 1], 1, 64),
+                ];
+
+                this.scene.obstacles.push(this.createObstacle(72, 0, 0, "sprObsDebugTrigger_", [0], 0, Math.PI * 2));
+                this.scene.obstacles[this.scene.obstacles.length - 1].trigger = true;
+                this.scene.obstacles[this.scene.obstacles.length - 1].collisionFunc = () => {
+                    this.scene.player.controls = SHIPCONTROLS.jump;
+                };
+
+                this.scene.obstacles.push(this.createObstacle(96, 0, 0, "sprObsDebugTrigger_", [0], 0, Math.PI * 2));
+                this.scene.obstacles[this.scene.obstacles.length - 1].trigger = true;
+                this.scene.obstacles[this.scene.obstacles.length - 1].collisionFunc = () => {
+                    this.scene.player.controls = SHIPCONTROLS.free;
+                };
+
+                this.scene.obstacles.push(this.createObstacle(96, 0, 0, "sprClownFace00_", [0], 0, -1));
                 break;
             default:
                 break;

@@ -595,7 +595,10 @@ export default class ScnMain extends Phaser.Scene {
         }
 
         //engine sounds
-        this.player.sndEngine.rate = (this.player.spd * 0.25) + 0.5;
+        
+        let newRate = (this.player.spd * 0.25) + 0.5;//Math.max(0, Math.min((this.player.spd * 0.25) + 0.5), 1);
+        this.player.sndEngine.rate += (newRate - this.player.sndEngine.rate) * 0.5;
+        //this.player.sndEngine.rate = newRate;
 
         this.ui.update();
     }
@@ -615,12 +618,14 @@ export default class ScnMain extends Phaser.Scene {
                     adjTrackPos -= this.trackLength;
                 }
 
-                let difAdj = Math.max(-1, Math.min(1, (adjTrackPos - _adjPlayerPosition) / 64));
-                o.sndEngine.rate = Math.max(0, Math.min((o.spd * 0.25) + 0.5 + ((difAdj) * -1)), 1);
-                o.sndEngine.volume = (1 - Math.abs(difAdj)) * OPTIONS.sound.sfx;
+                let difAdj = Math.max(-1, Math.min(1, (adjTrackPos - _adjPlayerPosition + 1) / 64));
+                let newRate = Math.max(0, Math.min((o.spd * 0.25) + 0.5 + ((difAdj) * -1)), 1);
+                o.sndEngine.rate += (newRate - o.sndEngine.rate) * 0.1;
+                let newVolume = (1 - Math.abs(difAdj)) * OPTIONS.sound.sfx;
+                o.sndEngine.volume += (newVolume - o.sndEngine.volume) * 0.1;
 
                 let flPos = Math.floor(adjTrackPos);
-                if (flPos < _adjPlayerPosition + 64 && flPos > _adjPlayerPosition) {
+                if (flPos < _adjPlayerPosition + 64 && flPos >= _adjPlayerPosition) {
                     let parent = this.segments[flPos - _adjPlayerPosition];
                     let pos = {
                         x: parent.pos.x,
@@ -652,7 +657,7 @@ export default class ScnMain extends Phaser.Scene {
                                 if (Math.abs(rollDif) < this.player.stats.slipZone) {
                                     target = o;
                                 }
-                                if (Math.abs(rollDif) < o.collisionZone) {
+                                if (Math.abs(rollDif) < o.data.collisionZone) {
                                     //slow down and avoid other player
                                     if (adjTrackPos < _adjPlayerPosition + 3) {
                                         this.player.spd *= 0.5;
@@ -668,7 +673,7 @@ export default class ScnMain extends Phaser.Scene {
                     }
                 } else {
                     o.sprite.alpha = 0;
-                    if (flPos < _adjPlayerPosition && flPos > _adjPlayerPosition - 64) {
+                    if (flPos < _adjPlayerPosition && flPos >= _adjPlayerPosition - 64) {
                         this.ui.tacho.follower.push(o.roll);
                         if(o.sndEngine.isPlaying === false){
                             o.sndEngine.play();
@@ -791,6 +796,7 @@ export default class ScnMain extends Phaser.Scene {
                     if(op.id === d.id){
                         found = true;
 
+                        op.data = d.data;
                         op.spd = d.spd;
                         op.roll = d.roll;
                         op.trackPos = d.trackPos;
@@ -800,6 +806,7 @@ export default class ScnMain extends Phaser.Scene {
 
                 if(found === false){
                     this.otherPlayers.push({
+                        data: d.data,
                         id: d.id,
                         spd: d.spd,
                         roll: d.roll,

@@ -61,6 +61,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.spritesheet("sprSegAirVent00", "sprites/segments/sprSegAirVent00.png", { frameWidth: 128, frameHeight: 128 });
 
         this.load.spritesheet("sprSegNuclearRoad00", "sprites/segments/sprSegNuclearRoad00.png", { frameWidth: 128, frameHeight: 128 });
+        this.load.spritesheet("sprSegNuclearRoad01", "sprites/segments/sprSegNuclearRoad01.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegNuclearRoom00", "sprites/segments/sprSegNuclearRoom00.png", { frameWidth: 200, frameHeight: 128 });
         this.load.spritesheet("sprSegNuclearRoomEnd00", "sprites/segments/sprSegNuclearRoomEnd00.png", { frameWidth: 200, frameHeight: 128 });
         
@@ -69,6 +70,9 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.spritesheet("sprSegCircusRoad00", "sprites/segments/sprSegCircusRoad00.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegCircusRoad00", "sprites/segments/sprSegCircusRoad00.png", { frameWidth: 128, frameHeight: 128 });
+
+        this.load.spritesheet("sprSegShaft00", "sprites/segments/sprSegShaft00.png", { frameWidth: 128, frameHeight: 256 });
+        this.load.spritesheet("sprSegShaft01", "sprites/segments/sprSegShaft01.png", { frameWidth: 128, frameHeight: 256 });
         
         this.load.spritesheet("sprSegStartTunnel00", "sprites/segments/sprSegStartTunnel00.png", {frameWidth: 128, frameHeight: 128});
         this.load.spritesheet("sprSegFinishLine00", "sprites/segments/sprSegFinishLine00.png", { frameWidth: 128, frameHeight: 128 });
@@ -100,6 +104,11 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprClownFace00_0", "sprites/clutter/sprClownFace00.png");
 
         this.load.image("sprRadioactive00_0", "sprites/logos/radioactive04.png");
+
+        this.load.image("sprNeonArrow00_0", "sprites/logos/sprNeonArrow00.png");
+        this.load.image("sprNeonArrow01_0", "sprites/logos/sprNeonArrow01.png");
+        this.load.image("sprNeonArrow02_0", "sprites/logos/sprNeonArrow02.png");
+        this.load.image("sprNeonArrow03_0", "sprites/logos/sprNeonArrow03.png");
 
         this.load.image("sprAdvertTeamArashi", "sprites/clutter/sprAdvertTeamArashi.png");
         this.load.image("sprAdvertTeamDaito", "sprites/clutter/sprAdvertTeamDaito.png");
