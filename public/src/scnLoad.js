@@ -37,6 +37,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprUiFullscreen", "sprites/sprUiFullscreen.png");
         this.load.image("sprUiMenu", "sprites/sprUiMenu.png");
         this.load.image("sprUiScore", "sprites/sprUiScore.png");
+        this.load.image("sprUiTunnelTarget00", "sprites/sprUiTunnelTarget02.png");
 
         this.load.image("sprStoryPolitics00", "sprites/story/storyPolitics00.png");
         this.load.image("sprStoryLoop00", "sprites/story/storyLoop00.png");

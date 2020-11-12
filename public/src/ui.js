@@ -311,11 +311,21 @@ class Tacho{
 
         this.reticle = {
             graph: this.scene.add.graphics({ x: 0.5, y: 0 }),
-            rot: 0
+            tunnelL: this.scene.add.sprite(0, 0, "sprUiTunnelTarget00"),
+            tunnelR: this.scene.add.sprite(0, 0, "sprUiTunnelTarget00"),
+            rot: 0,
+            in: false
         }
         this.reticle.graph.lineStyle(1, this.parent.colors.default);
         this.reticle.graph.strokeRect(-16, -16, 32, 32);
         this.reticle.graph.depth = 10000;
+        this.reticle.tunnelL.setTintFill(this.parent.colors.default);
+        this.reticle.tunnelR.setTintFill(this.parent.colors.default);
+        this.reticle.tunnelL.setOrigin(1, 0.5);
+        this.reticle.tunnelR.setOrigin(1, 0.5);
+        this.reticle.tunnelR.setScale(-1, 1);
+        this.reticle.tunnelL.depth = 10000;
+        this.reticle.tunnelR.depth = 10000;
 
         this.overSpd = false;
         this.overSlp = false;
@@ -352,8 +362,8 @@ class Tacho{
         if (this.scene.player.slipstream > 0) {
             if (this.overSlp === false) {
                 this.overSlp = true;
-                this.slpTxt.setTintFill(this.parent.colors.alert);
-                this.textWrap.slp.setTintFill(this.parent.colors.alert);
+                this.slpTxt.setTintFill(this.parent.colors.warning);
+                this.textWrap.slp.setTintFill(this.parent.colors.warning);
             }
         } else {
             if (this.overSlp === true) {
@@ -367,12 +377,14 @@ class Tacho{
 
         let res = 1 - this.scene.player.spdMax;
         this.resTxt.setText("RES " + String(res.toFixed(2)));
-        if (res >= 0.85) {
+        if (res >= 0.70) {
             if (this.overRes === false) {
                 this.overRes = true;
                 this.resTxt.setTintFill(this.parent.colors.alert);
                 this.textWrap.res.setTintFill(this.parent.colors.alert);
                 this.grav.roll.setTintFill(this.parent.colors.alert);
+                this.reticle.tunnelL.setTintFill(this.parent.colors.alert);
+                this.reticle.tunnelR.setTintFill(this.parent.colors.alert);
             }
         } else {
             if (this.overRes === true) {
@@ -380,6 +392,8 @@ class Tacho{
                 this.resTxt.setTintFill(this.parent.colors.default);
                 this.textWrap.res.setTintFill(this.parent.colors.default);
                 this.grav.roll.setTintFill(this.parent.colors.default);
+                this.reticle.tunnelL.setTintFill(this.parent.colors.default);
+                this.reticle.tunnelR.setTintFill(this.parent.colors.default);
             }
         }
         this.resTxt.x = this.pos.x - 24;
@@ -406,10 +420,21 @@ class Tacho{
         this.reticle.rot += 0.01;
         this.reticle.graph.rotation = this.reticle.rot;
         this.reticle.graph.alpha = 1;
-        /*if(this.target.x > this.scene.right){
+        if(this.pos.x > this.scene.left){
+            if(this.reticle.in === false){
+                this.reticle.in = true;
+                this.reticle.graph.setAlpha(1);
+                this.reticle.tunnelL.setAlpha(1);
+                this.reticle.tunnelR.setAlpha(1);
+            }
         }else{
-            this.reticle.graph.alpha = 0;
-        }*/
+            if (this.reticle.in === true) {
+                this.reticle.in = false;
+                this.reticle.graph.setAlpha(0);
+                this.reticle.tunnelL.setAlpha(0);
+                this.reticle.tunnelR.setAlpha(0);
+            }
+        }
     }
 
     move(_x, _y) {
@@ -420,14 +445,24 @@ class Tacho{
         this.tween.restart();
     }
 
+    setReticleTunnelPos(_x, _y, _gap){
+        _x = Math.max(this.scene.left + 32, Math.min(this.scene.right - 32, _x));
+        _y = Math.max(this.scene.top + 48, Math.min(this.scene.bottom - 48, _y));
+        this.reticle.tunnelL.x = Math.round(_x - _gap);
+        this.reticle.tunnelL.y = Math.round(_y);
+        this.reticle.tunnelR.x = Math.round(_x + _gap);
+        this.reticle.tunnelR.y = Math.round(_y);
+    }
+
     setReticlePos(_x, _y, _dz) {
         this.reticle.graph.clear();
+        if(this.reticle.in === true){
+            this.reticle.graph.lineStyle(1, this.parent.colors.default);
+            this.reticle.graph.strokeRect(-16 * (_dz * this.scene.zoom), -16 * (_dz * this.scene.zoom), 32 * (_dz * this.scene.zoom), 32 * (_dz * this.scene.zoom));
 
-        this.reticle.graph.lineStyle(1, this.parent.colors.default);
-        this.reticle.graph.strokeRect(-16 * (_dz * this.scene.zoom), -16 * (_dz * this.scene.zoom), 32 * (_dz * this.scene.zoom), 32 * (_dz * this.scene.zoom));
-
-        this.reticle.graph.x = _x + 0.5;
-        this.reticle.graph.y = _y;
+            this.reticle.graph.x = _x + 0.5;
+            this.reticle.graph.y = _y;
+        }
     }
 
     setBestTime(_time) {

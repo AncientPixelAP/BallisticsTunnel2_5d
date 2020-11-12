@@ -371,6 +371,8 @@ export default class ScnMain extends Phaser.Scene {
 
                 //adaptivespeed
                 this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
+
+                this.ui.tacho.setReticleTunnelPos(this.segments[this.segments.length - 2].sprite.x, this.segments[this.segments.length - 2].sprite.y, 16 - Math.floor(this.player.spd * 16));
             }
 
             //UPDATE THE REST
@@ -660,7 +662,7 @@ export default class ScnMain extends Phaser.Scene {
                                 if (Math.abs(rollDif) < o.data.collisionZone) {
                                     //slow down and avoid other player
                                     if (adjTrackPos < _adjPlayerPosition + 3) {
-                                        this.player.spd *= 0.5;
+                                        this.player.spd *= 0.25;
                                         this.player.roll += (rollDif) * 0.25;
                                     }
                                 }
@@ -754,7 +756,7 @@ export default class ScnMain extends Phaser.Scene {
                                 if (Math.abs(rollDif) < o.collisionZone) {   
                                     //slow down and avoid obstacle
                                     this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, () => { }, this);
-                                    this.player.spd *= 0.5;
+                                    this.player.spd *= 0.25;
                                     this.player.roll += (rollDif) * 0.25;
                                     o.collisionFunc();
                                 }else if(Math.abs(rollDif) < o.collisionZone + (Math.PI * 0.25)) {
