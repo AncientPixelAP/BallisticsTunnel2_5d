@@ -93,6 +93,12 @@ export default class ScnMain extends Phaser.Scene {
         this.spawner = {
             trackPos: 0,
             trackArrPos: 0,
+            sector: {
+                id: 0,
+                pos: 0,
+                arrPos: 0,
+                segmentArrPos: 0,
+            },
             strength: 0,
             yaw: 0,
             pitch: 0,
@@ -485,6 +491,7 @@ export default class ScnMain extends Phaser.Scene {
                         }
                     }
 
+                    /*
                     this.spawner.trackPos += 1;
                     if (this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units) {
                         //jump to next segment
@@ -494,9 +501,7 @@ export default class ScnMain extends Phaser.Scene {
                         this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
                         //new lap
                         if (this.spawner.trackArrPos >= this.trackData.length) {
-                            this.spawner.trackArrPos = 0;
-
-                            //TODO maybe spawn waittunnel here?                            
+                            this.spawner.trackArrPos = 0;                        
                         }
                     }
 
@@ -511,6 +516,35 @@ export default class ScnMain extends Phaser.Scene {
                         this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
                         this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
                         this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
+                    }
+                    */
+                    this.spawner.trackPos += 1;
+                    if (this.spawner.trackPos >= this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].units){
+                        //jump to next segment
+                        this.spawner.trackPos = 0;
+                        this.spawner.sector.segmentArrPos += 1;
+                        this.spawner.subimgArrPos = 0;
+                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
+                        //new lap
+                        if (this.spawner.sector.segmentArrPos >= this.trackData[this.spawner.sector.arrPos].segments.length) {
+                            this.spawner.sector.segmentArrPos = 0;
+                            this.spawner.sector.arrPos += 1;
+                            if (this.spawner.sector.arrPos >= this.trackData.length){
+                                this.spawner.sector.arrPos = 0;
+                            }
+                            //console.log(this.trackData[this.spawner.sector.arrPos].name);
+                        }
+                    }
+                    if (this.spawner.trackPos === 0) {
+                        this.spawner.asset = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].asset;
+                        this.spawner.subimgArr = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].subimgArr;
+                        this.spawner.subimgArrPos = 0;
+                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
+                        this.spawner.imgSpd = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].imgSpd;
+                        //absolute curving
+                        this.spawner.curve.x = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].curve.x;
+                        this.spawner.curve.y = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].curve.y;
+                        this.spawner.toRoll = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].roll;
                     }
                 }
             }
@@ -849,6 +883,12 @@ export default class ScnMain extends Phaser.Scene {
     resetSpawner() {
         this.spawner.trackPos = 0;
         this.spawner.trackArrPos = 0;
+        this.spawner.sector = {
+            id: 0,
+            pos: 0,
+            arrPos: 0,
+            segmentArrPos: 0,
+        },
         this.spawner.yaw = 0;
         this.spawner.pitch = 0;
         this.spawner.roll = 0;

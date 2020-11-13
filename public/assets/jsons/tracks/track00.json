@@ -1,0 +1,76 @@
+{
+    "name": "TestTrack",
+    "segments": [
+        {
+            "id": 0,
+            "curve": {
+                "x": 0,
+                "y": 0
+            },
+            "roll": 0,
+            "asset": "sprSegFinishLine00",
+            "subimgArr": [
+                0
+            ],
+            "imgSpd": 0,
+            "units": 1,
+            "nextId": 1,
+            "obstacles": [
+
+            ]
+        },{
+            "id": 1,
+            "curve": {
+                "x": 0,
+                "y": 0
+            },
+            "roll": 0,
+            "asset": "sprSegFinishLine00",
+            "subimgArr": [
+                0,
+                1
+            ],
+            "imgSpd": 0.25,
+            "units": 16,
+            "nextId": 2,
+            "obstacles": []
+        },{
+            "id": 2,
+            "curve": {
+                "x": 0,
+                "y": 0
+            },
+            "roll": 0,
+            "asset": "sprSegFinishLine00",
+            "subimgArr": [
+                0
+            ],
+            "imgSpd": 0,
+            "units": 1,
+            "nextId": 3,
+            "obstacles": []
+        },{
+            "id": 3,
+            "curve": {
+                "x": 0,
+                "y": 0
+            },
+            "roll": 0,
+            "asset": "sprSegMetalRoad05",
+            "subimgArr": [
+                0,
+                1,
+                2,
+                3,
+                3,
+                2,
+                0,
+                0
+            ],
+            "imgSpd": 1,
+            "units": 8,
+            "nextId": 0,
+            "obstacles": []
+        }
+    ]
+}
