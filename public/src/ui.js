@@ -7,7 +7,8 @@ export default class Ui{
         this.colors = {
             default: 0x00e436,//0xd1d15b 0x29adff
             alert: 0xff004d,
-            warning: 0xffa300
+            warning: 0xffa300,
+            good: 0xfff1e8
         }
 
         this.btnMenu = new Button(this.scene, { x: this.scene.right - 16, y: this.scene.top + 16 }, "sprUiMenu", "", false, () => {
@@ -311,21 +312,30 @@ class Tacho{
 
         this.reticle = {
             graph: this.scene.add.graphics({ x: 0.5, y: 0 }),
-            tunnelL: this.scene.add.sprite(0, 0, "sprUiTunnelTarget00"),
-            tunnelR: this.scene.add.sprite(0, 0, "sprUiTunnelTarget00"),
+            tunnelHorL: this.scene.add.sprite(0, 0, "sprUiTunnelTarget03Hor"),
+            tunnelHorR: this.scene.add.sprite(0, 0, "sprUiTunnelTarget03Hor"),
+            tunnelVerL: this.scene.add.sprite(0, 0, "sprUiTunnelTarget03Ver"),
+            tunnelVerR: this.scene.add.sprite(0, 0, "sprUiTunnelTarget03Ver"),
             rot: 0,
             in: false
         }
         this.reticle.graph.lineStyle(1, this.parent.colors.default);
         this.reticle.graph.strokeRect(-16, -16, 32, 32);
         this.reticle.graph.depth = 10000;
-        this.reticle.tunnelL.setTintFill(this.parent.colors.default);
-        this.reticle.tunnelR.setTintFill(this.parent.colors.default);
-        this.reticle.tunnelL.setOrigin(1, 0.5);
-        this.reticle.tunnelR.setOrigin(1, 0.5);
-        this.reticle.tunnelR.setScale(-1, 1);
-        this.reticle.tunnelL.depth = 10000;
-        this.reticle.tunnelR.depth = 10000;
+        this.reticle.tunnelHorL.setTintFill(this.parent.colors.default);
+        this.reticle.tunnelHorR.setTintFill(this.parent.colors.default);
+        this.reticle.tunnelVerL.setTintFill(this.parent.colors.default);
+        this.reticle.tunnelVerR.setTintFill(this.parent.colors.default);
+        this.reticle.tunnelHorL.setOrigin(1, 0.5);
+        this.reticle.tunnelHorR.setOrigin(1, 0.5);
+        this.reticle.tunnelVerL.setOrigin(1, 0.5);
+        this.reticle.tunnelVerR.setOrigin(1, 0.5);
+        this.reticle.tunnelHorR.setScale(-1, 1);
+        this.reticle.tunnelVerR.setScale(-1, 1);
+        this.reticle.tunnelHorL.depth = 10000;
+        this.reticle.tunnelHorR.depth = 10000;
+        this.reticle.tunnelVerL.depth = 10000;
+        this.reticle.tunnelVerR.depth = 10000;
 
         this.overSpd = false;
         this.overSlp = false;
@@ -362,8 +372,8 @@ class Tacho{
         if (this.scene.player.slipstream > 0) {
             if (this.overSlp === false) {
                 this.overSlp = true;
-                this.slpTxt.setTintFill(this.parent.colors.warning);
-                this.textWrap.slp.setTintFill(this.parent.colors.warning);
+                this.slpTxt.setTintFill(this.parent.colors.good);
+                this.textWrap.slp.setTintFill(this.parent.colors.good);
             }
         } else {
             if (this.overSlp === true) {
@@ -383,8 +393,10 @@ class Tacho{
                 this.resTxt.setTintFill(this.parent.colors.alert);
                 this.textWrap.res.setTintFill(this.parent.colors.alert);
                 this.grav.roll.setTintFill(this.parent.colors.alert);
-                this.reticle.tunnelL.setTintFill(this.parent.colors.alert);
-                this.reticle.tunnelR.setTintFill(this.parent.colors.alert);
+                this.reticle.tunnelHorL.setTintFill(this.parent.colors.alert);
+                this.reticle.tunnelHorR.setTintFill(this.parent.colors.alert);
+                this.reticle.tunnelVerL.setTintFill(this.parent.colors.alert);
+                this.reticle.tunnelVerR.setTintFill(this.parent.colors.alert);
             }
         } else {
             if (this.overRes === true) {
@@ -392,8 +404,10 @@ class Tacho{
                 this.resTxt.setTintFill(this.parent.colors.default);
                 this.textWrap.res.setTintFill(this.parent.colors.default);
                 this.grav.roll.setTintFill(this.parent.colors.default);
-                this.reticle.tunnelL.setTintFill(this.parent.colors.default);
-                this.reticle.tunnelR.setTintFill(this.parent.colors.default);
+                this.reticle.tunnelHorL.setTintFill(this.parent.colors.default);
+                this.reticle.tunnelHorR.setTintFill(this.parent.colors.default);
+                this.reticle.tunnelVerL.setTintFill(this.parent.colors.default);
+                this.reticle.tunnelVerR.setTintFill(this.parent.colors.default);
             }
         }
         this.resTxt.x = this.pos.x - 24;
@@ -424,15 +438,19 @@ class Tacho{
             if(this.reticle.in === false){
                 this.reticle.in = true;
                 this.reticle.graph.setAlpha(1);
-                this.reticle.tunnelL.setAlpha(1);
-                this.reticle.tunnelR.setAlpha(1);
+                this.reticle.tunnelHorL.setAlpha(1);
+                this.reticle.tunnelHorR.setAlpha(1);
+                this.reticle.tunnelVerL.setAlpha(1);
+                this.reticle.tunnelVerR.setAlpha(1);
             }
         }else{
             if (this.reticle.in === true) {
                 this.reticle.in = false;
                 this.reticle.graph.setAlpha(0);
-                this.reticle.tunnelL.setAlpha(0);
-                this.reticle.tunnelR.setAlpha(0);
+                this.reticle.tunnelHorL.setAlpha(0);
+                this.reticle.tunnelHorR.setAlpha(0);
+                this.reticle.tunnelVerL.setAlpha(0);
+                this.reticle.tunnelVerR.setAlpha(0);
             }
         }
     }
@@ -448,10 +466,15 @@ class Tacho{
     setReticleTunnelPos(_x, _y, _gap){
         _x = Math.max(this.scene.left + 32, Math.min(this.scene.right - 32, _x));
         _y = Math.max(this.scene.top + 48, Math.min(this.scene.bottom - 48, _y));
-        this.reticle.tunnelL.x = Math.round(_x - _gap);
-        this.reticle.tunnelL.y = Math.round(_y);
-        this.reticle.tunnelR.x = Math.round(_x + _gap);
-        this.reticle.tunnelR.y = Math.round(_y);
+        this.reticle.tunnelHorL.x = Math.round(_x - _gap);
+        this.reticle.tunnelHorL.y = Math.round(_y);
+        this.reticle.tunnelHorR.x = Math.round(_x + _gap);
+        this.reticle.tunnelHorR.y = Math.round(_y);
+
+        this.reticle.tunnelVerL.x = Math.round(0 - _gap);
+        this.reticle.tunnelVerL.y = Math.round(_y);
+        this.reticle.tunnelVerR.x = Math.round(0 + _gap);
+        this.reticle.tunnelVerR.y = Math.round(_y);
     }
 
     setReticlePos(_x, _y, _dz) {

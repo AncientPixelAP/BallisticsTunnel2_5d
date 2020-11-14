@@ -37,7 +37,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprUiFullscreen", "sprites/sprUiFullscreen.png");
         this.load.image("sprUiMenu", "sprites/sprUiMenu.png");
         this.load.image("sprUiScore", "sprites/sprUiScore.png");
-        this.load.image("sprUiTunnelTarget00", "sprites/sprUiTunnelTarget02.png");
+        this.load.image("sprUiTunnelTarget03Hor", "sprites/sprUiTunnelTarget03Hor.png");
+        this.load.image("sprUiTunnelTarget03Ver", "sprites/sprUiTunnelTarget03Ver.png");
 
         this.load.image("sprStoryPolitics00", "sprites/story/storyPolitics00.png");
         this.load.image("sprStoryLoop00", "sprites/story/storyLoop00.png");
@@ -162,6 +163,13 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.audio("musTrack4", "sounds/music/Lantriperc-PeopleMachine.mp3");
         this.load.audio("musTrack5", "sounds/music/Lantriperc-TechniqueMecha.mp3");
         this.load.audio("musTrack6", "sounds/music/ModifiedMotion&Faction-MagicMan.mp3");*/
+
+
+
+        greenscalePipeline = this.game.renderer.addPipeline('Custom', new GreenscalePipeline(this.game));
+        greenscalePipeline.setFloat2('resolution', this.game.config.width, this.game.config.height);
+        greenscalePipeline.setFloat2('mouse', 0.0, 0.0);
+
 
         this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);

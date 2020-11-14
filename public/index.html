@@ -4,6 +4,7 @@
 <head>
     <script src="./lib/phaser.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+    <script src="src/shaderGreenscale.js"></script>
 </head>
 
 <body style="margin: 0px; padding: 0px; background-color: black;">
@@ -27,7 +28,8 @@
                 speech: 0.5
             },
             effects: {
-                screenshake: 1
+                screenshake: 1,
+                shader: true
             }
         }
 
@@ -59,6 +61,9 @@
                 mil: mil
             }
         }
+
+        let greenscalePipeline;
+
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
         /*var socket = io("192.168.80.1:3000");
         if(socket.connected === false){

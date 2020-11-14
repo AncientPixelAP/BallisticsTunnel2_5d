@@ -52,6 +52,8 @@ export default class ScnLogin extends Phaser.Scene {
         OPTIONS.sound.music = this.saveGame.sound.music;
         OPTIONS.sound.sfx = this.saveGame.sound.sfx;
         OPTIONS.sound.speech = this.saveGame.sound.speech;
+        OPTIONS.effects.screenshake = this.saveGame.effects.screenshake;
+        OPTIONS.effects.shader = this.saveGame.effects.shader;
 
         this.hand = new Hand(this);
 
@@ -117,6 +119,18 @@ export default class ScnLogin extends Phaser.Scene {
             OPTIONS.effects.screenshake = this.sliderScreenshake.value;
             this.saveGame.effects.screenshake = this.sliderScreenshake.value;
             this.cameras.main.shake(150, (0.01) * OPTIONS.effects.screenshake, true, () => { }, this);
+        }
+
+        this.btnShader = new Button(this, { x: 48, y: this.game.config.height + 36 }, "sprBtn00", "SHADER", true, () => { 
+            OPTIONS.effects.shader = true;
+            this.saveGame.effects.shader = true;
+        });
+        this.btnShader.toggleOffFunc = () => {
+            OPTIONS.effects.shader = false;
+            this.saveGame.effects.shader = false;
+        };
+        if(OPTIONS.effects.shader === true){
+            this.btnShader.simulateClick();
         }
 
         this.btnFullscreen = new Button(this, { x: -160, y: this.game.config.height + 66 }, "sprBtn00", "FULLSCRN", false, () => {
@@ -241,6 +255,7 @@ export default class ScnLogin extends Phaser.Scene {
         this.sliderSfx.update();
         this.sliderSpeech.update();
         this.sliderScreenshake.update();
+        this.btnShader.update();
         this.btnBack.update();
 
         this.shipSelect.btnNext.update();
@@ -271,7 +286,8 @@ export default class ScnLogin extends Phaser.Scene {
                 speech: OPTIONS.sound.speech
             },
             effects: {
-                screenshake: OPTIONS.effects.screenshake
+                screenshake: OPTIONS.effects.screenshake,
+                shader: OPTIONS.effects.shader
             },
             multiplayer: {
                 bike: 0,
@@ -302,6 +318,9 @@ export default class ScnLogin extends Phaser.Scene {
             return false;
         }else{
             if(this.saveGame.effects.screenshake === undefined){
+                return false;
+            }
+            if (this.saveGame.effects.shader === undefined) {
                 return false;
             }
         }

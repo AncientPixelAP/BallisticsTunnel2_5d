@@ -234,9 +234,14 @@ export default class ScnMain extends Phaser.Scene {
         this.cameras.main.fadeFrom(500, 0, 0, 0, false, (_cam, _pct) => {
 
         }, this);
+
+        //this.cameras.main.setRenderToTexture(greenscalePipeline);
     }
 
     update(_time, _delta){
+        //greenscalePipeline.setFloat1('time', _time * 0.01);
+        //console.log(_time);
+
         this.hand.update();
 
         this.delta.current += _delta;
@@ -491,33 +496,7 @@ export default class ScnMain extends Phaser.Scene {
                         }
                     }
 
-                    /*
-                    this.spawner.trackPos += 1;
-                    if (this.spawner.trackPos >= this.trackData[this.spawner.trackArrPos].units) {
-                        //jump to next segment
-                        this.spawner.trackPos = 0;
-                        this.spawner.trackArrPos += 1;
-                        this.spawner.subimgArrPos = 0;
-                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
-                        //new lap
-                        if (this.spawner.trackArrPos >= this.trackData.length) {
-                            this.spawner.trackArrPos = 0;                        
-                        }
-                    }
-
-                    //start of segment
-                    if (this.spawner.trackPos === 0) {
-                        this.spawner.asset = this.trackData[this.spawner.trackArrPos].asset;
-                        this.spawner.subimgArr = this.trackData[this.spawner.trackArrPos].subimgArr;
-                        this.spawner.subimgArrPos = 0;
-                        this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
-                        this.spawner.imgSpd = this.trackData[this.spawner.trackArrPos].imgSpd;
-                        //absolute curving
-                        this.spawner.curve.x = this.trackData[this.spawner.trackArrPos].curve.x;
-                        this.spawner.curve.y = this.trackData[this.spawner.trackArrPos].curve.y;
-                        this.spawner.toRoll = this.trackData[this.spawner.trackArrPos].roll;
-                    }
-                    */
+                    
                     this.spawner.trackPos += 1;
                     if (this.spawner.trackPos >= this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].units){
                         //jump to next segment
@@ -696,6 +675,17 @@ export default class ScnMain extends Phaser.Scene {
                                 if (Math.abs(rollDif) < o.data.collisionZone) {
                                     //slow down and avoid other player
                                     if (adjTrackPos < _adjPlayerPosition + 3) {
+                                        this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, (_cam, _pct) => {
+                                            if (OPTIONS.effects.shader === true){
+                                                greenscalePipeline.setFloat1('time', _pct * 2);
+                                                if (this.cameras.main.renderToTexture === false) {
+                                                    this.cameras.main.setRenderToTexture(greenscalePipeline);
+                                                }
+                                                if (_pct >= 1) {
+                                                    this.cameras.main.clearRenderToTexture();
+                                                }
+                                            }
+                                        }, this);
                                         this.player.spd *= 0.25;
                                         this.player.roll += (rollDif) * 0.25;
                                     }
@@ -789,7 +779,17 @@ export default class ScnMain extends Phaser.Scene {
                                 //trigger is false by default and means the object is collidable
                                 if (Math.abs(rollDif) < o.collisionZone) {   
                                     //slow down and avoid obstacle
-                                    this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, () => { }, this);
+                                    this.cameras.main.shake(250, (this.player.spd * 0.1) * OPTIONS.effects.screenshake, false, (_cam, _pct) => {
+                                        if (OPTIONS.effects.shader === true){
+                                            greenscalePipeline.setFloat1('time', _pct * 0.01);
+                                            if (this.cameras.main.renderToTexture === false) {
+                                                this.cameras.main.setRenderToTexture(greenscalePipeline);
+                                            }
+                                            if (_pct >= 1) {
+                                                this.cameras.main.clearRenderToTexture();
+                                            }
+                                        }
+                                    }, this);
                                     this.player.spd *= 0.25;
                                     this.player.roll += (rollDif) * 0.25;
                                     o.collisionFunc();
@@ -855,14 +855,13 @@ export default class ScnMain extends Phaser.Scene {
         }
     }
 
+
     createTrack(){
         this.segments.push(new Segment(this, { x: 0, y: 0, z: 0 }, 0, "sprSegStartTunnel00", 0));
         for(let i = 1 ; i < 64 ; i++){
             this.segments.push(new Segment(this, { x: 0, y: 0, z: (i * 1) }, 0, "sprSegStartTunnel00", (i % 4 === 0 ? 0 : 1)));
         }
     }
-
-    
 
     resetTrack() {
         for (let [i, s] of this.segments.entries()) {

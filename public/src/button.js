@@ -33,7 +33,7 @@ export default class Button{
                 if(this.active === false){
                     this.switchState(this.states.over);
                 }else{
-                    this.switchState(this.states.on);
+                    this.switchState(this.states.out);
                 }
             }
             if(this.scene.hand.justPressed === true){
