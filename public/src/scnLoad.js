@@ -62,6 +62,8 @@ export default class ScnLoad extends Phaser.Scene {
         
         this.load.spritesheet("sprSegAirVent00", "sprites/segments/sprSegAirVent00.png", { frameWidth: 128, frameHeight: 128 });
 
+        this.load.spritesheet("sprSegConstructionRoad00", "sprites/segments/sprSegConstructionRoad00.png", { frameWidth: 128, frameHeight: 128 });
+
         this.load.spritesheet("sprSegNuclearRoad00", "sprites/segments/sprSegNuclearRoad00.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegNuclearRoad01", "sprites/segments/sprSegNuclearRoad01.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegNuclearRoom00", "sprites/segments/sprSegNuclearRoom00.png", { frameWidth: 200, frameHeight: 128 });
@@ -99,6 +101,13 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.image("sprObsVentDoor00_0", "sprites/obstacles/sprObsVentDoor00_0.png");
         this.load.image("sprObsVentDoor01_0", "sprites/obstacles/sprObsVentDoor01_0.png");
+
+        this.load.image("sprObsSmoke00_0", "sprites/obstacles/sprObsSmoke00_0.png");
+        this.load.image("sprObsSmoke00_1", "sprites/obstacles/sprObsSmoke00_1.png");
+        this.load.image("sprObsSmoke00_2", "sprites/obstacles/sprObsSmoke00_2.png");
+        this.load.image("sprObsSmoke00_3", "sprites/obstacles/sprObsSmoke00_3.png");
+        this.load.image("sprObsSmoke00_4", "sprites/obstacles/sprObsSmoke00_4.png");
+        this.load.image("sprObsSmoke00_5", "sprites/obstacles/sprObsSmoke00_5.png");
 
         this.load.image("sprObsTrigger_0", "sprites/obstacles/sprTrigger_0.png");
 
