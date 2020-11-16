@@ -688,6 +688,7 @@ export default class ScnMain extends Phaser.Scene {
                                         }, this);
                                         this.player.spd *= 0.25;
                                         this.player.roll += (rollDif) * 0.25;
+                                        this.ui.flashWarning(325);
                                     }
                                 }
                             }
@@ -793,6 +794,7 @@ export default class ScnMain extends Phaser.Scene {
                                     this.player.spd *= 0.25;
                                     this.player.roll += (rollDif) * 0.25;
                                     o.collisionFunc();
+                                    this.ui.flashWarning(325);
                                 }else if(Math.abs(rollDif) < o.collisionZone + (Math.PI * 0.25)) {
                                     //near miss
                                     this.cameras.main.shake(250, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, () => { }, this);

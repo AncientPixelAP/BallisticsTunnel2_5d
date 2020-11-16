@@ -94,6 +94,12 @@ export default class Ui{
             current: 0,
             threshold: 1
         }
+
+        this.warning = {
+            timer: null,
+            isFlashing: false,
+            flash: false
+        }
     }
 
     update(){
@@ -111,6 +117,23 @@ export default class Ui{
             this.count.current = 0;
         }
         this.binaryDisplay.update();
+    }
+
+    setColor(_color){
+        this.tacho.setColor(_color);
+        this.minimap.setColor(_color);
+        this.binaryDisplay.setColor(_color);
+    }
+
+    flashWarning(_time){
+        if(this.warning.timer === null){
+            this.setColor(this.colors.alert);
+            this.warning.timer = setTimeout(() => {
+                this.setColor(this.colors.default);
+                clearTimeout(this.warning.timer);
+                this.warning.timer = null;
+            }, _time);
+        }
     }
 }
 
@@ -187,6 +210,19 @@ class Minimap{
             }
             this.otherLines[i].x = this.lapLineRoot.x;
             this.otherLines[i].y = this.lapLineRoot.y - ((op.trackPos) / this.magnifier);
+        }
+    }
+
+    setColor(_color){
+        this.lapLine.clear();
+        this.lapLine.lineStyle(1, _color);
+        this.lapLine.beginPath();
+        this.lapLine.moveTo(0, 0);
+        this.lapLine.lineTo(0, (this.scene.trackLength / this.magnifier) * -1);
+        this.lapLine.strokePath();
+        this.playerLine.setTintFill(_color);
+        for(let ol of this.otherLines){
+            ol.setTintFill(_color);
         }
     }
 
@@ -455,6 +491,27 @@ class Tacho{
         }
     }
 
+    setColor(_color){
+        this.bstTxt.setTintFill(_color);
+        this.textWrap.bst.setTintFill(_color);
+        this.lapTxt.setTintFill(_color);
+        this.textWrap.lap.setTintFill(_color);
+        this.spdTxt.setTintFill(_color);
+        this.textWrap.spd.setTintFill(_color);
+        this.slpTxt.setTintFill(_color);
+        this.textWrap.slp.setTintFill(_color);
+        this.resTxt.setTintFill(_color);
+        this.textWrap.res.setTintFill(_color);
+        this.grav.circle.setTintFill(_color);
+        this.grav.pitch.setTintFill(_color);
+        this.grav.yaw.setTintFill(_color);
+        this.grav.roll.setTintFill(_color);
+        this.reticle.tunnelHorL.setTintFill(_color);
+        this.reticle.tunnelHorR.setTintFill(_color);
+        this.reticle.tunnelVerL.setTintFill(_color);
+        this.reticle.tunnelVerR.setTintFill(_color);
+    }
+
     move(_x, _y) {
         this.target.x = _x;
         this.target.y = _y;
@@ -620,6 +677,10 @@ class Standings {
         }
     }
 
+    setColor(_color) {
+
+    }
+
     move(_x, _y) {
         this.target.x = _x;
         this.target.y = _y;
@@ -696,6 +757,12 @@ class BinaryDisplay{
             if(strNum[strNum.length - i - 1] === "1"){
                 b.sprite.rotation = Math.PI * 0.5;
             }
+        }
+    }
+
+    setColor(_color) {
+        for(let b of this.bits){
+            b.sprite.setTintFill(_color);
         }
     }
 
