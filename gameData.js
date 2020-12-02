@@ -81,6 +81,12 @@ class GameData {
 
     switchToTrack(_no){
         this.currentTrack = _no;
+        if(this.currentTrack >= this.maxTracks){
+            this.currentTrack = 0;
+        }
+        if(this.currentTrack < 0){
+            this.currentTrack = this.maxTracks-1;
+        }
     }
 
     addPlayer(_id, _data){

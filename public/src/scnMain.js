@@ -45,7 +45,9 @@ export default class ScnMain extends Phaser.Scene {
             eight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT),
             nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE),
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
-            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
+            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB),
+            plus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD),
+            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT),
         }
 
         this.keyNumber = [this.keys.one, this.keys.two, this.keys.three, this.keys.four];
@@ -57,11 +59,25 @@ export default class ScnMain extends Phaser.Scene {
             }, this);
         }
 
-        this.keys.tab.on('down', function (_key, _event) {
+        this.keys.plus.on("down", (_key, _event) => {
+            _event.stopPropagation();
+            socket.emit("forceSwitchTrack", {
+                track: this.currentTrack + 1
+            });
+        }, this);
+
+        this.keys.minus.on("down", (_key, _event) => {
+            _event.stopPropagation();
+            socket.emit("forceSwitchTrack", {
+                track: this.currentTrack - 1
+            });
+        }, this);
+
+        this.keys.tab.on('down', (_key, _event) => {
             _event.stopPropagation();
             this.ui.btnScore.simulateClick();
         }, this);
-        this.keys.tab.on('up', function (_key, _event) {
+        this.keys.tab.on('up', (_key, _event) => {
             _event.stopPropagation();
             this.ui.btnScore.simulateClick();
         }, this);
@@ -179,6 +195,7 @@ export default class ScnMain extends Phaser.Scene {
         this.sndCountdownThree = this.sound.add("sndCountdownThree", { volume: OPTIONS.sound.speech});
 
         this.countdown = null
+        this.currentTrack = 0;
 
         this.jumpToWaitTunnel();
 
@@ -927,6 +944,7 @@ export default class ScnMain extends Phaser.Scene {
 
     switchToTrack(_no){
         console.log("switchting to track " + _no);
+        this.currentTrack = _no;
         this.player.waitingTunnel = false;
         this.player.controls = SHIPCONTROLS.autoZero;
         this.resetTrack();
