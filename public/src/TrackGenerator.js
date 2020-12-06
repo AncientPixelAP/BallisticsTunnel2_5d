@@ -547,12 +547,19 @@ export default class TrackGenerator{
                         id: 5,
                         name: "Construction Site",
                         segments: [
-                            this.createSegment(0, 0, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
+                            
+                            /*this.createSegment(0, 0, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
                             this.createSegment(0, 0.06, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
                             this.createSegment(0, -0.06, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
                             this.createSegment(0, 0, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
                             this.createSegment(0.02, 0, Math.PI * 2, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 128),
-                            this.createSegment(-0.02, 0, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 128),
+                            this.createSegment(-0.02, 0, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 128),*/
+                            this.createSegment(0, 0, 0, "sprSegIceRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
+                            this.createSegment(0, 0.06, 0, "sprSegIceRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
+                            this.createSegment(0, -0.06, 0, "sprSegIceRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
+                            this.createSegment(0, 0, 0, "sprSegIceRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),
+                            this.createSegment(0.02, 0, Math.PI * 2, "sprSegIceRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 128),
+                            this.createSegment(-0.02, 0, 0, "sprSegIceRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 128),
 
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                         ]

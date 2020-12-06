@@ -64,6 +64,8 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.spritesheet("sprSegConstructionRoad00", "sprites/segments/sprSegConstructionRoad00.png", { frameWidth: 128, frameHeight: 128 });
 
+        this.load.spritesheet("sprSegIceRoad00", "sprites/segments/sprSegIceRoad00.png", { frameWidth: 128, frameHeight: 128 });
+
         this.load.spritesheet("sprSegNuclearRoad00", "sprites/segments/sprSegNuclearRoad00.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegNuclearRoad01", "sprites/segments/sprSegNuclearRoad01.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegNuclearRoom00", "sprites/segments/sprSegNuclearRoom00.png", { frameWidth: 200, frameHeight: 128 });

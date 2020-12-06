@@ -150,12 +150,28 @@ class Minimap{
             y: _y
         }
 
-        this.screenHeightModified = this.scene.game.config.height * 0.8;
+        this.screenHeightModified = this.scene.game.config.height * 0.8
         this.magnifier = this.scene.trackLength / this.screenHeightModified;
         this.lapLineRoot = {
-            x: this.pos.x,//this.scene.right - 56,
+            x: this.pos.x,
             y: this.pos.y + (this.screenHeightModified * 0.5),
         }
+
+        this.posTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 96, "pixelmix", "POS 0/0", 8, 1).setOrigin(1, 0.5);
+        this.posTxt.depth = 10000;
+        this.posTxt.setTint(this.parent.colors.default);
+
+        this.lapTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "LAP 0/5", 8, 1).setOrigin(1, 0.5);
+        this.lapTxt.depth = 10000;
+        this.lapTxt.setTint(this.parent.colors.default);
+
+        this.textWrap = {
+            pos: this.scene.add.sprite(this.pos.x, this.pos.y - 96, "sprUiTextWrap"),
+            lap: this.scene.add.sprite(this.pos.x, this.pos.y - 80, "sprUiTextWrap")
+        }
+        this.textWrap.pos.depth = this.textWrap.lap.depth = 9999;
+        this.textWrap.pos.setTintFill(this.parent.colors.default);
+        this.textWrap.lap.setTintFill(this.parent.colors.default);
 
         this.lapLine = this.scene.add.graphics({ x: this.lapLineRoot.x + 0.5, y: this.lapLineRoot.y });
         this.sectors = [];
@@ -191,6 +207,10 @@ class Minimap{
                 s.x = this.lapLineRoot.x;
             }
         }
+
+        this.posTxt.x = this.pos.x + 24;
+        this.lapTxt.x = this.pos.x + 24;
+        this.textWrap.lap.x = this.textWrap.pos.x = this.pos.x;
 
         this.playerLine.y = this.lapLineRoot.y - ((this.scene.player.trackPos) / this.magnifier);
 
@@ -306,8 +326,8 @@ class Tacho{
         this.resTxt.setTint(this.parent.colors.default);
 
         this.textWrap = {
-            bst: this.scene.add.sprite(this.pos.x, this.pos.y - 80, "sprUiTextWrap"),
-            lap: this.scene.add.sprite(this.pos.x, this.pos.y - 64, "sprUiTextWrap"),
+            bst: this.scene.add.sprite(this.pos.x, this.pos.y - 80, "sprUiTextWrap"),//-80
+            lap: this.scene.add.sprite(this.pos.x, this.pos.y - 64, "sprUiTextWrap"),//-64
             spd: this.scene.add.sprite(this.pos.x, this.pos.y - 32, "sprUiTextWrap"),
             slp: this.scene.add.sprite(this.pos.x, this.pos.y, "sprUiTextWrap"),
             res: this.scene.add.sprite(this.pos.x, this.pos.y + 32, "sprUiTextWrap"),
