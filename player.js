@@ -5,6 +5,7 @@ class Player {
         this.trackPos = 128;
         this.sprite = "sprBike00";
         this.roll = Math.PI * -0.5;
+        this.radius = 24;
         this.spd = 0;
         this.laps = 0;
 
