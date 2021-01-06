@@ -70,6 +70,7 @@ export default class TrackGenerator{
                     {
                         id: 0,
                         name: "Transfer Tunnel",
+                        jumpTo: 0,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegStartTunnel00", [0, 1, 1, 1], 0, 256),
                         ]
@@ -81,6 +82,7 @@ export default class TrackGenerator{
                     {
                         id: 0,
                         name: "Start Finish",
+                        jumpTo: 1,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
@@ -92,6 +94,7 @@ export default class TrackGenerator{
                     },{
                         id: 1,
                         name: "Curva Grande",
+                        jumpTo: 2,
                         segments:[
                             this.createSegment(0.05, 0, Math.PI * -0.5, "sprSegMetalRoad01", [0], 0, 64),
                             this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
@@ -102,6 +105,7 @@ export default class TrackGenerator{
                     },{
                         id: 2,
                         name: "Harlequin",
+                        jumpTo: 3,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegMetalRoad04", [0, 1, 2, 3, 4, 5], 1, 60),
@@ -110,6 +114,7 @@ export default class TrackGenerator{
                     },{
                         id: 3,
                         name: "Treegarden",
+                        jumpTo: 4,
                         segments: [
                             this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
                             this.createSegment(0, 0.1, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
@@ -119,6 +124,7 @@ export default class TrackGenerator{
                     },{
                         id: 4,
                         name: "",
+                        jumpTo: 5,
                         segments: [
                             this.createSegment(-0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02", [0, 1], 1, 64),
                             this.createSegment(0.05, 0, Math.PI * 0.25, "sprSegMetalRoad02", [0, 1], 1, 64),
@@ -129,6 +135,7 @@ export default class TrackGenerator{
                     },{
                         id: 5,
                         name: "Treegarden Station",
+                        jumpTo: 6,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd00", [0], 0, 2),
@@ -139,6 +146,7 @@ export default class TrackGenerator{
                     },{
                         id: 6,
                         name: "",
+                        jumpTo: 7,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
@@ -147,6 +155,7 @@ export default class TrackGenerator{
                     },{
                         id: 7,
                         name: "Maintenance",
+                        jumpTo: 8,
                         segments:[
                             this.createSegment(0.01, -0.025, Math.PI, "sprSegAirVent00", [0], 0, 64),
                             this.createSegment(0, 0.025, 0, "sprSegAirVent00", [0], 0, 64),
@@ -157,6 +166,7 @@ export default class TrackGenerator{
                     },{
                         id: 8,
                         name: "Finish Straight",
+                        jumpTo: 0,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
@@ -206,6 +216,7 @@ export default class TrackGenerator{
                     {
                         id: 0,
                         name: "Start Finish",
+                        jumpTo: 1,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
@@ -218,6 +229,7 @@ export default class TrackGenerator{
                     },{
                         id: 1,
                         name: "Garden 170",
+                        jumpTo: 2,
                         segments:[
                             this.createSegment(-0.05, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
                             this.createSegment(0.05, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
@@ -226,6 +238,7 @@ export default class TrackGenerator{
                     },{
                         id: 2,
                         name: "Bridge",
+                        jumpTo: 3,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0.02, 0, "sprSegMetalRoad00", [0], 0, 64),
@@ -239,6 +252,7 @@ export default class TrackGenerator{
                     },{
                         id: 3,
                         name: "Garden 171",
+                        jumpTo: 4,
                         segments:[
                             this.createSegment(0, -0.02, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
                             this.createSegment(0.05, 0.02, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 64),
@@ -250,6 +264,7 @@ export default class TrackGenerator{
                     },{
                         id: 4,
                         name: "Ventilation Shaft",
+                        jumpTo: 5,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(-0.01, -0.025, 0, "sprSegAirVent00", [0], 0, 128),
@@ -258,6 +273,7 @@ export default class TrackGenerator{
                     },{
                         id: 5,
                         name: "Garden 172",
+                        jumpTo: 6,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, Math.PI * 2, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 128),
@@ -270,6 +286,7 @@ export default class TrackGenerator{
                     },{
                         id: 6,
                         name: "Finish Straight",
+                        jumpTo: 0,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegLabRoad00", [4, 3, 2, 1, 0, 0, 1, 2, 3], 1, 72),
@@ -326,6 +343,7 @@ export default class TrackGenerator{
                     {
                         id: 0,
                         name: "Start Finish",
+                        jumpTo: 1,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
@@ -335,6 +353,7 @@ export default class TrackGenerator{
                     },{
                         id: 1,
                         name: "",
+                        jumpTo: 2,
                         segments: [
                             this.createSegment(0.01, -0.01, Math.PI * -0.15, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 64),
                             this.createSegment(-0.01, 0.01, Math.PI * -0.15, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 64),
@@ -345,6 +364,7 @@ export default class TrackGenerator{
                     },{
                         id: 2,
                         name: "Green Station",
+                        jumpTo: 3,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd00", [0], 0, 2),
                             this.createSegment(-0.02, 0, 0, "sprSegMetroPlatform00", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
@@ -356,6 +376,7 @@ export default class TrackGenerator{
                     },{
                         id: 3,
                         name: "",
+                        jumpTo: 4,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
@@ -367,6 +388,7 @@ export default class TrackGenerator{
                     },{
                         id: 4,
                         name: "Garden",
+                        jumpTo: 5,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegTreeRoad00", [0, 1, 2, 3, 4, 5, 6, 7], -1, 64),
@@ -375,6 +397,7 @@ export default class TrackGenerator{
                     },{
                         id: 5,
                         name: "Red Station",
+                        jumpTo: 6,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetroPlatformEnd01", [0], 0, 2),
                             this.createSegment(-0.02, 0, Math.PI * 0.075, "sprSegMetroPlatform01", [0, 1, 2, 3, 4, 5, 6, 7], 1, 64),
@@ -385,6 +408,7 @@ export default class TrackGenerator{
                     },{
                         id: 6,
                         name: "",
+                        jumpTo: 0,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
@@ -473,6 +497,7 @@ export default class TrackGenerator{
                     {
                         id: 0,
                         name: "Start Finish",
+                        jumpTo: 1,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
@@ -481,6 +506,7 @@ export default class TrackGenerator{
                     },{
                         id: 1,
                         name: "Nucular Road 001",
+                        jumpTo: 2,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
 
@@ -502,6 +528,7 @@ export default class TrackGenerator{
                     },{
                         id: 2,
                         name: "Nucular Road 002",
+                        jumpTo: 3,
                         segments: [
                             this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [0, 1, 2, 3], -1, 15),
                             this.createSegment(0, 0, 0, "sprSegNuclearRoad00", [4], 0, 1),
@@ -523,6 +550,7 @@ export default class TrackGenerator{
                     },{
                         id: 3,
                         name: "Jump Landing",
+                        jumpTo: 4,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegNothing00", [0], 0, 64),
 
@@ -533,6 +561,7 @@ export default class TrackGenerator{
                     },{
                         id: 4,
                         name: "Lost Shaft",
+                        jumpTo: 5,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0.025, 0, "sprSegShaft01", [0], 0, 64),
@@ -546,6 +575,7 @@ export default class TrackGenerator{
                     }, {
                         id: 5,
                         name: "Construction Site",
+                        jumpTo: 0,
                         segments: [
                             
                             /*this.createSegment(0, 0, 0, "sprSegConstructionRoad00", [0, 1, 2, 3, 4, 5, 4, 3, 2, 1], 1, 64),

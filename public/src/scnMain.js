@@ -518,18 +518,18 @@ export default class ScnMain extends Phaser.Scene {
                     if (this.spawner.trackPos >= this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].units){
                         //jump to next segment
                         this.spawner.trackPos = 0;
-                        this.spawner.sector.segmentArrPos += 1;
+                        this.spawner.sector.segmentArrPos = this.trackData[this.spawner.sector.arrPos].jumpTo;//this.spawner.sector.segmentArrPos += 1;
                         this.spawner.subimgArrPos = 0;
                         this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
                         //new lap
-                        if (this.spawner.sector.segmentArrPos >= this.trackData[this.spawner.sector.arrPos].segments.length) {
+                        /*if (this.spawner.sector.segmentArrPos >= this.trackData[this.spawner.sector.arrPos].segments.length) {
                             this.spawner.sector.segmentArrPos = 0;
                             this.spawner.sector.arrPos += 1;
                             if (this.spawner.sector.arrPos >= this.trackData.length){
                                 this.spawner.sector.arrPos = 0;
                             }
                             //console.log(this.trackData[this.spawner.sector.arrPos].name);
-                        }
+                        }*/
                     }
                     if (this.spawner.trackPos === 0) {
                         this.spawner.asset = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].asset;
