@@ -12,6 +12,15 @@ class Player {
         this.lapTime = 0;
         this.bestLapTime = 0;
 
+        this.lounge = {
+            in: true,
+            pos: {
+                x: 0,
+                y: 0,
+                z: 0
+            }
+        }
+
         this.data = _data;
     }
 }

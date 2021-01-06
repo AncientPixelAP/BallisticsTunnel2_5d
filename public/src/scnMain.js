@@ -168,7 +168,7 @@ export default class ScnMain extends Phaser.Scene {
                 }
             },
             trackPos: this.trackLength-64,
-            position: 1,
+            position: -1,
             laps: 0,
             lapTime: {
                 current: 0,
@@ -185,6 +185,8 @@ export default class ScnMain extends Phaser.Scene {
             roll: Math.PI * -0.5,
             spd: 0.25
         }*/
+
+        this.standings = [];
 
         this.ui = new Ui(this);
 
@@ -881,6 +883,18 @@ export default class ScnMain extends Phaser.Scene {
                 }
             }
         }
+
+        this.standings = this.playersData.sort((a, b) => (b.trackPos + (this.scene.trackLength * b.laps)) - (a.trackPos + (this.scene.trackLength * a.laps)));
+        this.player.position = this.getStanding(this.you.id);
+    }
+
+    getStanding(_id){
+        for(let [i, p] of this.standings.entries()){
+            if (p.id === _id){
+                return i+1;
+            }
+        }
+        return -1;
     }
 
 

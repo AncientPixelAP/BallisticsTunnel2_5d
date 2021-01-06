@@ -410,11 +410,11 @@ class Tacho{
         this.lapTxt.x = this.pos.x - 24;
         this.textWrap.lap.x = this.pos.x;
 
-        this.spdTxt.setText("POS " + String(this.scene.player.position) + "/" + String(this.scene.otherPlayers.length + 1));
+        this.posTxt.setText("POS " + String(this.scene.player.position) + "/" + String(this.scene.playersData !== null ? this.scene.playersData.length : 0));
         this.posTxt.x = this.pos.x - 24;
         this.textWrap.pos.x = this.pos.x;
 
-        this.spdTxt.setText("LAP " + String(this.scene.player.laps) + "/" + "5");
+        this.lpsTxt.setText("LAP " + String(this.scene.player.laps) + "/" + "5");
         this.lpsTxt.x = this.pos.x - 24;
         this.textWrap.lps.x = this.pos.x;
 
