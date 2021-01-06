@@ -157,22 +157,6 @@ class Minimap{
             y: this.pos.y + (this.screenHeightModified * 0.5),
         }
 
-        this.posTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 96, "pixelmix", "POS 0/0", 8, 1).setOrigin(1, 0.5);
-        this.posTxt.depth = 10000;
-        this.posTxt.setTint(this.parent.colors.default);
-
-        this.lapTxt = this.scene.add.bitmapText(this.pos.x, this.pos.y - 80, "pixelmix", "LAP 0/5", 8, 1).setOrigin(1, 0.5);
-        this.lapTxt.depth = 10000;
-        this.lapTxt.setTint(this.parent.colors.default);
-
-        this.textWrap = {
-            pos: this.scene.add.sprite(this.pos.x, this.pos.y - 96, "sprUiTextWrap"),
-            lap: this.scene.add.sprite(this.pos.x, this.pos.y - 80, "sprUiTextWrap")
-        }
-        this.textWrap.pos.depth = this.textWrap.lap.depth = 9999;
-        this.textWrap.pos.setTintFill(this.parent.colors.default);
-        this.textWrap.lap.setTintFill(this.parent.colors.default);
-
         this.lapLine = this.scene.add.graphics({ x: this.lapLineRoot.x + 0.5, y: this.lapLineRoot.y });
         this.sectors = [];
 
@@ -207,10 +191,6 @@ class Minimap{
                 s.x = this.lapLineRoot.x;
             }
         }
-
-        this.posTxt.x = this.pos.x + 24;
-        this.lapTxt.x = this.pos.x + 24;
-        this.textWrap.lap.x = this.textWrap.pos.x = this.pos.x;
 
         this.playerLine.y = this.lapLineRoot.y - ((this.scene.player.trackPos) / this.magnifier);
 
@@ -305,37 +285,47 @@ class Tacho{
             y: _y
         }
 
-        this.bstTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 80, "pixelmix", "00:00:000", 8, 1).setOrigin(0, 0.5);
+        this.bstTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 96, "pixelmix", "00:00:000", 8, 1).setOrigin(0, 0.5);
         this.bstTxt.depth = 10000;
         this.bstTxt.setTint(this.parent.colors.default);
-
-        this.lapTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 64, "pixelmix", "00:00:000", 8, 1).setOrigin(0, 0.5);
+        this.lapTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 80, "pixelmix", "00:00:000", 8, 1).setOrigin(0, 0.5);
         this.lapTxt.depth = 10000;
         this.lapTxt.setTint(this.parent.colors.default);
 
-        this.spdTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 32, "pixelmix", "SPD ", 8, 1).setOrigin(0, 0.5);
+        this.posTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 48, "pixelmix", "POS 0/0", 8, 1).setOrigin(0, 0.5);
+        this.posTxt.depth = 10000;
+        this.posTxt.setTint(this.parent.colors.default);
+        this.lpsTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 32, "pixelmix", "LAP 1/5", 8, 1).setOrigin(0, 0.5);
+        this.lpsTxt.depth = 10000;
+        this.lpsTxt.setTint(this.parent.colors.default);
+
+        this.spdTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y - 0, "pixelmix", "SPD ", 8, 1).setOrigin(0, 0.5);
         this.spdTxt.depth = 10000;
         this.spdTxt.setTint(this.parent.colors.default);
-
-        this.slpTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y, "pixelmix", "SLP ", 8, 1).setOrigin(0, 0.5);
+        this.slpTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y + 16, "pixelmix", "SLP ", 8, 1).setOrigin(0, 0.5);
         this.slpTxt.depth = 10000;
         this.slpTxt.setTint(this.parent.colors.default);
-
         this.resTxt = this.scene.add.bitmapText(this.pos.x - 24, this.pos.y + 32, "pixelmix", "RES ", 8, 1).setOrigin(0, 0.5);
         this.resTxt.depth = 10000;
         this.resTxt.setTint(this.parent.colors.default);
 
         this.textWrap = {
-            bst: this.scene.add.sprite(this.pos.x, this.pos.y - 80, "sprUiTextWrap"),//-80
-            lap: this.scene.add.sprite(this.pos.x, this.pos.y - 64, "sprUiTextWrap"),//-64
-            spd: this.scene.add.sprite(this.pos.x, this.pos.y - 32, "sprUiTextWrap"),
-            slp: this.scene.add.sprite(this.pos.x, this.pos.y, "sprUiTextWrap"),
+            bst: this.scene.add.sprite(this.pos.x, this.pos.y - 96, "sprUiTextWrap"),//-80
+            lap: this.scene.add.sprite(this.pos.x, this.pos.y - 80, "sprUiTextWrap"),//-64
+            pos: this.scene.add.sprite(this.pos.x, this.pos.y - 48, "sprUiTextWrap"),
+            lps: this.scene.add.sprite(this.pos.x, this.pos.y - 32, "sprUiTextWrap"),
+            spd: this.scene.add.sprite(this.pos.x, this.pos.y - 0, "sprUiTextWrap"),
+            slp: this.scene.add.sprite(this.pos.x, this.pos.y + 16, "sprUiTextWrap"),
             res: this.scene.add.sprite(this.pos.x, this.pos.y + 32, "sprUiTextWrap"),
         }
         this.textWrap.bst.depth = 9999;
         this.textWrap.bst.setTintFill(this.parent.colors.default);
         this.textWrap.lap.depth = 9999;
         this.textWrap.lap.setTintFill(this.parent.colors.default);
+        this.textWrap.pos.depth = 9999;
+        this.textWrap.pos.setTintFill(this.parent.colors.default);
+        this.textWrap.lps.depth = 9999;
+        this.textWrap.lps.setTintFill(this.parent.colors.default);
         this.textWrap.spd.depth = 9999;
         this.textWrap.spd.setTintFill(this.parent.colors.default);
         this.textWrap.slp.depth = 9999;
@@ -419,6 +409,14 @@ class Tacho{
         }
         this.lapTxt.x = this.pos.x - 24;
         this.textWrap.lap.x = this.pos.x;
+
+        this.spdTxt.setText("POS " + String(this.scene.player.position) + "/" + String(this.scene.otherPlayers.length + 1));
+        this.posTxt.x = this.pos.x - 24;
+        this.textWrap.pos.x = this.pos.x;
+
+        this.spdTxt.setText("LAP " + String(this.scene.player.laps) + "/" + "5");
+        this.lpsTxt.x = this.pos.x - 24;
+        this.textWrap.lps.x = this.pos.x;
 
         this.spdTxt.setText("SPD " + String(Math.floor(this.scene.player.spd * 900)));
         this.spdTxt.x = this.pos.x - 24;

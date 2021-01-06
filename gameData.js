@@ -5,7 +5,7 @@ class GameData {
         this.players = [];
         this.lapsToFinish = 5;
         this.currentTrack = 0;
-        this.maxTracks = 4;
+        this.maxTracks = 5;
         this.allFinished = false;
         this.finishTimer = null;
 

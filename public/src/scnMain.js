@@ -50,7 +50,7 @@ export default class ScnMain extends Phaser.Scene {
             minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT),
         }
 
-        this.keyNumber = [this.keys.one, this.keys.two, this.keys.three, this.keys.four];
+        this.keyNumber = [this.keys.one, this.keys.two, this.keys.three, this.keys.four, this.keys.five, this.keys.six];
         for(let [i, k] of this.keyNumber.entries()){
             k.on("up", (_key, _event) => {
                 socket.emit("forceSwitchTrack", {
@@ -168,6 +168,7 @@ export default class ScnMain extends Phaser.Scene {
                 }
             },
             trackPos: this.trackLength-64,
+            position: 1,
             laps: 0,
             lapTime: {
                 current: 0,
@@ -262,7 +263,7 @@ export default class ScnMain extends Phaser.Scene {
         this.hand.update();
 
         this.delta.current += _delta;
-        if (this.delta.current >= this.delta.treshold){
+        while (this.delta.current >= this.delta.treshold){
             this.delta.current -= this.delta.treshold;
 
             this.player.lapTime.current = new Date().getTime();
@@ -518,20 +519,28 @@ export default class ScnMain extends Phaser.Scene {
                     if (this.spawner.trackPos >= this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].units){
                         //jump to next segment
                         this.spawner.trackPos = 0;
-                        this.spawner.sector.segmentArrPos = this.trackData[this.spawner.sector.arrPos].jumpTo;//this.spawner.sector.segmentArrPos += 1;
+                        this.spawner.sector.segmentArrPos += 1;
                         this.spawner.subimgArrPos = 0;
                         this.spawner.subimage = this.spawner.subimgArr[this.spawner.subimgArrPos];
-                        //new lap
-                        /*if (this.spawner.sector.segmentArrPos >= this.trackData[this.spawner.sector.arrPos].segments.length) {
+                        
+                        //next section of segments
+                        if (this.spawner.sector.segmentArrPos >= this.trackData[this.spawner.sector.arrPos].segments.length) {
                             this.spawner.sector.segmentArrPos = 0;
-                            this.spawner.sector.arrPos += 1;
+                            /*this.spawner.sector.arrPos += 1;
                             if (this.spawner.sector.arrPos >= this.trackData.length){
                                 this.spawner.sector.arrPos = 0;
-                            }
+                            }*/
+                            this.spawner.sector.arrPos = this.trackData[this.spawner.sector.arrPos].jumpTo;
+                            /*if(this.spawner.sector.arrPos === 0){
+                                //new lap
+                            }*/
                             //console.log(this.trackData[this.spawner.sector.arrPos].name);
-                        }*/
+                        }
                     }
                     if (this.spawner.trackPos === 0) {
+                        //console.log("arrPos" + this.spawner.sector.arrPos);
+                        //console.log("segmentArrPos" + this.spawner.sector.segmentArrPos);
+
                         this.spawner.asset = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].asset;
                         this.spawner.subimgArr = this.trackData[this.spawner.sector.arrPos].segments[this.spawner.sector.segmentArrPos].subimgArr;
                         this.spawner.subimgArrPos = 0;

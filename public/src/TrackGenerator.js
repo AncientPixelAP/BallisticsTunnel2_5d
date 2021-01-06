@@ -636,7 +636,71 @@ export default class TrackGenerator{
                 this.scene.obstacles[this.scene.obstacles.length - 1].rollSpd = 0.02;
 
                 break;
+                
             case 4:
+                this.scene.trackData = [
+                    {
+                        id: 0,
+                        name: "Start Finish",
+                        jumpTo: 1,
+                        segments: [
+                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
+                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                        ]
+                    }, {
+                        id: 1,
+                        name: "Light Ring 001",
+                        jumpTo: 2,
+                        segments: [
+                            this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                        ]
+                    },{
+                        id: 2,
+                        name: "Test Road 00",
+                        jumpTo: 3,
+                        segments: [
+                            this.createSegment(0, -0.04, 0, "sprSegMetalRoad00", [0], 0, 128),
+                        ]
+                    }, {
+                        id: 3,
+                        name: "Test Road 01",
+                        jumpTo: 4,
+                        segments: [
+                            this.createSegment(0, 0.04, 0, "sprSegMetroLine00", [0, 0, 0, 1], 0.5, 128),
+                        ]
+                    }, {
+                        id: 4,
+                        name: "Test Road 02",
+                        jumpTo: 5,
+                        segments: [
+                            this.createSegment(0, 0, 0, "sprSegShaft01", [0], 0, 64),
+                        ]
+                    }, {
+                        id: 5,
+                        name: "Test Road 03",
+                        jumpTo: 6,
+                        segments: [
+                            this.createSegment(0, -0.04, 0, "sprSegMetroLine01", [0, 0, 0, 1], 0.5, 128),
+                        ]
+                    }, {
+                        id: 6,
+                        name: "Test Road 00",
+                        jumpTo: 7,
+                        segments: [
+                            this.createSegment(0, 0.04, 0, "sprSegMetalRoad00", [0], 0, 128),
+                        ]
+                    }, {
+                        id: 7,
+                        name: "Light Ring 002",
+                        jumpTo: 0,
+                        segments: [
+                            this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
+                        ]
+                    }
+                ]   
+                break;
+            case 5:
                 this.scene.trackData = [
                     this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
                     this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
