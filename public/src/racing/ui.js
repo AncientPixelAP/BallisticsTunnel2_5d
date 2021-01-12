@@ -1,4 +1,4 @@
-import Button from "./button.js";
+import Button from "../ui/button.js";
 
 export default class Ui{
     constructor(_scene){

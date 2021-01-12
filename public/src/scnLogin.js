@@ -1,6 +1,6 @@
-import Hand from "./hand.js";
-import Button from "./button.js";
-import { SliderHorizontal } from "./slider.js";
+import Hand from "./ui/hand.js";
+import Button from "./ui/button.js";
+import { SliderHorizontal } from "./ui/slider.js";
 
 export default class ScnLogin extends Phaser.Scene {
 
@@ -274,7 +274,8 @@ export default class ScnLogin extends Phaser.Scene {
     gotoSingleplayer() {
         localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
 
-        this.scene.start("ScnIntro");
+        //this.scene.start("ScnIntro");
+        this.scene.start("ScnLounge");
     }
 
     getFreshSaveGame(){

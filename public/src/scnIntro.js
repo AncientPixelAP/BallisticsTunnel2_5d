@@ -1,5 +1,5 @@
-import Hand from "./hand.js";
-import Button from "./button.js";
+import Hand from "./ui/hand.js";
+import Button from "./ui/button.js";
 
 export default class ScnIntro extends Phaser.Scene {
 

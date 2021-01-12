@@ -1,8 +1,8 @@
-import Hand from "./hand.js";
+import Hand from "./ui/hand.js";
 import MusicPlayer from "./musicPlayer.js";
-import Segment from "./segment.js";
-import TrackGenerator from "./TrackGenerator.js";
-import Ui from "./ui.js";
+import Segment from "./racing/segment.js";
+import TrackGenerator from "./racing/TrackGenerator.js";
+import Ui from "./racing/ui.js";
 
 export default class ScnMain extends Phaser.Scene {
 

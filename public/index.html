@@ -3,7 +3,9 @@
 
 <head>
     <script src="./lib/phaser.min.js"></script>
+    
     <script src="/socket.io/socket.io.js"></script>
+
     <script src="src/shaderGreenscale.js"></script>
 </head>
 
@@ -21,6 +23,7 @@
             autoZero: 3,
             stopZero: 4
         }
+        const HALFPI = Math.PI * 0.5;
         var OPTIONS = {
             sound: {
                 music: 0.5,
@@ -62,7 +65,12 @@
             }
         }
 
+        
+
+        //shader
+
         let greenscalePipeline;
+        let rti;
 
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
         /*var socket = io("192.168.80.1:3000");
@@ -79,8 +87,11 @@
         import Preloader from './src/preloader.js'; 
         import ScnLoad from './src/scnLoad.js'; 
         import ScnIntro from './src/scnIntro.js'; 
+        import ScnLounge from './src/scnLounge.js'; 
         import ScnLogin from './src/scnLogin.js'; 
         import ScnMain from './src/scnMain.js'; 
+
+        import RTI from "./src/additionalMath/rayTriangleIntersection.js";
 
         let ratio = Math.max(0.5, Math.min(1.77,window.innerWidth / window.innerHeight));
         let w = 512;
@@ -103,10 +114,14 @@
                 Preloader(), 
                 ScnLoad, 
                 ScnIntro,
+                ScnLounge,
                 ScnLogin, 
                 ScnMain 
-            ] }; 
-            var game = new Phaser.Game(config);
+            ] 
+        }; 
+        var game = new Phaser.Game(config);
+
+        rti = new RTI();
 
     </script>
 </body>

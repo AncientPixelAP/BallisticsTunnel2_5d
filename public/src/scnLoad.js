@@ -11,6 +11,8 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.setBaseURL("./assets/");
 
+        this.load.json("modDebugTile", "jsons/models/debugTile.json");
+
         //this.load.image('image0', '0.png');
         //this.load.json("story1", "storyjson/story1.json");
         //this.load.text("locDE", "languageData/deutsch.txt");
@@ -150,6 +152,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprBike03_2", "sprites/ships/sprBike03_2.png");
         this.load.image("sprBike03_3", "sprites/ships/sprBike03_3.png");
 
+        this.load.image("sprDebugTexture", "sprites/sprDebugTexture.png");
         this.load.image("sprDebugTarget00", "sprites/sprDebugTarget00.png");
         this.load.image("sprObsDebugTrigger_0", "sprites/sprDebugTrigger00.png");
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");
