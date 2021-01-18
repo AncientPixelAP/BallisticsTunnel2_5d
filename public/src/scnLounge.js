@@ -51,7 +51,7 @@ export default class ScnLounge extends Phaser.Scene {
         this.geometryController = new GeometryController(this);
 
         //add debug grid
-        for(let z = 0 ; z < 5 ; z++){
+        /*for(let z = 0 ; z < 5 ; z++){
             for(let x = -2 ; x < 2 ; x++){
                 let yy = z * 2;
                 if(x != 0){
@@ -64,10 +64,15 @@ export default class ScnLounge extends Phaser.Scene {
                 });
             }
         }
-
         this.geometryController.loadModel("DebugTile", "modDebugTile", {
             x: 0,
             y: 8,
+            z: 0
+        });*/
+
+        this.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
+            x: 0,
+            y: 0,
             z: 0
         });
     }
@@ -139,7 +144,7 @@ export default class ScnLounge extends Phaser.Scene {
                 console.log(returnColl[0].hit);
             }
             //teleport to ground
-            this.cam.pos.y = returnColl[0].hit[0].pt[1] - 16;
+            this.cam.pos.y = returnColl[0].hit[0].pt[1] - this.cam.eyeHeight;
         }
 
        this.geometryController.draw(this.cam.pos, this.cam.dir);

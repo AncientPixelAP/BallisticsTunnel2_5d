@@ -12,6 +12,14 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.setBaseURL("./assets/");
 
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
+        this.load.json("modElevatorBase", "jsons/models/elevatorBase.json");
+
+        //3dtex
+        this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
+        this.load.image("texElevatorWall01", "sprites/3dTextures/texElevatorWall01.png");
+        this.load.image("texElevatorDoor00", "sprites/3dTextures/texElevatorDoor00.png");
+        this.load.image("texMetalDark00", "sprites/3dTextures/texMetalDark00.png");
+        this.load.image("texMetalDark01", "sprites/3dTextures/texMetalDark01.png");
 
         //this.load.image('image0', '0.png');
         //this.load.json("story1", "storyjson/story1.json");
@@ -24,8 +32,6 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSliderLeft00", "sprites/sprSliderLeft00.png");
         this.load.image("sprSliderRight00", "sprites/sprSliderRight00.png");
         this.load.image("sprSliderHighlight00", "sprites/sprSliderHighlight00.png");
-
-        this.load.image("sprSkybox00", "sprites/sprSkybox00.png");
 
         this.load.image("sprUiBit", "sprites/sprUiBit.png");
         this.load.image("sprUiCircle", "sprites/sprUiCircle.png");
@@ -157,6 +163,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprObsDebugTrigger_0", "sprites/sprDebugTrigger00.png");
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");
 
+        //audio
         this.load.audio("sndEngine00", "sounds/jetengine.mp3");
         this.load.audio("sndWhoo00", "sounds/whoo00.mp3");
         this.load.audio("sndPew00", "sounds/finalmoan.mp3");

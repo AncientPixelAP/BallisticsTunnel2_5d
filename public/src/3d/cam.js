@@ -3,7 +3,7 @@ export default class Cam{
         this.scene = _scene;
         this.pos = {
             x: 0,
-            y: -16,
+            y: -24,
             z: 0
         }
         this.dir = {
@@ -11,6 +11,7 @@ export default class Cam{
             pitch: 0,
             roll: 0
         }
+        this.eyeHeight = 24;
     }
 
     udpate(){

@@ -42,7 +42,8 @@ export default class DataQuad{
             sin: Math.sin(_dir.pitch)
         }
 
-        let recZ = 9999;
+        let recZ = -9999;
+        let sumZ = 0;
         for(let [i, p] of this.points.entries()){
             let pts = {
                 x: p.x + this.pos.x - _from.x,
@@ -59,15 +60,42 @@ export default class DataQuad{
             ny = outYZ[1];
             nz = outYZ[2];
 
-            let dz = (16 / Math.max(0.0001, nz)) * 16;
-            this.screenCoords[i].x = nx * dz;
-            this.screenCoords[i].y = ny * dz;
+            //let dz = (16 / Math.max(0.0001, nz)) * 16;
+            /*let dz = (32 / nz) * 32;
+            let fac = 0.25;
+            if(dz > 0){
+                this.screenCoords[i].x = (nx * dz) * fac;
+                this.screenCoords[i].y = (ny * dz) * fac;
+            }
 
             if (dz < recZ){
                 recZ = dz;
+            }*/
+
+            let zoom = 2.5;
+            this.screenCoords[i].x = (nx /(Math.abs(nz) * 0.01)) * zoom;//*0.01 at zoom 2.5
+            this.screenCoords[i].y = (ny /(Math.abs(nz) * 0.01))* zoom;
+
+            //clamp screenCoords
+            this.screenCoords[i].x = Math.max(-this.scene.game.config.width * 1, Math.min(this.scene.game.config.width * 1, this.screenCoords[i].x));
+            this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 1, Math.min(this.scene.game.config.height * 1, this.screenCoords[i].y));
+
+            if (nz > recZ) {
+                recZ = nz;
+            }
+            sumZ += nz;
+        }
+        this.depth = sumZ * -0.25;//recZ;
+        if (this.quad !== null) {
+            if (recZ > 16) {
+                this.quad.alphas = [1, 1, 1, 1, 1, 1];
+            } else {
+                this.quad.alphas = [0, 0, 0, 0, 0, 0];
             }
         }
-        this.depth = recZ;
+        /*if(this.scene.input.activePointer.isDown){
+            console.log(recZ);
+        }*/
     }
 
     getIntersect(_x, _y, _z, _toX, _toY, _toZ) {
