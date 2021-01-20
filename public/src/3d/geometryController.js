@@ -1,3 +1,4 @@
+import PIP from "../additionalMath/pointInPolygon.js";
 import Model from "./model.js";
 
 export default class GeometryController{
@@ -52,15 +53,37 @@ export default class GeometryController{
             pt: _quad.getIntersect(_collChecker.pos.x, _collChecker.pos.y, _collChecker.pos.z, _collChecker.dir.x, _collChecker.dir.y, _collChecker.dir.z),
             quad: _quad   
         }
-        /*if (h !== null) {
-            _collChecker.hit.push({
-                pt: h,
-                quad: _quad
-            });
-        }else{
-
-        }*/
         return h;
+    }
+
+    getQuadsFromScreenspaceAt(_x, _y){
+        let hits = [];
+        for (let m of this.models) {
+            for (let q of m.quadData) {
+                if(q.depth < 0){
+                    if (pip.pointInPolygon(
+                        [_x, _y], 
+                        [
+                            [q.screenCoords[0].x, q.screenCoords[0].y],
+                            [q.screenCoords[1].x, q.screenCoords[1].y],
+                            [q.screenCoords[2].x, q.screenCoords[2].y]
+                        ]
+                    )){
+                        hits.push(q)
+                    }else if(pip.pointInPolygon(
+                        [_x, _y],
+                        [
+                            [q.screenCoords[0].x, q.screenCoords[0].y],
+                            [q.screenCoords[2].x, q.screenCoords[2].y],
+                            [q.screenCoords[3].x, q.screenCoords[3].y]
+                        ]
+                    )){
+                        hits.push(q)
+                    }
+                }
+            }
+        }
+        return hits;
     }
 
     loadData(_data){

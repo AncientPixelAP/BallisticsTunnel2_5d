@@ -162,6 +162,12 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprDebugTarget00", "sprites/sprDebugTarget00.png");
         this.load.image("sprObsDebugTrigger_0", "sprites/sprDebugTrigger00.png");
         this.load.image("sprDebugArrow00", "sprites/sprDebugArrow00.png");
+        this.load.image("sprDebugQuadPoint0", "sprites/sprDebugQuadPoint0.png");
+        this.load.image("sprDebugQuadPoint1", "sprites/sprDebugQuadPoint1.png");
+        this.load.image("sprDebugQuadPoint2", "sprites/sprDebugQuadPoint2.png");
+        this.load.image("sprDebugQuadPoint3", "sprites/sprDebugQuadPoint3.png");
+        this.load.image("sprDebugQuadPoint4", "sprites/sprDebugQuadPoint4.png");
+        this.load.image("sprDebugQuadPointCenter", "sprites/sprDebugQuadPointCenter.png");
 
         //audio
         this.load.audio("sndEngine00", "sounds/jetengine.mp3");
