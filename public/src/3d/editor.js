@@ -96,6 +96,13 @@ export default class Editor {
                 this.model.log();
             }
         }, this);
+
+        //flick current model in debug mode
+        this.scene.keys.m.on("up", (_key, _event) => {
+            if (this.model != null) {
+                this.model.toggleDrawCollisions();
+            }
+        }, this);
     }
 
     update() {

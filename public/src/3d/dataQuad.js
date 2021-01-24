@@ -1,7 +1,8 @@
 export default class DataQuad{
-    constructor(_scene, _modelId, _pos, _points, _texture, _frame){
+    constructor(_scene, _modelId, _type, _pos, _points, _texture, _frame){
         this.scene = _scene;
         this.modelId = _modelId;
+        this.type = _type;
         this.pos = _pos;
         this.points = _points; //array of 4 xyz coords
         this.texture = _texture;
@@ -91,14 +92,14 @@ export default class DataQuad{
     }
 
     calculate3d(_from, _dir) {
-        let yaw = {
+        /*let yaw = {
             cos: Math.cos(_dir.yaw),
             sin: Math.sin(_dir.yaw)
         }
         let pitch = {
             cos: Math.cos(_dir.pitch),
             sin: Math.sin(_dir.pitch)
-        }
+        }*/
 
         let recZ = -9999;
         let sumZ = 0;
@@ -119,7 +120,7 @@ export default class DataQuad{
             nz = outYZ[2];
 
             let zoom = 2.5;
-            this.screenCoords[i].x = (nx /(Math.abs(nz) * 0.01)) * zoom;//*0.01 at zoom 2.5
+            this.screenCoords[i].x = (nx /(Math.abs(nz) * 0.01)) * zoom;
             this.screenCoords[i].y = (ny /(Math.abs(nz) * 0.01)) * zoom;
 
             //clamp screenCoords
@@ -131,34 +132,33 @@ export default class DataQuad{
             }
             sumZ += nz;
         }
-        this.depth = sumZ * -0.25;//recZ;
+        this.depth = sumZ * -0.25;
 
-        if(this.depth >= 0){//near clipping plane could be at -25 for example
-            if (this.quads.length > 0) {
-                this.clearQuads();
+        if(this.type !== "collisionQuad"){
+            if(this.depth >= 0){//near clipping plane could be at -25 for example
+                if (this.quads.length > 0) {
+                    this.clearQuads();
+                }
+            }else if(this.depth < 0){
+                if (this.quads.length === 0) {
+                    this.createQuad();
+                }
+                //quad so near that mipmapping is required?
+                if(this.depth > -50){
+                    this.mipmapQuad();
+                }else{
+                    this.unmipmapQuad();
+                }
             }
-        }else if(this.depth < 0){
-            if (this.quads.length === 0) {
-                this.createQuad();
-            }
-            //quad so near that mipmapping is required?
-            if(this.depth > -50){
-                this.mipmapQuad();
-            }else{
-                this.unmipmapQuad();
+
+            if (this.quads.length > null) {
+                if (recZ > 16) {
+                    this.quads[0].alphas = [1, 1, 1, 1, 1, 1];
+                } else {
+                    this.quads[0].alphas = [0, 0, 0, 0, 0, 0];
+                }
             }
         }
-
-        if (this.quads.length > null) {
-            if (recZ > 16) {
-                this.quads[0].alphas = [1, 1, 1, 1, 1, 1];
-            } else {
-                this.quads[0].alphas = [0, 0, 0, 0, 0, 0];
-            }
-        }
-        /*if(this.scene.input.activePointer.isDown){
-            console.log(recZ);
-        }*/
     }
 
     getIntersect(_x, _y, _z, _toX, _toY, _toZ) {

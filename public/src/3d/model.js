@@ -21,9 +21,15 @@ export default class Model{
                 z: q.position.z - this.pos.z
             }
             this.collisionData.push(
-                new DataQuad(this.scene, this.id, pos, q.points, "none", 0)
+                new DataQuad(this.scene, this.id, q.type, pos, q.points, "none", 0)
             );
         }
+
+        this.debug = {
+            drawCollisions: false,
+            collisionGraphics: this.scene.add.graphics()
+        }
+        this.debug.collisionGraphics.depth = 10000;
     }
 
     update(){
@@ -35,6 +41,28 @@ export default class Model{
             q.calculate3d(_from, _dir);
             q.draw();
         }
+        if(this.debug.drawCollisions === true){
+            this.debug.collisionGraphics.clear();
+            this.debug.collisionGraphics.lineStyle(1, 0x00e436);
+            for(let q of this.collisionData){
+                q.calculate3d(_from, _dir);
+                this.debug.collisionGraphics.beginPath();
+                
+                this.debug.collisionGraphics.moveTo(q.screenCoords[0].x, q.screenCoords[0].y);
+                this.debug.collisionGraphics.lineTo(q.screenCoords[1].x, q.screenCoords[1].y);
+                this.debug.collisionGraphics.moveTo(q.screenCoords[1].x, q.screenCoords[1].y);
+                this.debug.collisionGraphics.lineTo(q.screenCoords[2].x, q.screenCoords[2].y);
+                this.debug.collisionGraphics.moveTo(q.screenCoords[2].x, q.screenCoords[2].y);
+                this.debug.collisionGraphics.lineTo(q.screenCoords[0].x, q.screenCoords[0].y);
+                this.debug.collisionGraphics.moveTo(q.screenCoords[0].x, q.screenCoords[0].y);
+                this.debug.collisionGraphics.lineTo(q.screenCoords[3].x, q.screenCoords[3].y);
+                this.debug.collisionGraphics.moveTo(q.screenCoords[3].x, q.screenCoords[3].y);
+                this.debug.collisionGraphics.lineTo(q.screenCoords[2].x, q.screenCoords[2].y);
+
+                //this.debug.collisionGraphics.closePath();
+                this.debug.collisionGraphics.strokePath();
+            }
+        }
     }
 
     addQuadFromData(_q){
@@ -44,8 +72,15 @@ export default class Model{
             z: _q.position.z - this.pos.z
         }
         this.quadData.push(
-            new DataQuad(this.scene, this.id, pos, _q.points, _q.texture, _q.frame)
+            new DataQuad(this.scene, this.id, _q.type, pos, _q.points, _q.texture, _q.frame)
         );
+    }
+
+    toggleDrawCollisions(){
+        this.debug.drawCollisions = !this.debug.drawCollisions;
+        if (this.debug.drawCollisions === false) {
+            this.debug.collisionGraphics.clear();
+        }
     }
 
     log(){

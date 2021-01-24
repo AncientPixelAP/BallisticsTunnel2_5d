@@ -33,6 +33,7 @@ export default class ScnLounge extends Phaser.Scene {
             s: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
             d: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
             n: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N),
+            m: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M),
             t: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T),
             c: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
             v: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
