@@ -10,14 +10,7 @@ export default class Model{
 
         this.quadData = [];
         for (let q of this.modelData.quadData) {
-            let pos = {
-                x: q.position.x - this.pos.x,
-                y: q.position.y - this.pos.y,
-                z: q.position.z - this.pos.z
-            }
-            this.quadData.push(
-                new DataQuad(this.scene, pos, q.points, q.texture, q.frame)
-            );
+            this.addQuadFromData(q);
         }
 
         this.collisionData = [];
@@ -28,7 +21,7 @@ export default class Model{
                 z: q.position.z - this.pos.z
             }
             this.collisionData.push(
-                new DataQuad(this.scene, pos, q.points, "none", 0)
+                new DataQuad(this.scene, this.id, pos, q.points, "none", 0)
             );
         }
     }
@@ -42,5 +35,20 @@ export default class Model{
             q.calculate3d(_from, _dir);
             q.draw();
         }
+    }
+
+    addQuadFromData(_q){
+        let pos = {
+            x: _q.position.x - this.pos.x,
+            y: _q.position.y - this.pos.y,
+            z: _q.position.z - this.pos.z
+        }
+        this.quadData.push(
+            new DataQuad(this.scene, this.id, pos, _q.points, _q.texture, _q.frame)
+        );
+    }
+
+    log(){
+        console.log(this);
     }
 }

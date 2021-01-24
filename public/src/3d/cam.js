@@ -14,7 +14,7 @@ export default class Cam{
         this.eyeHeight = 24;
     }
 
-    udpate(){
+    update(){
 
     }
 }

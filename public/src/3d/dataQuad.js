@@ -1,6 +1,7 @@
 export default class DataQuad{
-    constructor(_scene, _pos, _points, _texture, _frame){
+    constructor(_scene, _modelId, _pos, _points, _texture, _frame){
         this.scene = _scene;
+        this.modelId = _modelId;
         this.pos = _pos;
         this.points = _points; //array of 4 xyz coords
         this.texture = _texture;
