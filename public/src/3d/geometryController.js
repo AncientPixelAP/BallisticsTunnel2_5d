@@ -86,6 +86,13 @@ export default class GeometryController{
         return hits;
     }
 
+    logLevel() {
+        //TODO make object and array of each model and its quads
+        /*for (let m of this.models) {
+            m.draw(_from, _dir);
+        }*/
+    }
+
     loadData(_data){
         
     }

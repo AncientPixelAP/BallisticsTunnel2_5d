@@ -45,9 +45,21 @@ export default class ScnLounge extends Phaser.Scene {
             eight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT),
             nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE),
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
-            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB),
+            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
+        }
+        this.numkeys = {
             plus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD),
-            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT),
+            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT), 
+            one: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
+            two: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
+            three: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_THREE),
+            four: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FOUR),
+            five: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_FIVE),
+            six: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SIX),
+            seven: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SEVEN),
+            eight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_EIGHT),
+            nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE),
+            zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO)
         }
 
         this.keys.e.on("down", (_key, _event) => {
@@ -79,9 +91,77 @@ export default class ScnLounge extends Phaser.Scene {
                 //this.add.sprite(0, 0, "sprDebugQuadPoint4"),
                 //this.add.sprite(0, 0, "sprDebugQuadPointCenter")
             ],
-            quad: null
+            editPointsEnabled: [false, false, false, false],
+            quad: null,
+            pressed: false,
         }
         this.toggleEditor();
+
+        //setup Editor key grabs
+        this.keys.one.on("up", (_key, _event) => {
+            this.toggleEditPoint(0);
+        }, this);
+        this.keys.two.on("up", (_key, _event) => {
+            this.toggleEditPoint(1);
+        }, this);
+        this.keys.three.on("up", (_key, _event) => {
+            this.toggleEditPoint(2);
+        }, this);
+        this.keys.four.on("up", (_key, _event) => {
+            this.toggleEditPoint(3);
+        }, this);
+        this.keys.five.on("up", (_key, _event) => {
+            this.toggleEditPoint(0);
+            this.toggleEditPoint(1);
+            this.toggleEditPoint(2);
+            this.toggleEditPoint(3);
+        }, this);
+
+        
+        this.numkeys.eight.on("up", (_key, _event) => {
+            for(let [i, e] of this.editor.editPointsEnabled.entries()){
+                if(e === true){
+                    this.moveToolPoint(i, { x: Math.sin(this.cam.dir.yaw) * -4, y: 0, z: Math.cos(this.cam.dir.yaw) * 4 });
+                }
+            }
+        }, this);
+        this.numkeys.two.on("up", (_key, _event) => {
+            for (let [i, e] of this.editor.editPointsEnabled.entries()) {
+                if (e === true) {
+                    this.moveToolPoint(i, { x: Math.sin(this.cam.dir.yaw) * 4, y: 0, z: Math.cos(this.cam.dir.yaw) * -4 });
+                }
+            }
+        }, this);
+        this.numkeys.four.on("up", (_key, _event) => {
+            for (let [i, e] of this.editor.editPointsEnabled.entries()) {
+                if (e === true) {
+                    this.moveToolPoint(i, { x: Math.sin(this.cam.dir.yaw - HALFPI) * 4, y: 0, z: Math.cos(this.cam.dir.yaw - HALFPI) * -4 });
+                }
+            }
+        }, this);
+        this.numkeys.six.on("up", (_key, _event) => {
+            for (let [i, e] of this.editor.editPointsEnabled.entries()) {
+                if (e === true) {
+                    this.moveToolPoint(i, { x: Math.sin(this.cam.dir.yaw + HALFPI) * 4, y: 0, z: Math.cos(this.cam.dir.yaw + HALFPI) * -4 });
+                }
+            }
+        }, this);
+        this.numkeys.nine.on("up", (_key, _event) => {
+            for (let [i, e] of this.editor.editPointsEnabled.entries()) {
+                if (e === true) {
+                    this.moveToolPoint(i, { x: 0, y: -4, z: 0 });
+                }
+            }
+        }, this);
+        this.numkeys.three.on("up", (_key, _event) => {
+            for (let [i, e] of this.editor.editPointsEnabled.entries()) {
+                if (e === true) {
+                    this.moveToolPoint(i, { x: 0, y: 4, z: 0 });
+                }
+            }
+        }, this);
+
+
 
         this.cam = new Cam(this);
         this.geometryController = new GeometryController(this);
@@ -121,6 +201,14 @@ export default class ScnLounge extends Phaser.Scene {
 
         if(this.editor.enabled === true){
             this.editorControls();
+
+            //mark quad points
+            if (this.editor.quad !== null) {
+                for (let [i, p] of this.editor.quad.screenCoords.entries()) {
+                    this.editor.points[i].x = p.x;
+                    this.editor.points[i].y = p.y;
+                }
+            }
         }else{
             this.gameControls();
         }
@@ -137,15 +225,7 @@ export default class ScnLounge extends Phaser.Scene {
             }
         }
 
-        //mark quad points
-        if(this.editor.quad !== null){
-            for (let [i, p] of this.editor.quad.screenCoords.entries()) {
-                this.editor.points[i].x = p.x;
-                this.editor.points[i].y = p.y;
-            }
-        }
-
-
+        //camera controls
         if (this.cursors.up.isDown) {
             this.cam.dir.pitch += 0.05;
         }
@@ -261,5 +341,24 @@ export default class ScnLounge extends Phaser.Scene {
             }
         }
         console.log("EDITOR " + (this.editor.enabled ? "ENABLED": "DISABLED"));
+    }
+
+    toggleEditPoint(_ptNum){
+        this.editor.editPointsEnabled[_ptNum] = !this.editor.editPointsEnabled[_ptNum];
+        if (this.editor.editPointsEnabled[_ptNum] === true){
+            this.editor.points[_ptNum].setTint(0x00e436);
+        }else{
+            this.editor.points[_ptNum].setTint(0xff77a8);
+        }
+    }
+
+    moveToolPoint(_pt, _pos){
+        this.editor.quad.points[_pt].x += _pos.x;
+        this.editor.quad.points[_pt].y += _pos.y;
+        this.editor.quad.points[_pt].z += _pos.z;
+
+        this.editor.quad.points[_pt].x = Math.round(this.editor.quad.points[_pt].x / 4) * 4;
+        this.editor.quad.points[_pt].y = Math.round(this.editor.quad.points[_pt].y / 4) * 4;
+        this.editor.quad.points[_pt].z = Math.round(this.editor.quad.points[_pt].z / 4) * 4;
     }
 }
