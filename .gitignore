@@ -1,2 +1,4 @@
 node_modules/
 promo/
+package.json
+package-lock.json
