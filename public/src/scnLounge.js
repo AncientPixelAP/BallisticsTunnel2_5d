@@ -35,12 +35,13 @@ export default class ScnLounge extends Phaser.Scene {
             n: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.N),
             m: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.M),
             t: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T),
-            c: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
-            v: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
+            c: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
+            v: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
             space: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             ctrl: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL),
             alt: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT),
             end: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.END),
+            del: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DELETE),
             one: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE),
             two: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO),
             three: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE),
@@ -55,7 +56,7 @@ export default class ScnLounge extends Phaser.Scene {
         }
         this.numkeys = {
             plus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD),
-            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT), 
+            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT),
             one: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
             two: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
             three: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_THREE),
@@ -68,12 +69,7 @@ export default class ScnLounge extends Phaser.Scene {
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO)
         }
 
-        this.keys.e.on("down", (_key, _event) => {
-            _event.stopPropagation();
-            if(this.keys.space.isDown){
-                this.editor.toggleEditor();
-            }
-        }, this);
+        
 
         this.hand = new Hand(this);
         /*
@@ -119,6 +115,12 @@ export default class ScnLounge extends Phaser.Scene {
             y: 0,
             z: 0
         });
+
+        this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
+            x: 0,
+            y: 0,
+            z: -96
+        });
     }
 
     update(){
@@ -139,7 +141,8 @@ export default class ScnLounge extends Phaser.Scene {
 
     editorControls(){
         if(this.hand.justReleased){
-            let hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY);
+            let hits = [];
+            hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, this.editor.editCollisions);
             if(hits.length > 0){
                 hits = hits.sort((a, b) => a.depth - b.depth);
                 this.editor.quad = hits[hits.length-1];
@@ -153,16 +156,16 @@ export default class ScnLounge extends Phaser.Scene {
 
         //camera controls
         if (this.cursors.up.isDown) {
-            this.cam.dir.pitch += 0.05;
+            this.cam.dir.pitch += this.cam.dir.spd.pitch;
         }
         if (this.cursors.down.isDown) {
-            this.cam.dir.pitch -= 0.05;
+            this.cam.dir.pitch -= this.cam.dir.spd.pitch;
         }
         if (this.cursors.right.isDown) {
-            this.cam.dir.yaw -= 0.05;
+            this.cam.dir.yaw -= this.cam.dir.spd.yaw;
         }
         if (this.cursors.left.isDown) {
-            this.cam.dir.yaw += 0.05;
+            this.cam.dir.yaw += this.cam.dir.spd.yaw;
         }
 
         if (this.keys.a.isDown) {
@@ -185,69 +188,177 @@ export default class ScnLounge extends Phaser.Scene {
         if (this.keys.space.isDown) {
             this.cam.pos.y -= 1;
         }
-        if (this.keys.ctrl.isDown) {
+        if (this.keys.c.isDown) {
             this.cam.pos.y += 1;
         }
     }
 
     gameControls(){
         if (this.cursors.up.isDown) {
-            this.cam.dir.pitch += 0.01;//0.05
+            this.cam.dir.pitch += this.cam.dir.spd.pitch;
         }
         if (this.cursors.down.isDown) {
-            this.cam.dir.pitch -= 0.01;
+            this.cam.dir.pitch -= this.cam.dir.spd.pitch;
         }
         if (this.cursors.right.isDown) {
-            this.cam.dir.yaw -= 0.01;
+            this.cam.dir.yaw -= this.cam.dir.spd.yaw;
         }
         if (this.cursors.left.isDown) {
-            this.cam.dir.yaw += 0.01;
+            this.cam.dir.yaw += this.cam.dir.spd.yaw;
+        }
+
+        let toPos = {
+            x: this.cam.pos.x,
+            y: this.cam.pos.y,
+            z: this.cam.pos.z
         }
 
         if (this.keys.a.isDown) {
-            this.cam.pos.z -= Math.cos(this.cam.dir.yaw - HALFPI) * 1;
-            this.cam.pos.x += Math.sin(this.cam.dir.yaw - HALFPI) * 1;
+            toPos.z -= Math.cos(this.cam.dir.yaw - HALFPI) * 1;
+            toPos.x += Math.sin(this.cam.dir.yaw - HALFPI) * 1;
+            //this.cam.pos.z -= Math.cos(this.cam.dir.yaw - HALFPI) * 1;
+            //this.cam.pos.x += Math.sin(this.cam.dir.yaw - HALFPI) * 1;
         }
         if (this.keys.d.isDown) {
-            this.cam.pos.z -= Math.cos(this.cam.dir.yaw + HALFPI) * 1;
-            this.cam.pos.x += Math.sin(this.cam.dir.yaw + HALFPI) * 1;
+            toPos.z -= Math.cos(this.cam.dir.yaw + HALFPI) * 1;
+            toPos.x += Math.sin(this.cam.dir.yaw + HALFPI) * 1;
+            //this.cam.pos.z -= Math.cos(this.cam.dir.yaw + HALFPI) * 1;
+            //this.cam.pos.x += Math.sin(this.cam.dir.yaw + HALFPI) * 1;
         }
         if (this.keys.s.isDown) {
-            this.cam.pos.z -= Math.cos(this.cam.dir.yaw) * 1;
-            this.cam.pos.x += Math.sin(this.cam.dir.yaw) * 1;
+            toPos.z -= Math.cos(this.cam.dir.yaw) * 1;
+            toPos.x += Math.sin(this.cam.dir.yaw) * 1;
+            //this.cam.pos.z -= Math.cos(this.cam.dir.yaw) * 1;
+            //this.cam.pos.x += Math.sin(this.cam.dir.yaw) * 1;
         }
         if (this.keys.w.isDown) {
-            this.cam.pos.z += Math.cos(this.cam.dir.yaw) * 1;
-            this.cam.pos.x -= Math.sin(this.cam.dir.yaw) * 1;
+            toPos.z += Math.cos(this.cam.dir.yaw) * 1;
+            toPos.x -= Math.sin(this.cam.dir.yaw) * 1;
+            //this.cam.pos.z += Math.cos(this.cam.dir.yaw) * 1;
+            //this.cam.pos.x -= Math.sin(this.cam.dir.yaw) * 1;
         }
 
         if (this.keys.space.isDown) {
             this.cam.pos.y -= 1;
         }
-        if (this.keys.ctrl.isDown) {
+        if (this.keys.c.isDown) {
             this.cam.pos.y += 1;
         }
 
         let returnColl = [];
         returnColl = this.geometryController.update(
-            [{//check ground at player position
-                pos: {
-                    x: this.cam.pos.x,
-                    y: this.cam.pos.y,
-                    z: this.cam.pos.z
-                },
-                dir: {
-                    x: 0,
-                    y: 1,
-                    z: 0
-                },
-                hit: []
-            }]
+            [
+                {//check ground at player position
+                    pos: {
+                        x: this.cam.pos.x,
+                        y: this.cam.pos.y,
+                        z: this.cam.pos.z
+                    },
+                    dir: {
+                        x: 0,
+                        y: 1,
+                        z: 0
+                    },
+                    hit: []
+                }, {//check wall colllision global x axis
+                    pos: {
+                        x: toPos.x,
+                        y: toPos.y + this.cam.eyeHeight - this.cam.stepHeight,
+                        z: toPos.z
+                    },
+                    dir: {
+                        x: 1,
+                        y: 0,
+                        z: 0
+                    },
+                    hit: []
+                }, {//check wall colllision global z axis
+                    pos: {
+                        x: toPos.x,
+                        y: toPos.y + this.cam.eyeHeight - this.cam.stepHeight,
+                        z: toPos.z
+                    },
+                    dir: {
+                        x: 0,
+                        y: 0,
+                        z: 1
+                    },
+                    hit: []
+                }
+            ]
         );
-        //console.log(returnColl);
+        /*if(this.input.activePointer.isDown){
+            console.log(returnColl);
+        }*/
+
+        //resolve collision with ground
         if (returnColl[0].hit.length > 0) {
+            //filter relevant = nearest hit
+            let dist = 9999;
+            let nearestHit = returnColl[0].hit[0];
+            for (let [i, n] of returnColl[0].hit.entries()) {
+                let d = Phaser.Math.Distance.Between(0, this.cam.pos.y + (this.cam.eyeHeight - this.cam.stepHeight), 0, returnColl[0].hit[i].pt[1]);
+                if (d < dist) {
+                    dist = d;
+                    nearestHit = returnColl[0].hit[i];
+                }
+            }
+            //returnColl[input point and direction].hit[nearest = 0].pt[coord x,y,z]
             //teleport to ground
-            this.cam.pos.y = returnColl[0].hit[0].pt[1] - this.cam.eyeHeight;
+            //if (this.cam.pos.y - this.cam.stepHeight < nearestHit.pt[1] - this.cam.eyeHeight){
+                this.cam.pos.y = nearestHit.pt[1] - this.cam.eyeHeight;
+            //}
+        }
+
+        //resolve hit in global x axis
+        if(returnColl[1].hit.length > 0){
+            //filter relevant = nearest hit
+            let dist = 9999;
+            let nearestHit = returnColl[1].hit[0];
+            for(let [i, n] of returnColl[1].hit.entries()){
+                let d = Phaser.Math.Distance.Between(this.cam.pos.x, this.cam.pos.z, returnColl[1].hit[i].pt[0], returnColl[1].hit[i].pt[2]);
+                if(d < dist){
+                    dist = d;
+                    nearestHit = returnColl[1].hit[i];
+                }
+            }
+            if(dist < this.cam.collisionRadius){
+                //only move if you move away from the wall
+                if ((toPos.x < this.cam.pos.x && this.cam.pos.x < nearestHit.pt[0]) || (toPos.x > this.cam.pos.x && this.cam.pos.x > nearestHit.pt[0])){
+                    this.cam.pos.x = toPos.x;
+                }
+            }else{
+                //be free to move cause yoou are far away from wall
+                this.cam.pos.x = toPos.x;
+            }
+        }else{
+            //move because there is nothing out there
+            this.cam.pos.x = toPos.x;
+        }
+
+        if (returnColl[2].hit.length > 0) {
+            //filter relevant = nearest hit
+            let dist = 9999;
+            let nearestHit = returnColl[2].hit[0];
+            for (let [i, n] of returnColl[2].hit.entries()) {
+                let d = Phaser.Math.Distance.Between(this.cam.pos.x, this.cam.pos.z, returnColl[2].hit[i].pt[0], returnColl[2].hit[i].pt[2]);
+                if (d < dist) {
+                    dist = d;
+                    nearestHit = returnColl[2].hit[i];
+                }
+            }
+            if (dist < this.cam.collisionRadius) {
+                //only move if you move away from the wall
+                if ((toPos.z < this.cam.pos.z && this.cam.pos.z < nearestHit.pt[2]) || (toPos.z > this.cam.pos.z && this.cam.pos.z > nearestHit.pt[2])) {
+                    this.cam.pos.z = toPos.z;
+                }
+            }else{
+                //be free to move cause yoou are far away from wall
+                this.cam.pos.z = toPos.z;
+            }
+        }else{
+            //move because there is nothing out there
+            this.cam.pos.z = toPos.z;
         }
     }
 

@@ -9,19 +9,19 @@ export default class Model{
         this.pos = _pos;
 
         this.quadData = [];
-        for (let q of this.modelData.quadData) {
+        for (let [i, q] of this.modelData.quadData.entries()) {
             this.addQuadFromData(q);
         }
 
         this.collisionData = [];
-        for (let q of this.modelData.collisionData) {
+        for (let [i, q] of this.modelData.collisionData.entries()) {
             let pos = {
                 x: q.position.x - this.pos.x,
                 y: q.position.y - this.pos.y,
                 z: q.position.z - this.pos.z
             }
             this.collisionData.push(
-                new DataQuad(this.scene, this.id, q.type, pos, q.points, "none", 0)
+                new DataQuad(this.scene, this.id, i, q.type, pos, q.points, "none", 0)
             );
         }
 
@@ -71,9 +71,39 @@ export default class Model{
             y: _q.position.y - this.pos.y,
             z: _q.position.z - this.pos.z
         }
-        this.quadData.push(
-            new DataQuad(this.scene, this.id, _q.type, pos, _q.points, _q.texture, _q.frame)
-        );
+        if(_q.type !== "collisionQuad"){
+            let no = this.quadData.length;
+            this.quadData.push(
+                new DataQuad(this.scene, this.id, no, _q.type, pos, _q.points, _q.texture, _q.frame)
+            );
+        }else{
+            let no = this.collisionData.length;
+            this.collisionData.push(
+                new DataQuad(this.scene, this.id, no, _q.type, pos, _q.points, "none", 0)
+            );
+        }
+    }
+
+    deleteQuad(_q, _isCollisionQuad){
+        if(_isCollisionQuad === true){
+            for(let i = this.collisionData.length-1 ; i >= 0 ; i--){
+                if (this.collisionData[i].runNo === _q.runNo){
+                    this.collisionData[i].destroy();
+                    this.collisionData.splice(i, 1);
+                }
+            }
+            //this.collisionData[_q.runNo].destroy();
+            //this.collisionData.splice(_q.runNo, 1);
+        }else{
+            for (let i = this.quadData.length - 1; i >= 0; i--) {
+                if (this.quadData[i].runNo === _q.runNo) {
+                    this.quadData[i].destroy();
+                    this.quadData.splice(i, 1);
+                }
+            }
+            //this.quadData[_q.runNo].destroy();
+            //this.quadData.splice(_q.runNo, 1);
+        }
     }
 
     toggleDrawCollisions(){
@@ -84,6 +114,54 @@ export default class Model{
     }
 
     log(){
-        console.log(this);
+        let logobj = {
+            name: this.modelData.name,
+            quadData: [],
+            collisionData: []
+        }
+        //add quad Data from model
+        for(let q of this.quadData){
+            let pts = [];
+            for(let p of q.points){
+                pts.push({
+                    x: p.x,// + this.pos.x,
+                    y: p.y,// + this.pos.y,
+                    z: p.z,// + this.pos.z
+                });
+            }
+            logobj.quadData.push({
+                type: q.type,
+                texture: q.texture,
+                frame: q.frame,
+                position: {
+                    x: q.pos.x + this.pos.x,
+                    y: q.pos.y + this.pos.y,
+                    z: q.pos.z + this.pos.z,
+                },
+                points: pts
+            });
+        }
+        //add collision Data from model
+        for (let q of this.collisionData) {
+            let pts = [];
+            for (let p of q.points) {
+                pts.push({
+                    x: p.x,// + this.pos.x,
+                    y: p.y,// + this.pos.y,
+                    z: p.z,// + this.pos.z
+                });
+            }
+            logobj.collisionData.push({
+                type: "collisionQuad",
+                position: {
+                    x: q.pos.x + this.pos.x,
+                    y: q.pos.y + this.pos.y,
+                    z: q.pos.z + this.pos.z,
+                },
+                points: pts
+            });
+        }
+        //log model for saving
+        console.log(JSON.stringify(logobj));
     }
 }
