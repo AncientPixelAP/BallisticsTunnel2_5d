@@ -15,6 +15,23 @@ export default class Editor {
         this.quad = null;
         this.model = null;
         this.pressed = false;
+        this.editCollisions = false;
+
+        this.textures = {
+            palette:  [[
+                "texElevatorWall00",
+                "texElevatorWall01",
+                "texElevatorDoor00",
+                "texElevatorDoor01",
+                "texMetalDark00",
+                "texMetalDark01",
+                "texElevatorLight00",
+                "texElevatorLight01"
+            ]],
+            position: 0,
+            bank: 0
+        }
+        
 
         //setup Editor key grabs
         //grab quads edge points
@@ -80,6 +97,37 @@ export default class Editor {
                 }
             }
         }, this);
+        this.scene.numkeys.five.on("up", (_key, _event) => {
+            if(this.quad !== null){
+                this.quad.recalculatePosition();
+            }
+        }, this);
+
+        //texture bank and palette
+        this.scene.input.on("wheel", (_pointer, _gameObjs, _deltaX, _deltaY, _deltaZ) => {
+            //change texture bank
+            if (this.scene.keys.z.isDown) {
+                if (_deltaY > 0) {
+                    this.textures.bank -= 1;
+                } else if (_deltaY < 0) {
+                    this.textures.bank += 1;
+                }
+                this.textures.bank = Math.max(0, Math.min(this.textures.bank, this.textures.palette.length-1));
+            }
+            //flip through texture
+            if (this.scene.keys.t.isDown) {
+                //console.log(_deltaY); //-100 to 100
+                if(_deltaY > 0){
+                    this.textures.position -= 1;
+                }else if(_deltaY < 0){
+                    this.textures.position += 1;
+                }
+                this.textures.position = Math.max(0, Math.min(this.textures.position, this.textures.palette[this.textures.bank].length-1));
+                if(this.quad !== null){
+                    this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
+                }
+            }
+        }, this);
 
         //duplicate quad
         this.scene.keys.n.on("up", (_key, _event) => {
@@ -90,6 +138,13 @@ export default class Editor {
             }
         }, this);
 
+        //delete selected quad
+        this.scene.keys.del.on("up", (_key, _event) => {
+            if (this.model != null) {
+                this.model.deleteQuad(this.quad, this.editCollisions);
+            }
+        }, this);
+
         //log model
         this.scene.keys.end.on("up", (_key, _event) => {
             if(this.model != null){
@@ -97,10 +152,25 @@ export default class Editor {
             }
         }, this);
 
-        //flick current model in debug mode
+        //flick current model in debug mode - this is ONLY drawing the collision boxes
         this.scene.keys.m.on("up", (_key, _event) => {
             if (this.model != null) {
                 this.model.toggleDrawCollisions();
+                //press spacbar too to edit collision boxes
+                if (this.scene.keys.q.isDown) {
+                    this.toggleEditCollisions();
+                    if (this.model.debug.drawCollisions === false){
+                        this.model.toggleDrawCollisions();
+                    }
+                }
+            }
+        }, this);
+
+        //toggle editor
+        this.scene.keys.e.on("down", (_key, _event) => {
+            _event.stopPropagation();
+            if (this.scene.keys.q.isDown) {
+                this.toggleEditor();
             }
         }, this);
     }
@@ -152,39 +222,48 @@ export default class Editor {
         let model = this.scene.geometryController.getModelById(this.quad.modelId);
         if(model.length > 0){
             model[0].addQuadFromData({
-                type: "quad",
+                type: this.quad.type,
                 texture: this.quad.texture,
                 frame: this.quad.frame,
                 position: {
-                    x: this.quad.pos.x,
-                    y: this.quad.pos.y,
-                    z: this.quad.pos.z,
+                    x: this.quad.pos.x + this.model.pos.x,
+                    y: this.quad.pos.y + this.model.pos.y,
+                    z: this.quad.pos.z + this.model.pos.z,
                 },
                 points: [
                     {
                         x: this.quad.points[0].x,
                         y: this.quad.points[0].y,
-                        z: this.quad.points[0].z
+                        z: this.quad.points[0].z,
                     }, {
                         x: this.quad.points[1].x,
                         y: this.quad.points[1].y,
-                        z: this.quad.points[1].z
+                        z: this.quad.points[1].z,
                     }, {
                         x: this.quad.points[2].x,
                         y: this.quad.points[2].y,
-                        z: this.quad.points[2].z
+                        z: this.quad.points[2].z,
                     }, {
                         x: this.quad.points[3].x,
                         y: this.quad.points[3].y,
-                        z: this.quad.points[3].z
+                        z: this.quad.points[3].z,
                     }
                 ]
             });
 
-            this.quad = model[0].quadData[model[0].quadData.length-1];
+            this.quad = this.editCollisions ? model[0].collisionData[model[0].collisionData.length - 1] : model[0].quadData[model[0].quadData.length-1];
         }else{
             console.log("couldnt find model!");
         }
         //console.log(model);
+    }
+
+    toggleEditCollisions(){
+        this.editCollisions = !this.editCollisions;
+        if(this.editCollisions === true){
+            console.log("edit collisions enabled");
+        }else{
+            console.log("edit collisions disabled");
+        }
     }
 }

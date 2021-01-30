@@ -1,15 +1,15 @@
 export default class DataQuad{
-    constructor(_scene, _modelId, _type, _pos, _points, _texture, _frame){
+    constructor(_scene, _modelId, _runNo, _type, _pos, _points, _texture, _frame){
         this.scene = _scene;
         this.modelId = _modelId;
+        this.runNo = _runNo;
         this.type = _type;
         this.pos = _pos;
         this.points = _points; //array of 4 xyz coords
         this.texture = _texture;
-        //this.quad = null; // to be filled by a phaser quad if it should be rendered
-        this.quads = [];
-        this.mipmapped = false;
         this.frame = _frame;
+        this.quads = [];// to be filled by a phaser quad if it should be rendered
+        this.mipmapped = false;
         this.depth = 0;
 
         this.screenCoords = [
@@ -47,15 +47,6 @@ export default class DataQuad{
     }
 
     draw(){
-        /*if(this.quad === null){
-            this.quad = this.scene.add.quad(0, 0, this.texture);
-        }else{
-            this.quad.setTopLeft(this.screenCoords[0].x, this.screenCoords[0].y);
-            this.quad.setTopRight(this.screenCoords[1].x, this.screenCoords[1].y);
-            this.quad.setBottomRight(this.screenCoords[2].x, this.screenCoords[2].y);
-            this.quad.setBottomLeft(this.screenCoords[3].x, this.screenCoords[3].y);
-            this.quad.depth = this.depth;
-        }*/
         if(this.quads.length > 0){
             if(this.mipmapped === false){
                 this.quads[0].setTopLeft(this.screenCoords[0].x, this.screenCoords[0].y);
@@ -91,16 +82,14 @@ export default class DataQuad{
         }
     }
 
-    calculate3d(_from, _dir) {
-        /*let yaw = {
-            cos: Math.cos(_dir.yaw),
-            sin: Math.sin(_dir.yaw)
+    drawNo3d(){
+        if (this.quads.length > 0) {
+            this.quads[0].x = this.screenCoords[0].x;
+            this.quads[0].y = this.screenCoords[0].y;
         }
-        let pitch = {
-            cos: Math.cos(_dir.pitch),
-            sin: Math.sin(_dir.pitch)
-        }*/
+    }
 
+    calculate3d(_from, _dir) {
         let recZ = -9999;
         let sumZ = 0;
         for(let [i, p] of this.points.entries()){
@@ -118,14 +107,19 @@ export default class DataQuad{
             nx = outYZ[0];
             ny = outYZ[1];
             nz = outYZ[2];
+            let nzMod = nz + 10;
 
-            let zoom = 2.5;
-            this.screenCoords[i].x = (nx /(Math.abs(nz) * 0.01)) * zoom;
-            this.screenCoords[i].y = (ny /(Math.abs(nz) * 0.01)) * zoom;
+            let zoom = 400;//2.5 - 0.01
+            this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
+            this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
+
+            //ortho rendering
+            /*this.screenCoords[i].x = nx;
+            this.screenCoords[i].y = ny;*/
 
             //clamp screenCoords
-            this.screenCoords[i].x = Math.max(-this.scene.game.config.width * 2, Math.min(this.scene.game.config.width * 2, this.screenCoords[i].x));
-            this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 2, Math.min(this.scene.game.config.height * 2, this.screenCoords[i].y));
+            //this.screenCoords[i].x = Math.max(-this.scene.game.config.width * 20, Math.min(this.scene.game.config.width * 20, this.screenCoords[i].x));
+            //this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 20, Math.min(this.scene.game.config.height * 20, this.screenCoords[i].y));
 
             if (nz > recZ) {
                 recZ = nz;
@@ -186,7 +180,7 @@ export default class DataQuad{
         if (hit !== null) {
             return hit;
         }
-        if (ohit !== null) {
+        if (ohit !== null) {//TODO actually never happens bc the first hit covers infinite length in both ways
             return ohit;
         }
         return null;
@@ -206,17 +200,7 @@ export default class DataQuad{
     }
 
     mipmapQuad(){
-
-        this.sc01.x = (this.screenCoords[0].x + this.screenCoords[1].x) * 0.5;
-        this.sc01.y = (this.screenCoords[0].y + this.screenCoords[1].y) * 0.5;
-        this.sc03.x = (this.screenCoords[0].x + this.screenCoords[3].x) * 0.5;
-        this.sc03.y = (this.screenCoords[0].y + this.screenCoords[3].y) * 0.5;
-        this.sc12.x = (this.screenCoords[1].x + this.screenCoords[2].x) * 0.5;
-        this.sc12.y = (this.screenCoords[1].y + this.screenCoords[2].y) * 0.5;
-        this.sc32.x = (this.screenCoords[3].x + this.screenCoords[2].x) * 0.5;
-        this.sc32.y = (this.screenCoords[3].y + this.screenCoords[2].y) * 0.5;
-        this.scM.x = (this.sc03.x + this.sc12.x) * 0.5;
-        this.scM.y = (this.sc03.y + this.sc12.y) * 0.5;
+        this.calculateHelpPoints();
 
         if(this.mipmapped === false){
             this.mipmapped = true;
@@ -241,5 +225,37 @@ export default class DataQuad{
 
             this.quads[0].uv = [0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0];
         }
+    }
+
+    calculateHelpPoints(){
+        this.sc01.x = (this.screenCoords[0].x + this.screenCoords[1].x) * 0.5;
+        this.sc01.y = (this.screenCoords[0].y + this.screenCoords[1].y) * 0.5;
+        this.sc03.x = (this.screenCoords[0].x + this.screenCoords[3].x) * 0.5;
+        this.sc03.y = (this.screenCoords[0].y + this.screenCoords[3].y) * 0.5;
+        this.sc12.x = (this.screenCoords[1].x + this.screenCoords[2].x) * 0.5;
+        this.sc12.y = (this.screenCoords[1].y + this.screenCoords[2].y) * 0.5;
+        this.sc32.x = (this.screenCoords[3].x + this.screenCoords[2].x) * 0.5;
+        this.sc32.y = (this.screenCoords[3].y + this.screenCoords[2].y) * 0.5;
+        this.scM.x = (this.sc03.x + this.sc12.x) * 0.5;
+        this.scM.y = (this.sc03.y + this.sc12.y) * 0.5;
+    }
+
+    recalculatePosition(){
+        this.pos = {
+            x: (this.points[0].x + this.points[1].x + this.points[2].x + this.points[3].x) / 4,
+            y: (this.points[0].y + this.points[1].y + this.points[2].y + this.points[3].y) / 4,
+            z: (this.points[0].z + this.points[1].z + this.points[2].z + this.points[3].z) / 4
+        };
+    }
+
+    setTexture(_tex){
+        this.texture = _tex;
+        for(let q of this.quads){
+            q.setTexture(this.texture, this.frame);
+        }
+    }
+
+    destroy(){
+        this.clearQuads();
     }
 }

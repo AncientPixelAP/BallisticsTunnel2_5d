@@ -51,34 +51,60 @@ export default class GeometryController{
         */
         let h = {
             pt: _quad.getIntersect(_collChecker.pos.x, _collChecker.pos.y, _collChecker.pos.z, _collChecker.dir.x, _collChecker.dir.y, _collChecker.dir.z),
-            quad: _quad   
+            quad: _quad
         }
         return h;
     }
 
-    getQuadsFromScreenspaceAt(_x, _y){
+    getQuadsFromScreenspaceAt(_x, _y, _checkCollisionMask){
         let hits = [];
         for (let m of this.models) {
-            for (let q of m.quadData) {
-                if(q.depth < 0){
-                    if (pip.pointInPolygon(
-                        [_x, _y], 
-                        [
-                            [q.screenCoords[0].x, q.screenCoords[0].y],
-                            [q.screenCoords[1].x, q.screenCoords[1].y],
-                            [q.screenCoords[2].x, q.screenCoords[2].y]
-                        ]
-                    )){
-                        hits.push(q)
-                    }else if(pip.pointInPolygon(
-                        [_x, _y],
-                        [
-                            [q.screenCoords[0].x, q.screenCoords[0].y],
-                            [q.screenCoords[2].x, q.screenCoords[2].y],
-                            [q.screenCoords[3].x, q.screenCoords[3].y]
-                        ]
-                    )){
-                        hits.push(q)
+            if(_checkCollisionMask === false){
+                for (let q of m.quadData) {
+                    if(q.depth < 0){
+                        if (pip.pointInPolygon(
+                            [_x, _y], 
+                            [
+                                [q.screenCoords[0].x, q.screenCoords[0].y],
+                                [q.screenCoords[1].x, q.screenCoords[1].y],
+                                [q.screenCoords[2].x, q.screenCoords[2].y]
+                            ]
+                        )){
+                            hits.push(q);
+                        }else if(pip.pointInPolygon(
+                            [_x, _y],
+                            [
+                                [q.screenCoords[0].x, q.screenCoords[0].y],
+                                [q.screenCoords[2].x, q.screenCoords[2].y],
+                                [q.screenCoords[3].x, q.screenCoords[3].y]
+                            ]
+                        )){
+                            hits.push(q);
+                        }
+                    }
+                }
+            }else{
+                for (let q of m.collisionData) {
+                    if (q.depth < 0) {
+                        if (pip.pointInPolygon(
+                            [_x, _y],
+                            [
+                                [q.screenCoords[0].x, q.screenCoords[0].y],
+                                [q.screenCoords[1].x, q.screenCoords[1].y],
+                                [q.screenCoords[2].x, q.screenCoords[2].y]
+                            ]
+                        )) {
+                            hits.push(q);
+                        } else if (pip.pointInPolygon(
+                            [_x, _y],
+                            [
+                                [q.screenCoords[0].x, q.screenCoords[0].y],
+                                [q.screenCoords[2].x, q.screenCoords[2].y],
+                                [q.screenCoords[3].x, q.screenCoords[3].y]
+                            ]
+                        )) {
+                            hits.push(q);
+                        }
                     }
                 }
             }
