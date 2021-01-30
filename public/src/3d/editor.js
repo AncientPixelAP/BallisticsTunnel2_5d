@@ -191,10 +191,12 @@ export default class Editor {
             for (let p of this.points) {
                 p.alpha = 1;
             }
+            this.scene.hand.setMouseLock(false);
         } else {
             for (let p of this.points) {
                 p.alpha = 0;
             }
+            this.scene.hand.setMouseLock(true);
         }
         console.log("EDITOR " + (this.enabled ? "ENABLED" : "DISABLED"));
     }

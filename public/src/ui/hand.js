@@ -6,6 +6,8 @@ export default class Hand{
         this.pressed = false;
         this.justReleased = false;
 
+        this.mouselock = false;
+
         this.pos = {
             x: 0,
             y: 0
@@ -15,6 +17,18 @@ export default class Hand{
             x: 0,
             y: 0
         }
+
+        this.vel = {
+            x: 0,
+            y: 0
+        }
+
+        this.scene.input.on('pointermove', function (_pointer) {
+            if (this.mouselock){
+                this.vel.x = Math.max(-10, Math.min(10, _pointer.movementX));
+                this.vel.y = Math.max(-10, Math.min(10, _pointer.movementY));
+            }
+        }, this);
     }
 
     update(){
@@ -42,6 +56,22 @@ export default class Hand{
                 this.start.y = this.pos.y;
             }else{
                 this.justReleased = false;
+            }
+        }
+    }
+
+    lateUpdate(){
+        this.vel.x = 0;
+        this.vel.y = 0;
+    }
+
+    setMouseLock(_bool){
+        this.mouselock = _bool;
+        if(this.mouselock === true){
+            this.scene.input.mouse.requestPointerLock();
+        }else{
+            if (this.scene.input.mouse.locked){
+                this.scene.input.mouse.releasePointerLock();
             }
         }
     }

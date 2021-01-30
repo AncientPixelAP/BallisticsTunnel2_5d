@@ -14,6 +14,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
         this.load.json("modDebugWallTest", "jsons/models/debugWallTest.json");
         this.load.json("modElevatorBase", "jsons/models/elevatorBase.json");
+        this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");

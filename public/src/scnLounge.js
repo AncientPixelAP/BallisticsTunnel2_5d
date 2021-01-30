@@ -37,6 +37,7 @@ export default class ScnLounge extends Phaser.Scene {
             t: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T),
             c: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.C),
             v: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.V),
+            z: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z),
             space: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             ctrl: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL),
             alt: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT),
@@ -69,11 +70,10 @@ export default class ScnLounge extends Phaser.Scene {
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO)
         }
 
-        
-
         this.hand = new Hand(this);
-        /*
+        this.hand.setMouseLock(true);
 
+        /*
         this.btnBack = new Button(this, { x: -160, y: - 66 }, "sprBtn00", "BACK", false, () => {
             this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
                 if (_pct >= 1) {
@@ -91,24 +91,15 @@ export default class ScnLounge extends Phaser.Scene {
         this.geometryController = new GeometryController(this);
 
         //add debug grid
-        /*for(let z = 0 ; z < 5 ; z++){
-            for(let x = -2 ; x < 2 ; x++){
-                let yy = z * 2;
-                if(x != 0){
-                    yy = 0;
-                }
-                this.geometryController.loadModel("DebugTile", "modDebugTile", {
-                    x: x * 32,
-                    y: yy,
-                    z: z * -32
-                });
-            }
-        }
+        /*
         this.geometryController.loadModel("DebugTile", "modDebugTile", {
             x: 0,
             y: 8,
             z: 0
-        });*/
+        });
+        */
+
+        
 
         this.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
             x: 0,
@@ -116,11 +107,17 @@ export default class ScnLounge extends Phaser.Scene {
             z: 0
         });
 
-        this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
+        this.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
+            x: 0,
+            y: 8,
+            z: -96
+        });
+
+        /*this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
             x: 0,
             y: 0,
             z: -96
-        });
+        });*/
     }
 
     update(){
@@ -137,6 +134,8 @@ export default class ScnLounge extends Phaser.Scene {
         }
 
        this.geometryController.draw(this.cam.pos, this.cam.dir);
+
+       this.hand.lateUpdate();
     }
 
     editorControls(){
@@ -155,18 +154,7 @@ export default class ScnLounge extends Phaser.Scene {
         }
 
         //camera controls
-        if (this.cursors.up.isDown) {
-            this.cam.dir.pitch += this.cam.dir.spd.pitch;
-        }
-        if (this.cursors.down.isDown) {
-            this.cam.dir.pitch -= this.cam.dir.spd.pitch;
-        }
-        if (this.cursors.right.isDown) {
-            this.cam.dir.yaw -= this.cam.dir.spd.yaw;
-        }
-        if (this.cursors.left.isDown) {
-            this.cam.dir.yaw += this.cam.dir.spd.yaw;
-        }
+        this.keyboardLook();
 
         if (this.keys.a.isDown) {
             this.cam.pos.z -= Math.cos(this.cam.dir.yaw - HALFPI) * 1;
@@ -194,18 +182,10 @@ export default class ScnLounge extends Phaser.Scene {
     }
 
     gameControls(){
-        if (this.cursors.up.isDown) {
-            this.cam.dir.pitch += this.cam.dir.spd.pitch;
-        }
-        if (this.cursors.down.isDown) {
-            this.cam.dir.pitch -= this.cam.dir.spd.pitch;
-        }
-        if (this.cursors.right.isDown) {
-            this.cam.dir.yaw -= this.cam.dir.spd.yaw;
-        }
-        if (this.cursors.left.isDown) {
-            this.cam.dir.yaw += this.cam.dir.spd.yaw;
-        }
+        this.keyboardLook();
+        this.mouseLook();
+
+        this.cam.dir.pitch = Math.max(-HALFPI, Math.min(HALFPI ,this.cam.dir.pitch));
 
         let toPos = {
             x: this.cam.pos.x,
@@ -359,6 +339,32 @@ export default class ScnLounge extends Phaser.Scene {
         }else{
             //move because there is nothing out there
             this.cam.pos.z = toPos.z;
+        }
+    }
+
+    keyboardLook(){
+        if (this.cursors.up.isDown) {
+            this.cam.dir.pitch += this.cam.dir.spd.pitch;
+        }
+        if (this.cursors.down.isDown) {
+            this.cam.dir.pitch -= this.cam.dir.spd.pitch;
+        }
+        if (this.cursors.right.isDown) {
+            this.cam.dir.yaw -= this.cam.dir.spd.yaw;
+        }
+        if (this.cursors.left.isDown) {
+            this.cam.dir.yaw += this.cam.dir.spd.yaw;
+        }
+    }
+
+    mouseLook(){
+        if(this.hand.vel.x !== 0){
+            //this.cam.dir.yaw = prevCamDir.yaw;
+            this.cam.dir.yaw -= (this.hand.vel.x * 0.25) * this.cam.dir.spd.yaw;
+        }
+        if(this.hand.vel.y !== 0){
+            //this.cam.dir.pitch = prevCamDir.pitch;
+            this.cam.dir.pitch += (this.hand.vel.y * 0.25) * this.cam.dir.spd.pitch;
         }
     }
 
