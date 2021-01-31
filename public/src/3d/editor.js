@@ -27,6 +27,12 @@ export default class Editor {
                 "texMetalDark01",
                 "texElevatorLight00",
                 "texElevatorLight01"
+            ],[
+                "sprDebugTexture",
+                "sprLogoArashi",
+                "sprAdvertTeamArashi",
+                "texSegStartTunnel00",
+                "texSegStartTunnel02"
             ]],
             position: 0,
             bank: 0
@@ -113,6 +119,11 @@ export default class Editor {
                     this.textures.bank += 1;
                 }
                 this.textures.bank = Math.max(0, Math.min(this.textures.bank, this.textures.palette.length-1));
+
+                this.textures.position = Math.max(0, Math.min(this.textures.position, this.textures.palette[this.textures.bank].length-1));
+                if(this.quad !== null){
+                    this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
+                }
             }
             //flip through texture
             if (this.scene.keys.t.isDown) {

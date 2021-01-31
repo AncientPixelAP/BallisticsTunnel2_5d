@@ -28,6 +28,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texElevatorLight00", "sprites/3dTextures/texElevatorLight00.png");
         this.load.image("texElevatorLight01", "sprites/3dTextures/texElevatorLight01.png");
 
+        this.load.image("texSegStartTunnel00", "sprites/segmentsSingles/sprSegStartTunnel00.png");
+        this.load.image("texSegStartTunnel02", "sprites/segmentsSingles/sprSegStartTunnel02.png");
+
         //this.load.image('image0', '0.png');
         //this.load.json("story1", "storyjson/story1.json");
         //this.load.text("locDE", "languageData/deutsch.txt");
