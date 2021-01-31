@@ -11,6 +11,7 @@ export default class DataQuad{
         this.quads = [];// to be filled by a phaser quad if it should be rendered
         this.mipmapped = false;
         this.depth = 0;
+        this.shade = 0;
 
         this.screenCoords = [
             { x: 0, y: 0 },
@@ -79,6 +80,17 @@ export default class DataQuad{
                 this.quads[3].setBottomLeft(this.screenCoords[3].x, this.screenCoords[3].y);
                 this.quads[3].depth = this.depth;
             }
+
+            /*
+            let col = Phaser.Display.Color.GetColor(this.shade, this.shade, this.shade);
+            for(let q of this.quads){
+                //shading
+                q.topLeftColor = col;
+                q.topRightColor = col;
+                q.bottomLeftColor = col;
+                q.bottomRightColor = col;
+            }
+            */
         }
     }
 
@@ -127,6 +139,7 @@ export default class DataQuad{
             sumZ += nz;
         }
         this.depth = sumZ * -0.25;
+        this.shade = Math.max(0, 255 - ((recZ + 32) * 0.5));
 
         if(this.type !== "collisionQuad"){
             if(this.depth >= 0){//near clipping plane could be at -25 for example

@@ -107,10 +107,21 @@ export default class ScnLounge extends Phaser.Scene {
             z: 0
         });
 
-        this.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
+        this.geometryController.loadModel("HangarHallway", "modHangarHallway", {
             x: 0,
-            y: 8,
-            z: -96
+            y: 0,
+            z: -52
+        });
+        this.geometryController.loadModel("HangarMain", "modHangarMain", {
+            x: -48,
+            y: -56,
+            z: -276
+        });
+
+        this.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
+            x: -256,
+            y: -56,
+            z: -256
         });
 
         /*this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
@@ -360,11 +371,11 @@ export default class ScnLounge extends Phaser.Scene {
     mouseLook(){
         if(this.hand.vel.x !== 0){
             //this.cam.dir.yaw = prevCamDir.yaw;
-            this.cam.dir.yaw -= (this.hand.vel.x * 0.25) * this.cam.dir.spd.yaw;
+            this.cam.dir.yaw -= ((this.hand.vel.x * 0.25) * this.cam.dir.spd.yaw);
         }
         if(this.hand.vel.y !== 0){
             //this.cam.dir.pitch = prevCamDir.pitch;
-            this.cam.dir.pitch += (this.hand.vel.y * 0.25) * this.cam.dir.spd.pitch;
+            this.cam.dir.pitch += ((this.hand.vel.y * 0.25) * this.cam.dir.spd.pitch);
         }
     }
 
