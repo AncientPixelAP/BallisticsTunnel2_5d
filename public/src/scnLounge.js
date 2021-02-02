@@ -124,13 +124,19 @@ export default class ScnLounge extends Phaser.Scene {
             z: -256
         });
 
+        this.geometryController.loadModel("ShipArashiDart", "modShipArashiDart", {
+            x: -256,
+            y: -56,
+            z: -56
+        });
+
         /*this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
             x: 0,
             y: 0,
             z: -96
         });*/
 
-        this.debugTxt = this.add.bitmapText(0, 0, "pixochrome", "TEST Test test 00 gbqrSX5s", 32, 1).setOrigin(0.5);
+        this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "pixochrome", "TEST Test test 00 gbqrSX5s", 32, 1).setOrigin(0).setLetterSpacing(-2);
     }
 
     update(){
@@ -144,6 +150,13 @@ export default class ScnLounge extends Phaser.Scene {
             this.editor.update();
         }else{
             this.gameControls();
+
+            let hits = [];
+            hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
+            if (hits.length > 0) {
+                hits = hits.sort((a, b) => a.depth - b.depth);
+                this.debugTxt.setText(hits[hits.length - 1].modelId);
+            }
         }
 
        this.geometryController.draw(this.cam.pos, this.cam.dir);

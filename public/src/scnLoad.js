@@ -17,6 +17,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
         this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
+        this.load.json("modShipArashiDart", "jsons/models/shipArashiDart.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -26,7 +27,11 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetalDark00", "sprites/3dTextures/texMetalDark00.png");
         this.load.image("texMetalDark01", "sprites/3dTextures/texMetalDark01.png"); 
         this.load.image("texElevatorLight00", "sprites/3dTextures/texElevatorLight00.png");
-        this.load.image("texElevatorLight01", "sprites/3dTextures/texElevatorLight01.png"); 
+        this.load.image("texElevatorLight01", "sprites/3dTextures/texElevatorLight01.png");
+
+        this.load.image("texPlatingYellow00", "sprites/3dTextures/texPlatingYellow00.png");
+        this.load.image("texPlatingYellow01", "sprites/3dTextures/texPlatingYellow01.png");
+
         this.load.image("texPlatingRed00", "sprites/3dTextures/texPlatingRed00.png");
         this.load.image("texPlatingRed01", "sprites/3dTextures/texPlatingRed01.png");
         this.load.image("texPlatingRed02", "sprites/3dTextures/texPlatingRed02.png");
@@ -34,6 +39,10 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texPlatingRed04", "sprites/3dTextures/texPlatingRed04.png");
         this.load.image("texPlatingRed05", "sprites/3dTextures/texPlatingRed05.png");
         this.load.image("texPlatingRed06", "sprites/3dTextures/texPlatingRed06.png");
+        this.load.image("texPlatingRed07", "sprites/3dTextures/texPlatingRed07.png");
+        this.load.image("texPlatingRed08", "sprites/3dTextures/texPlatingRed08.png");
+        this.load.image("texPlatingRed09", "sprites/3dTextures/texPlatingRed09.png");
+
         this.load.image("texGlass00", "sprites/3dTextures/texGlass00.png");
         this.load.image("texGlass01", "sprites/3dTextures/texGlass01.png");
         this.load.image("texGlass02", "sprites/3dTextures/texGlass02.png");

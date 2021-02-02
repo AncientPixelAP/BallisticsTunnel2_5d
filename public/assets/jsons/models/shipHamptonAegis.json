@@ -195,7 +195,7 @@
         },
         {
             "type": "quad",
-            "texture": "texPlatingRed03",
+            "texture": "texPlatingRed09",
             "frame": 0,
             "position": {
                 "x": 0,
@@ -227,7 +227,7 @@
         },
         {
             "type": "quad",
-            "texture": "texPlatingRed03",
+            "texture": "texPlatingRed09",
             "frame": 0,
             "position": {
                 "x": 0,
@@ -1068,43 +1068,6 @@
             },
             "points": [
                 {
-                    "x": -4,
-                    "y": -24,
-                    "z": 4
-                },
-                {
-                    "x": 0,
-                    "y": -24,
-                    "z": 4
-                },
-                {
-                    "x": 0,
-                    "y": -24,
-                    "z": 16
-                },
-                {
-                    "x": -4,
-                    "y": -24,
-                    "z": 16
-                }
-            ]
-        },
-        {
-            "type": "quad",
-            "texture": "texPlatingRed05",
-            "frame": 0,
-            "position": {
-                "x": 0,
-                "y": 0,
-                "z": 0
-            },
-            "points": [
-                {
-                    "x": 0,
-                    "y": -24,
-                    "z": 4
-                },
-                {
                     "x": 4,
                     "y": -24,
                     "z": 4
@@ -1115,9 +1078,14 @@
                     "z": 16
                 },
                 {
-                    "x": 0,
+                    "x": -4,
                     "y": -24,
                     "z": 16
+                },
+                {
+                    "x": -4,
+                    "y": -24,
+                    "z": 4
                 }
             ]
         },

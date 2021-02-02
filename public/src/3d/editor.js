@@ -41,6 +41,13 @@ export default class Editor {
                 "texPlatingRed04",
                 "texPlatingRed05",
                 "texPlatingRed06",
+                "texPlatingRed07",
+                "texPlatingRed08",
+                "texPlatingRed09",
+            ], [
+                "texPlatingYellow00",
+                "texPlatingYellow01"
+            ],[
                 "texGlass00",
                 "texGlass01",
                 "texGlass02",
