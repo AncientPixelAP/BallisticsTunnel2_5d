@@ -129,6 +129,8 @@ export default class ScnLounge extends Phaser.Scene {
             y: 0,
             z: -96
         });*/
+
+        this.debugTxt = this.add.bitmapText(0, 0, "pixochrome", "TEST Test test 00 gbqrSX5s", 32, 1).setOrigin(0.5);
     }
 
     update(){

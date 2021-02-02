@@ -33,6 +33,20 @@ export default class Editor {
                 "sprAdvertTeamArashi",
                 "texSegStartTunnel00",
                 "texSegStartTunnel02"
+            ], [
+                "texPlatingRed00",
+                "texPlatingRed01",
+                "texPlatingRed02",
+                "texPlatingRed03",
+                "texPlatingRed04",
+                "texPlatingRed05",
+                "texPlatingRed06",
+                "texGlass00",
+                "texGlass01",
+                "texGlass02",
+                "texGrating00",
+                "texGrating01",
+                "texGrating02"
             ]],
             position: 0,
             bank: 0
