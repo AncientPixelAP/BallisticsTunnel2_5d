@@ -57,7 +57,7 @@ export default class ScnLounge extends Phaser.Scene {
         }
         this.numkeys = {
             plus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD),
-            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBSTRACT),
+            minus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_SUBTRACT),
             one: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
             two: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
             three: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_THREE),
@@ -105,6 +105,17 @@ export default class ScnLounge extends Phaser.Scene {
             x: 0,
             y: 0,
             z: 0
+        });
+
+        this.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
+            x: -16,
+            y: 0,
+            z: -32
+        });
+        this.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
+            x: 16,
+            y: 0,
+            z: -32
         });
 
         this.geometryController.loadModel("HangarHallway", "modHangarHallway", {

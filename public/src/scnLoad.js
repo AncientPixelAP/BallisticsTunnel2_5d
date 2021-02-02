@@ -14,6 +14,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
         this.load.json("modDebugWallTest", "jsons/models/debugWallTest.json");
         this.load.json("modElevatorBase", "jsons/models/elevatorBase.json");
+        this.load.json("modElevatorDoor", "jsons/models/elevatorDoor.json");
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
         this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
@@ -28,6 +29,16 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetalDark01", "sprites/3dTextures/texMetalDark01.png"); 
         this.load.image("texElevatorLight00", "sprites/3dTextures/texElevatorLight00.png");
         this.load.image("texElevatorLight01", "sprites/3dTextures/texElevatorLight01.png");
+
+        this.load.image("texMetalHangar00", "sprites/3dTextures/texMetalHangar00.png");
+        this.load.image("texMetalHangar01", "sprites/3dTextures/texMetalHangar01.png");
+        this.load.image("texMetalHangar02", "sprites/3dTextures/texMetalHangar02.png");
+        this.load.image("texMetalHangarLineEnd", "sprites/3dTextures/texMetalHangarLineEnd.png");
+        this.load.image("texMetalHangarLineStraight", "sprites/3dTextures/texMetalHangarLineStraight.png");
+        this.load.image("texMetalHangarLineCurve", "sprites/3dTextures/texMetalHangarLineCurve.png");
+        this.load.image("texMetalHangarLineT", "sprites/3dTextures/texMetalHangarLineT.png");
+        this.load.image("texWallGrind00", "sprites/3dTextures/texWallGrind00.png");
+        this.load.image("texWallGrind01", "sprites/3dTextures/texWallGrind01.png");
 
         this.load.image("texPlatingYellow00", "sprites/3dTextures/texPlatingYellow00.png");
         this.load.image("texPlatingYellow01", "sprites/3dTextures/texPlatingYellow01.png");

@@ -261,6 +261,38 @@ export default class DataQuad{
         };
     }
 
+    cyclePoints(_cw){
+        if(_cw === true){
+            let help = {
+                x: this.points[0].x,
+                y: this.points[0].y,
+                z: this.points[0].z
+            }
+            for(let i = 0 ; i < 3 ; i++){
+                this.points[i].x = this.points[i + 1].x;
+                this.points[i].y = this.points[i + 1].y;
+                this.points[i].z = this.points[i + 1].z;
+            }
+            this.points[3].x = help.x;
+            this.points[3].y = help.y;
+            this.points[3].z = help.z;
+        }else{
+            let help = {
+                x: this.points[3].x,
+                y: this.points[3].y,
+                z: this.points[3].z
+            }
+            for (let i = 3; i > 0; i--) {
+                this.points[i].x = this.points[i - 1].x;
+                this.points[i].y = this.points[i - 1].y;
+                this.points[i].z = this.points[i - 1].z;
+            }
+            this.points[0].x = help.x;
+            this.points[0].y = help.y;
+            this.points[0].z = help.z;
+        }
+    }
+
     setTexture(_tex){
         this.texture = _tex;
         for(let q of this.quads){

@@ -28,6 +28,16 @@ export default class Editor {
                 "texElevatorLight00",
                 "texElevatorLight01"
             ],[
+                "texMetalHangar00",
+                "texMetalHangar01",
+                "texMetalHangar02",
+                "texMetalHangarLineEnd",
+                "texMetalHangarLineStraight",
+                "texMetalHangarLineCurve",
+                "texMetalHangarLineT",
+                "texWallGrind00",
+                "texWallGrind01"
+            ],[
                 "sprDebugTexture",
                 "sprLogoArashi",
                 "sprAdvertTeamArashi",
@@ -127,6 +137,17 @@ export default class Editor {
         this.scene.numkeys.five.on("up", (_key, _event) => {
             if(this.quad !== null){
                 this.quad.recalculatePosition();
+            }
+        }, this);
+
+        this.scene.numkeys.plus.on("up", (_key, _event) => {
+            if (this.quad !== null) {
+                this.quad.cyclePoints(true);
+            }
+        }, this);
+        this.scene.numkeys.minus.on("up", (_key, _event) => {
+            if (this.quad !== null) {
+                this.quad.cyclePoints(false);
             }
         }, this);
 
