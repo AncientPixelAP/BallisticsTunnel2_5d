@@ -147,7 +147,13 @@ export default class ScnLounge extends Phaser.Scene {
             z: -96
         });*/
 
-        this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "pixochrome", "TEST Test test 00 gbqrSX5s", 32, 1).setOrigin(0).setLetterSpacing(-2);
+        this.modelName = "";
+        this.debugTxt0 = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 8, "pixochrome", "TEST Test test 00 gbqrSX5s", 32, 1).setOrigin(0).setLetterSpacing(-2);
+        this.debugTxt1 = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 32, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
+        this.debugTxt2 = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 48, "empire_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
+        this.debugTxt3 = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 64, "omikron_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
+        this.debugTxt4 = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 80, "racer_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
+        this.debugTxt5 = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 96, "radar_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
     }
 
     update(){
@@ -166,7 +172,13 @@ export default class ScnLounge extends Phaser.Scene {
             hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
             if (hits.length > 0) {
                 hits = hits.sort((a, b) => a.depth - b.depth);
-                this.debugTxt.setText(hits[hits.length - 1].modelId);
+                this.modelName = hits[hits.length - 1].modelId;
+                this.debugTxt0.setText(this.modelName);
+                this.debugTxt1.setText(this.modelName);
+                this.debugTxt2.setText(this.modelName);
+                this.debugTxt3.setText(this.modelName);
+                this.debugTxt4.setText(this.modelName);
+                this.debugTxt5.setText(this.modelName);
             }
         }
 
