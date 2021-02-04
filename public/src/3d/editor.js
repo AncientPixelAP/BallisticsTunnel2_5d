@@ -26,7 +26,9 @@ export default class Editor {
                 "texMetalDark00",
                 "texMetalDark01",
                 "texElevatorLight00",
-                "texElevatorLight01"
+                "texElevatorLight01",
+                "texAirVentRotor00",
+                "texTrasseYellow00"
             ],[
                 "texMetalHangar00",
                 "texMetalHangar01",
@@ -35,14 +37,17 @@ export default class Editor {
                 "texMetalHangarLineStraight",
                 "texMetalHangarLineCurve",
                 "texMetalHangarLineT",
-                "texWallGrind00",
+                "texMetalHangar03",
+                "texMetalHangar04",
                 "texWallGrind01"
             ],[
                 "sprDebugTexture",
                 "sprLogoArashi",
                 "sprAdvertTeamArashi",
+                "texPainting16x16Dart",
                 "texSegStartTunnel00",
-                "texSegStartTunnel02"
+                "texSegStartTunnel02",
+                "mechanic"
             ], [
                 "texPlatingRed00",
                 "texPlatingRed01",
@@ -63,7 +68,10 @@ export default class Editor {
                 "texGlass02",
                 "texGrating00",
                 "texGrating01",
-                "texGrating02"
+                "texGrating02",
+                "texPadding00",
+                "texPadding01",
+                "texPadding02"
             ]],
             position: 0,
             bank: 0

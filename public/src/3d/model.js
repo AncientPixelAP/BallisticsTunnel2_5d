@@ -36,6 +36,14 @@ export default class Model{
 
     }
 
+    translate(_x, _y, _z){
+
+    }
+
+    rotate(_x, _y, _z){
+        
+    }
+
     draw(_from, _dir){
         for (let q of this.quadData){
             q.calculate3d(_from, _dir);

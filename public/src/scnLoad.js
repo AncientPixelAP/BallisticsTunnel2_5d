@@ -29,15 +29,18 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetalDark01", "sprites/3dTextures/texMetalDark01.png"); 
         this.load.image("texElevatorLight00", "sprites/3dTextures/texElevatorLight00.png");
         this.load.image("texElevatorLight01", "sprites/3dTextures/texElevatorLight01.png");
+        this.load.image("texAirVentRotor00", "sprites/3dTextures/texAirVentRotor00.png");
+        this.load.image("texTrasseYellow00", "sprites/3dTextures/texTrasseYellow00.png");
 
         this.load.image("texMetalHangar00", "sprites/3dTextures/texMetalHangar00.png");
         this.load.image("texMetalHangar01", "sprites/3dTextures/texMetalHangar01.png");
         this.load.image("texMetalHangar02", "sprites/3dTextures/texMetalHangar02.png");
+        this.load.image("texMetalHangar03", "sprites/3dTextures/texMetalHangar03.png");
+        this.load.image("texMetalHangar04", "sprites/3dTextures/texMetalHangar04.png");
         this.load.image("texMetalHangarLineEnd", "sprites/3dTextures/texMetalHangarLineEnd.png");
         this.load.image("texMetalHangarLineStraight", "sprites/3dTextures/texMetalHangarLineStraight.png");
         this.load.image("texMetalHangarLineCurve", "sprites/3dTextures/texMetalHangarLineCurve.png");
         this.load.image("texMetalHangarLineT", "sprites/3dTextures/texMetalHangarLineT.png");
-        this.load.image("texWallGrind00", "sprites/3dTextures/texWallGrind00.png");
         this.load.image("texWallGrind01", "sprites/3dTextures/texWallGrind01.png");
 
         this.load.image("texPlatingYellow00", "sprites/3dTextures/texPlatingYellow00.png");
@@ -60,7 +63,11 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texGrating00", "sprites/3dTextures/texGrating00.png");
         this.load.image("texGrating01", "sprites/3dTextures/texGrating01.png");
         this.load.image("texGrating02", "sprites/3dTextures/texGrating02.png");
+        this.load.image("texPadding00", "sprites/3dTextures/texPadding00.png");
+        this.load.image("texPadding01", "sprites/3dTextures/texPadding01.png");
+        this.load.image("texPadding02", "sprites/3dTextures/texPadding02.png");
 
+        this.load.image("texPainting16x16Dart", "sprites/3dTextures/texPainting16x16Dart00.png");
         this.load.image("texSegStartTunnel00", "sprites/segmentsSingles/sprSegStartTunnel00.png");
         this.load.image("texSegStartTunnel02", "sprites/segmentsSingles/sprSegStartTunnel02.png");
 
@@ -98,6 +105,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("PaulM_smallBrown", "raw/SebiM_lores00.png");
         this.load.image("PaulM_smallDog", "raw/PaulM_lores01.png");
         this.load.image("PaulM_smallGreenn", "raw/PaulM_smallGreenn01.png");
+        this.load.image("mechanic", "sprites/characters/wheelchairMechanic.png");
 
         //SEGMENTS
         this.load.spritesheet("sprSegMetalRoad00", "sprites/segments/sprSegMetalRoad00.png", { frameWidth: 128, frameHeight: 128 });
