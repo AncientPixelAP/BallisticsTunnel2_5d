@@ -70,7 +70,7 @@
         //shader
 
         let greenscalePipeline;
-        let rti, pip;
+        let rti, pip, eud;
 
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
         /*var socket = io("192.168.80.1:3000");
@@ -93,6 +93,7 @@
 
         import RTI from "./src/additionalMath/rayTriangleIntersection.js";
         import PIP from "./src/additionalMath/pointInPolygon.js";
+        import EuclidianDistance from "./src/additionalMath/euclidianDistance.js";
 
         let ratio = Math.max(0.5, Math.min(1.77,window.innerWidth / window.innerHeight));
         let w = 512;
@@ -124,6 +125,7 @@
 
         rti = new RTI();
         pip = new PIP();
+        eud = new EuclidianDistance();
 
     </script>
 </body>

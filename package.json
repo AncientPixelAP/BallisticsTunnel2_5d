@@ -10,6 +10,7 @@
   "author": "Sebastian Merkl",
   "license": "ISC",
   "dependencies": {
+    "euclidean-distance": "^1.0.0",
     "express": "^4.17.1",
     "path": "^0.12.7",
     "socket.io": "^2.2.0"

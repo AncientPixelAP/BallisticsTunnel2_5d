@@ -108,37 +108,50 @@ export default class ScnLounge extends Phaser.Scene {
         });
 
         this.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
-            x: -16,
+            x: 8,
             y: 0,
-            z: -30
+            z: 30
         });
         this.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
-            x: 16,
+            x: -8,
             y: 0,
-            z: -30
+            z: 30
         });
+        let m = this.geometryController.getModelById("ElevatorDoorRight");
+        let ml = this.geometryController.getModelById("ElevatorDoorLeft");
+        m.interact = () => {
+            m.mover.isMoving = true;
+            m.mover.spd = 0.01;
+            m.mover.target.x = (m.pos.x) + 12;
+            ml.mover.isMoving = true;
+            ml.mover.spd = 0.01;
+            ml.mover.target.x = (ml.pos.x) - 12;
+        };
+        ml.interact = () => {
+            m.interact();
+        }
 
         this.geometryController.loadModel("HangarHallway", "modHangarHallway", {
             x: 0,
             y: 0,
-            z: -52
+            z: 52
         });
         this.geometryController.loadModel("HangarMain", "modHangarMain", {
-            x: -48,
-            y: -56,
-            z: -276
+            x: 48,
+            y: 56,
+            z: 276
         });
 
         this.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
-            x: -256,
-            y: -56,
-            z: -256
+            x: 256,
+            y: 56,
+            z: 256
         });
 
         this.geometryController.loadModel("ShipArashiDart", "modShipArashiDart", {
-            x: -256,
-            y: -56,
-            z: -56
+            x: 256,
+            y: 56,
+            z: 56
         });
 
         /*this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
@@ -164,12 +177,23 @@ export default class ScnLounge extends Phaser.Scene {
             this.gameControls();
 
             let hits = [];
-            hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
+            //hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
+            hits = this.geometryController.getQuadsFromScreenspaceAt(0, 0, false);
             if (hits.length > 0) {
                 hits = hits.sort((a, b) => a.depth - b.depth);
                 this.modelName = hits[hits.length - 1].modelId;
                 this.debugTxt.setText(this.modelName);
+
+                if (this.hand.justReleased) {
+                    let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
+                    model.interact();
+                    /*if (this.modelName === "ElevatorDoorRight"){
+                        model.translateAndRotate({ x: Math.sin(this.cam.dir.yaw) * -4, y: 0, z: Math.cos(this.cam.dir.yaw) * 4}, {yaw: 0, pitch: 0, roll: 0});
+                    }*/
+                }
             }
+
+            
         }
 
        this.geometryController.draw(this.cam.pos, this.cam.dir);
@@ -185,10 +209,8 @@ export default class ScnLounge extends Phaser.Scene {
                 hits = hits.sort((a, b) => a.depth - b.depth);
                 this.editor.quad = hits[hits.length-1];
 
-                let model = this.geometryController.getModelById(this.editor.quad.modelId);
-                if (model.length > 0) {
-                    this.editor.model = model[0];
-                }
+                this.editor.model = this.geometryController.getModelById(this.editor.quad.modelId);
+                //console.log(this.editor.model);
             }
         }
 

@@ -6,7 +6,30 @@ export default class Model{
         this.geometryController = _geometryController;
         this.id = _id;
         this.modelData = this.scene.cache.json.get(_modelDataJson);
-        this.pos = _pos;
+        this.pos = {
+            x: _pos.x,
+            y: _pos.y,
+            z: _pos.z
+        };
+        this.dir = {
+            yaw: 0,
+            pitch: 0,
+            roll: 0
+        }
+        this.data = {};
+        this.interact = () => {};
+
+        this.mover = {
+            isMoving: false,
+            target: {
+                x: +this.pos.x,
+                y: +this.pos.y,
+                z: +this.pos.z
+            },
+            targets: [],
+            spd: 0.01
+        }
+        
 
         this.quadData = [];
         for (let [i, q] of this.modelData.quadData.entries()) {
@@ -16,9 +39,9 @@ export default class Model{
         this.collisionData = [];
         for (let [i, q] of this.modelData.collisionData.entries()) {
             let pos = {
-                x: q.position.x - this.pos.x,
-                y: q.position.y - this.pos.y,
-                z: q.position.z - this.pos.z
+                x: q.position.x + this.pos.x,
+                y: q.position.y + this.pos.y,
+                z: q.position.z + this.pos.z
             }
             this.collisionData.push(
                 new DataQuad(this.scene, this.id, i, q.type, pos, q.points, "none", 0)
@@ -33,15 +56,67 @@ export default class Model{
     }
 
     update(){
-
+        if(this.mover.isMoving){
+            let d = eud.distance([this.pos.x, this.pos.y, this.pos.z], [this.mover.target.x, this.mover.target.y, this.mover.target.z]);
+            if (d > this.mover.spd){
+                //console.log(d);
+                let a = Phaser.Math.Angle.Between(this.pos.x, this.pos.z, this.mover.target.x, this.mover.target.z);
+                this.translateAndRotate({ x: Math.cos(a) * this.mover.spd, y: 0, z: Math.sin(a) * this.mover.spd}, {yaw: 0.1, pitch: 0, roll: 0});
+                //this.jumpToPosition({ x: this.mover.target.x, y: this.mover.target.y, z: this.mover.target.z})
+            }else{
+                console.log("finished moving");
+                this.mover.isMoving = false;
+            }
+        }
     }
 
-    translate(_x, _y, _z){
+    translateAndRotate(_offset, _dir){
+        this.dir.yaw += _dir.yaw;
+        this.dir.pitch += _dir.pitch;
+        this.dir.roll += _dir.roll;
 
-    }
-
-    rotate(_x, _y, _z){
+        for(let q of this.quadData){
+            for(let [i, p] of q.points.entries()){
+                let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
+                let nx = outXZ[0];
+                let ny = outXZ[1];
+                let nz = outXZ[2];
+                let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.pitch);
+                p.x = outYZ[0];
+                p.y = outYZ[1];
+                p.z = outYZ[2];
+            }
+        }
         
+        this.pos.x += _offset.x;
+        this.pos.y += _offset.y;
+        this.pos.z += _offset.z;
+        for(let q of this.quadData){
+            q.pos.x += _offset.x;
+            q.pos.y += _offset.y;
+            q.pos.z += _offset.z;
+        }
+        for (let q of this.collisionData) {
+            q.pos.x += _offset.x;
+            q.pos.y += _offset.y;
+            q.pos.z += _offset.z;
+        }
+    }
+
+    jumpToPosition(_pos){
+        this.pos.x = _pos.x;
+        this.pos.y = _pos.y;
+        this.pos.z = _pos.z;
+        for (let q of this.quadData) {
+            q.pos.x = _pos.x;
+            q.pos.y = _pos.y;
+            q.pos.z = _pos.z;
+        }
+        for (let q of this.collisionData) {
+            q.pos.x = _pos.x;
+            q.pos.y = _pos.y;
+            q.pos.z = _pos.z;
+        }
     }
 
     draw(_from, _dir){
@@ -75,9 +150,9 @@ export default class Model{
 
     addQuadFromData(_q){
         let pos = {
-            x: _q.position.x - this.pos.x,
-            y: _q.position.y - this.pos.y,
-            z: _q.position.z - this.pos.z
+            x: _q.position.x + this.pos.x,
+            y: _q.position.y + this.pos.y,
+            z: _q.position.z + this.pos.z
         }
         if(_q.type !== "collisionQuad"){
             let no = this.quadData.length;
@@ -142,9 +217,9 @@ export default class Model{
                 texture: q.texture,
                 frame: q.frame,
                 position: {
-                    x: q.pos.x + this.pos.x,
-                    y: q.pos.y + this.pos.y,
-                    z: q.pos.z + this.pos.z,
+                    x: q.pos.x - this.pos.x,
+                    y: q.pos.y - this.pos.y,
+                    z: q.pos.z - this.pos.z,
                 },
                 points: pts
             });
@@ -162,9 +237,9 @@ export default class Model{
             logobj.collisionData.push({
                 type: "collisionQuad",
                 position: {
-                    x: q.pos.x + this.pos.x,
-                    y: q.pos.y + this.pos.y,
-                    z: q.pos.z + this.pos.z,
+                    x: q.pos.x - this.pos.x,
+                    y: q.pos.y - this.pos.y,
+                    z: q.pos.z - this.pos.z,
                 },
                 points: pts
             });

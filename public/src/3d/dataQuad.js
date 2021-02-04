@@ -254,11 +254,13 @@ export default class DataQuad{
     }
 
     recalculatePosition(){
+        /*
+        //TODO rework this - this doesnt calculate the mdipoint of the quad
         this.pos = {
             x: (this.points[0].x + this.points[1].x + this.points[2].x + this.points[3].x) / 4,
             y: (this.points[0].y + this.points[1].y + this.points[2].y + this.points[3].y) / 4,
             z: (this.points[0].z + this.points[1].z + this.points[2].z + this.points[3].z) / 4
-        };
+        };*/
     }
 
     cyclePoints(_cw){
