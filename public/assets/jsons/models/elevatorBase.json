@@ -163,7 +163,7 @@
         },
         {
             "type": "quad",
-            "texture": "texElevatorWall01",
+            "texture": "texElevatorWall02",
             "frame": 0,
             "position": {
                 "x": 0,

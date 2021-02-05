@@ -2,7 +2,7 @@ export default class Editor {
     constructor(_scene) {
         this.scene = _scene;
 
-        this.enabled = true;
+        this.enabled = false;
         this.points = [
             this.scene.add.sprite(0, 0, "sprDebugQuadPoint1"),
             this.scene.add.sprite(0, 0, "sprDebugQuadPoint2"),
@@ -11,6 +11,9 @@ export default class Editor {
             //this.add.sprite(0, 0, "sprDebugQuadPoint4"),
             //this.add.sprite(0, 0, "sprDebugQuadPointCenter")
         ];
+        for (let p of this.points) {
+            p.alpha = 0;
+        }
         this.editPointsEnabled = [false, false, false, false];
         this.quad = null;
         this.model = null;
@@ -21,6 +24,7 @@ export default class Editor {
             palette:  [[
                 "texElevatorWall00",
                 "texElevatorWall01",
+                "texElevatorWall02",
                 "texElevatorDoor00",
                 "texElevatorDoor01",
                 "texMetalDark00",
@@ -28,6 +32,7 @@ export default class Editor {
                 "texElevatorLight00",
                 "texElevatorLight01",
                 "texAirVentRotor00",
+                "texElevatorButtonPanel00",
                 "texTrasseYellow00"
             ],[
                 "texMetalHangar00",
@@ -76,6 +81,14 @@ export default class Editor {
             position: 0,
             bank: 0
         }
+
+
+        this.grid = {
+            size: 4,
+            min: 0.1,
+            max: 16,
+            txt: this.scene.add.bitmapText((this.scene.game.config.width * 0.5) - 16, (this.scene.game.config.height * -0.5) + 16, "bravenewEra_16", "grid: 4.00", 16, 1).setOrigin(1, 0).setLetterSpacing(1)
+        }
         
 
         //setup Editor key grabs
@@ -103,42 +116,42 @@ export default class Editor {
         this.scene.numkeys.eight.on("up", (_key, _event) => {
             for (let [i, e] of this.editPointsEnabled.entries()) {
                 if (e === true) {
-                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw) * -4, y: 0, z: Math.cos(this.scene.cam.dir.yaw) * 4 });
+                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw) * -this.grid.size, y: 0, z: Math.cos(this.scene.cam.dir.yaw) * this.grid.size });
                 }
             }
         }, this);
         this.scene.numkeys.two.on("up", (_key, _event) => {
             for (let [i, e] of this.editPointsEnabled.entries()) {
                 if (e === true) {
-                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw) * 4, y: 0, z: Math.cos(this.scene.cam.dir.yaw) * -4 });
+                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw) * this.grid.size, y: 0, z: Math.cos(this.scene.cam.dir.yaw) * -this.grid.size });
                 }
             }
         }, this);
         this.scene.numkeys.four.on("up", (_key, _event) => {
             for (let [i, e] of this.editPointsEnabled.entries()) {
                 if (e === true) {
-                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw - HALFPI) * 4, y: 0, z: Math.cos(this.scene.cam.dir.yaw - HALFPI) * -4 });
+                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw - HALFPI) * this.grid.size, y: 0, z: Math.cos(this.scene.cam.dir.yaw - HALFPI) * -this.grid.size });
                 }
             }
         }, this);
         this.scene.numkeys.six.on("up", (_key, _event) => {
             for (let [i, e] of this.editPointsEnabled.entries()) {
                 if (e === true) {
-                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw + HALFPI) * 4, y: 0, z: Math.cos(this.scene.cam.dir.yaw + HALFPI) * -4 });
+                    this.moveToolPoint(i, { x: Math.sin(this.scene.cam.dir.yaw + HALFPI) * this.grid.size, y: 0, z: Math.cos(this.scene.cam.dir.yaw + HALFPI) * -this.grid.size });
                 }
             }
         }, this);
         this.scene.numkeys.nine.on("up", (_key, _event) => {
             for (let [i, e] of this.editPointsEnabled.entries()) {
                 if (e === true) {
-                    this.moveToolPoint(i, { x: 0, y: -4, z: 0 });
+                    this.moveToolPoint(i, { x: 0, y: -this.grid.size, z: 0 });
                 }
             }
         }, this);
         this.scene.numkeys.three.on("up", (_key, _event) => {
             for (let [i, e] of this.editPointsEnabled.entries()) {
                 if (e === true) {
-                    this.moveToolPoint(i, { x: 0, y: 4, z: 0 });
+                    this.moveToolPoint(i, { x: 0, y: this.grid.size, z: 0 });
                 }
             }
         }, this);
@@ -187,6 +200,17 @@ export default class Editor {
                 if(this.quad !== null){
                     this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
                 }
+            }
+
+            //change gridsize
+            if (this.scene.keys.g.isDown) {
+                if (_deltaY > 0) {
+                    this.grid.size -= 0.1;
+                } else if (_deltaY < 0) {
+                    this.grid.size += 0.1;
+                }
+                this.grid.size = Math.max(this.grid.min, Math.min(this.grid.max, this.grid.size));
+                this.grid.txt.setText("Grid: " + this.grid.size.toFixed(1));
             }
         }, this);
 
@@ -276,9 +300,9 @@ export default class Editor {
         this.quad.points[_pt].y += _pos.y;
         this.quad.points[_pt].z += _pos.z;
 
-        this.quad.points[_pt].x = Math.round(this.quad.points[_pt].x / 4) * 4;
-        this.quad.points[_pt].y = Math.round(this.quad.points[_pt].y / 4) * 4;
-        this.quad.points[_pt].z = Math.round(this.quad.points[_pt].z / 4) * 4;
+        this.quad.points[_pt].x = Math.round(this.quad.points[_pt].x / this.grid.size) * this.grid.size;
+        this.quad.points[_pt].y = Math.round(this.quad.points[_pt].y / this.grid.size) * this.grid.size;
+        this.quad.points[_pt].z = Math.round(this.quad.points[_pt].z / this.grid.size) * this.grid.size;
     }
 
     duplicateQuad(_pos){

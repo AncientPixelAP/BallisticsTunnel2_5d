@@ -16,12 +16,18 @@ export default class Cam{
                 roll: 0.04
             }
         }
-        this.eyeHeight = 24;
-        this.stepHeight = 9;
-        this.collisionRadius = 12;
     }
 
     update(){
 
+    }
+
+    setPositionAndRotation(_pos, _dir){
+         this.pos.x = _pos.x;
+         this.pos.y = _pos.y;
+         this.pos.z = _pos.z;
+         this.dir.yaw = _dir.yaw;
+         this.dir.pitch = _dir.pitch;
+         this.dir.roll = _dir.roll;
     }
 }

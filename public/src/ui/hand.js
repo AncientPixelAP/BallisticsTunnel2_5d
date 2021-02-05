@@ -24,7 +24,7 @@ export default class Hand{
         }
 
         this.scene.input.on('pointermove', function (_pointer) {
-            if (this.mouselock){
+            if (this.scene.input.mouse.locked === true){
                 this.vel.x = Math.max(-10, Math.min(10, _pointer.movementX));
                 this.vel.y = Math.max(-10, Math.min(10, _pointer.movementY));
             }
@@ -34,6 +34,14 @@ export default class Hand{
     update(){
         this.pos.x = this.scene.input.activePointer.worldX;
         this.pos.y = this.scene.input.activePointer.worldY;
+
+        //this.mouselock = this.scene.input.mouse.locked;
+        /*if (this.scene.input.mouse.locked === false) {
+            if(this.mouselock === true){
+                this.mouselock = false;
+                this.scene.input.mouse.releasePointerLock();
+            }
+        }*/
 
         if(this.scene.input.activePointer.isDown){
             if(this.pressed === false){
@@ -74,5 +82,6 @@ export default class Hand{
                 this.scene.input.mouse.releasePointerLock();
             }
         }
+        console.log("mouselock: " + this.mouselock );
     }
 }

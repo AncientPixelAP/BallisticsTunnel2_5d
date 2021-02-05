@@ -18,16 +18,25 @@ export default class Model{
         }
         this.data = {};
         this.interact = () => {};
+        this.action = () => {};
 
         this.mover = {
             isMoving: false,
             target: {
-                x: +this.pos.x,
-                y: +this.pos.y,
-                z: +this.pos.z
+                pos: {
+                    x: this.pos.x,
+                    y: this.pos.y,
+                    z: this.pos.z,
+                    spd: 0.01,
+                },
+                dir: {
+                    yaw: this.dir.yaw,
+                    pitch: this.dir.pitch,
+                    roll: this.dir.roll,
+                    spd: 0.01,
+                }
             },
             targets: [],
-            spd: 0.01
         }
         
 
@@ -57,24 +66,48 @@ export default class Model{
 
     update(){
         if(this.mover.isMoving){
-            let d = eud.distance([this.pos.x, this.pos.y, this.pos.z], [this.mover.target.x, this.mover.target.y, this.mover.target.z]);
-            if (d > this.mover.spd){
-                //console.log(d);
-                let a = Phaser.Math.Angle.Between(this.pos.x, this.pos.z, this.mover.target.x, this.mover.target.z);
-                this.translateAndRotate({ x: Math.cos(a) * this.mover.spd, y: 0, z: Math.sin(a) * this.mover.spd}, {yaw: 0.1, pitch: 0, roll: 0});
-                //this.jumpToPosition({ x: this.mover.target.x, y: this.mover.target.y, z: this.mover.target.z})
-            }else{
-                console.log("finished moving");
+            let finishedMoving = true;
+            let finishedTurning = true;
+            let d = eud.distance([this.pos.x, this.pos.y, this.pos.z], [this.mover.target.pos.x, this.mover.target.pos.y, this.mover.target.pos.z]);
+
+            let toMove = {
+                offset: {
+                    x: 0,
+                    y: 0,
+                    z: 0,
+                },
+                dir: {
+                    yaw: 0,
+                    pitch: 0,
+                    roll: 0
+                }
+            }
+            if (this.dir.yaw != this.mover.target.dir.yaw || this.dir.pitch != this.mover.target.dir.pitch) {
+                finishedTurning = false;
+                toMove.dir.yaw = this.dir.yaw != this.mover.target.dir.yaw ? this.mover.target.dir.spd : 0;
+                toMove.dir.pitch = this.dir.yaw != this.mover.target.dir.pitch ? this.mover.target.dir.pitch : 0;
+                toMove.dir.roll = this.dir.yaw != this.mover.target.dir.roll ? this.mover.target.dir.roll : 0;
+            }
+            if(d > this.mover.target.pos.spd){
+                finishedMoving = false;
+                let a = Phaser.Math.Angle.Between(this.pos.x, this.pos.z, this.mover.target.pos.x, this.mover.target.pos.z);
+                toMove.offset.x = Math.cos(a) * this.mover.target.pos.spd;
+                toMove.offset.z = Math.sin(a) * this.mover.target.pos.spd;
+            }
+
+            if (finishedMoving === false || finishedTurning === false){
+                this.translateAndRotate(toMove.offset, toMove.dir);
+            } else {
                 this.mover.isMoving = false;
             }
         }
     }
 
     translateAndRotate(_offset, _dir){
+        // roates
         this.dir.yaw += _dir.yaw;
         this.dir.pitch += _dir.pitch;
         this.dir.roll += _dir.roll;
-
         for(let q of this.quadData){
             for(let [i, p] of q.points.entries()){
                 let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
@@ -87,7 +120,7 @@ export default class Model{
                 p.z = outYZ[2];
             }
         }
-        
+        //translate
         this.pos.x += _offset.x;
         this.pos.y += _offset.y;
         this.pos.z += _offset.z;

@@ -14,6 +14,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
         this.load.json("modDebugWallTest", "jsons/models/debugWallTest.json");
         this.load.json("modElevatorBase", "jsons/models/elevatorBase.json");
+        this.load.json("modElevatorButton", "jsons/models/elevatorButton.json");
         this.load.json("modElevatorDoor", "jsons/models/elevatorDoor.json");
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
@@ -23,8 +24,10 @@ export default class ScnLoad extends Phaser.Scene {
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
         this.load.image("texElevatorWall01", "sprites/3dTextures/texElevatorWall01.png");
+        this.load.image("texElevatorWall02", "sprites/3dTextures/texElevatorWall02.png");
         this.load.image("texElevatorDoor00", "sprites/3dTextures/texElevatorDoor00.png");
         this.load.image("texElevatorDoor01", "sprites/3dTextures/texElevatorDoor01.png");
+        this.load.image("texElevatorButtonPanel00", "sprites/3dTextures/texElevatorButtonPanel00.png");
         this.load.image("texMetalDark00", "sprites/3dTextures/texMetalDark00.png");
         this.load.image("texMetalDark01", "sprites/3dTextures/texMetalDark01.png"); 
         this.load.image("texElevatorLight00", "sprites/3dTextures/texElevatorLight00.png");
