@@ -137,5 +137,6 @@ export default class GeometryController{
         this.models.push(
             new Model(this.scene, this, _id, _modelDataJson, _pos)
         );
+        return this.models[this.models.length-1];
     }
 }

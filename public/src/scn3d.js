@@ -4,6 +4,7 @@ import Cam from "./3d/cam.js";
 import GeometryController from "./3d/geometryController.js";
 import Editor from "./3d/editor.js";
 import { Player3d } from "./3d/player.js";
+import LevelHangar00 from "./3d/levels/lvlHangar00.js"
 
 export default class Scn3d extends Phaser.Scene {
 
@@ -101,104 +102,17 @@ export default class Scn3d extends Phaser.Scene {
             y: 8,
             z: 0
         });
-        */
 
+        this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
+           x: 0,
+           y: 0,
+           z: -96
+        });
+        */
         
 
-        this.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
-            x: 0,
-            y: 0,
-            z: 0
-        });
-
-        this.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
-            x: 8,
-            y: 0,
-            z: 30
-        });
-        this.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
-            x: -8,
-            y: 0,
-            z: 30
-        });
-        let m = this.geometryController.getModelById("ElevatorDoorRight");
-        let ml = this.geometryController.getModelById("ElevatorDoorLeft");
-        m.data = {
-            positions: [
-                m.pos.x,
-                m.pos.x + 12
-            ],
-            currentPosition: 1
-        }
-        ml.data = {
-            positions: [
-                ml.pos.x,
-                ml.pos.x - 12
-            ],
-            currentPosition: 1
-        }
-        m.action = () => {
-            m.mover.isMoving = true;
-            m.mover.target.pos.spd = 0.1;
-            m.mover.target.pos.x = m.data.positions[m.data.currentPosition];
-            ml.mover.isMoving = true;
-            ml.mover.target.pos.spd = 0.1;
-            ml.mover.target.pos.x = ml.data.positions[ml.data.currentPosition];
-        };
-        ml.action = () => {
-            m.action();
-        }
-        m.action();
-
-        this.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
-            x: 22,
-            y: -22,
-            z: 31.95
-        });
-        let b = this.geometryController.getModelById("ElevatorButton");
-        b.data = {
-            open: true
-        }
-        b.interact = () => {
-            b.data.open = !b.data.open;
-            if(b.data.open === true){
-                m.data.currentPosition = 1;
-                ml.data.currentPosition = 1;
-            }else{
-                m.data.currentPosition = 0;
-                ml.data.currentPosition = 0;
-            }
-            m.action();
-        }
-
-        this.geometryController.loadModel("HangarHallway", "modHangarHallway", {
-            x: 0,
-            y: 0,
-            z: 52
-        });
-        this.geometryController.loadModel("HangarMain", "modHangarMain", {
-            x: 48,
-            y: 56,
-            z: 276
-        });
-
-        this.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
-            x: 256,
-            y: 56,
-            z: 256
-        });
-
-        this.geometryController.loadModel("ShipArashiDart", "modShipArashiDart", {
-            x: 256,
-            y: 56,
-            z: 56
-        });
-
-        /*this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
-            x: 0,
-            y: 0,
-            z: -96
-        });*/
+       
+        this.level = new LevelHangar00(this);
 
         this.modelName = "";
         this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
