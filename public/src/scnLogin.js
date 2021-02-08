@@ -275,7 +275,7 @@ export default class ScnLogin extends Phaser.Scene {
         localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
 
         //this.scene.start("ScnIntro");
-        this.scene.start("ScnLounge");
+        this.scene.start("Scn3d");
     }
 
     getFreshSaveGame(){

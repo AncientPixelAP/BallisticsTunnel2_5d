@@ -29,6 +29,7 @@ export default class Editor {
                 "texElevatorDoor01",
                 "texMetalDark00",
                 "texMetalDark01",
+                "texMetalDark02",
                 "texElevatorLight00",
                 "texElevatorLight01",
                 "texAirVentRotor00",
@@ -44,6 +45,9 @@ export default class Editor {
                 "texMetalHangarLineT",
                 "texMetalHangar03",
                 "texMetalHangar04",
+                "texMetalHangar05",
+                "texMetalHangar06",
+                "texMetalHangar07",
                 "texWallGrind01"
             ],[
                 "sprDebugTexture",
@@ -307,15 +311,15 @@ export default class Editor {
 
     duplicateQuad(_pos){
         let model = this.scene.geometryController.getModelById(this.quad.modelId);
-        if(model.length > 0){
-            model[0].addQuadFromData({
+        if(model != null){
+            model.addQuadFromData({
                 type: this.quad.type,
                 texture: this.quad.texture,
                 frame: this.quad.frame,
                 position: {
-                    x: this.quad.pos.x + this.model.pos.x,
-                    y: this.quad.pos.y + this.model.pos.y,
-                    z: this.quad.pos.z + this.model.pos.z,
+                    x: this.quad.pos.x - this.model.pos.x,
+                    y: this.quad.pos.y - this.model.pos.y,
+                    z: this.quad.pos.z - this.model.pos.z,
                 },
                 points: [
                     {
@@ -338,7 +342,7 @@ export default class Editor {
                 ]
             });
 
-            this.quad = this.editCollisions ? model[0].collisionData[model[0].collisionData.length - 1] : model[0].quadData[model[0].quadData.length-1];
+            this.quad = this.editCollisions ? model.collisionData[model.collisionData.length - 1] : model.quadData[model.quadData.length-1];
         }else{
             console.log("couldnt find model!");
         }

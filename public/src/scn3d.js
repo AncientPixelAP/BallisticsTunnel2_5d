@@ -5,10 +5,10 @@ import GeometryController from "./3d/geometryController.js";
 import Editor from "./3d/editor.js";
 import { Player3d } from "./3d/player.js";
 
-export default class ScnLounge extends Phaser.Scene {
+export default class Scn3d extends Phaser.Scene {
 
     constructor() {
-        super("ScnLounge");
+        super("Scn3d");
     }
 
     create() {
