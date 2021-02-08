@@ -30,6 +30,8 @@ export default class Editor {
                 "texMetalDark00",
                 "texMetalDark01",
                 "texMetalDark02",
+                "texMetalDark03",
+                "texMetalDark04",
                 "texElevatorLight00",
                 "texElevatorLight01",
                 "texAirVentRotor00",
@@ -48,6 +50,9 @@ export default class Editor {
                 "texMetalHangar05",
                 "texMetalHangar06",
                 "texMetalHangar07",
+                "texMetalHangar08",
+                "texMetalHangar09",
+                "texMetalHangar10",
                 "texWallGrind01"
             ],[
                 "sprDebugTexture",
