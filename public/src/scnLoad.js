@@ -20,6 +20,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
         this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
         this.load.json("modShipArashiDart", "jsons/models/shipArashiDart.json");
+        this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -82,6 +83,13 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texPainting16x16Dart", "sprites/3dTextures/texPainting16x16Dart00.png");
         this.load.image("texSegStartTunnel00", "sprites/segmentsSingles/sprSegStartTunnel00.png");
         this.load.image("texSegStartTunnel02", "sprites/segmentsSingles/sprSegStartTunnel02.png");
+
+        this.load.image("texBloodLineEnd", "sprites/3dTextures/texBloodLineEnd.png");
+        this.load.image("texBloodLineStraight00", "sprites/3dTextures/texBloodLineStraight00.png");
+        this.load.image("texBloodLineStraight01", "sprites/3dTextures/texBloodLineStraight01.png");
+        this.load.image("texBloodLineCurve00", "sprites/3dTextures/texBloodLineCurve00.png");
+        this.load.image("texBloodLineCurve01", "sprites/3dTextures/texBloodLineCurve01.png");
+        this.load.image("texBloodLineCross00", "sprites/3dTextures/texBloodLineCross00.png");
 
         //this.load.image('image0', '0.png');
         //this.load.json("story1", "storyjson/story1.json");

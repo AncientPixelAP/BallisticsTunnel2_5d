@@ -86,6 +86,13 @@ export default class Editor {
                 "texPadding00",
                 "texPadding01",
                 "texPadding02"
+            ],[
+                "texBloodLineEnd",
+                "texBloodLineStraight00",
+                "texBloodLineStraight01",
+                "texBloodLineCurve00",
+                "texBloodLineCurve01",
+                "texBloodLineCross00"
             ]],
             position: 0,
             bank: 0

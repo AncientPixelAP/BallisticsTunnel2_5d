@@ -5,6 +5,8 @@ import GeometryController from "./3d/geometryController.js";
 import Editor from "./3d/editor.js";
 import { Player3d } from "./3d/player.js";
 import LevelHangar00 from "./3d/levels/lvlHangar00.js"
+import LevelDream00 from "./3d/levels/lvlDream00.js"
+import LevelQuarters00 from "./3d/levels/lvlQuarters00.js"
 
 export default class Scn3d extends Phaser.Scene {
 
@@ -91,7 +93,6 @@ export default class Scn3d extends Phaser.Scene {
         this.editor = new Editor(this);
         //this.editor.toggleEditor();
 
-
         this.cam = new Cam(this);
         this.geometryController = new GeometryController(this);
 
@@ -102,17 +103,15 @@ export default class Scn3d extends Phaser.Scene {
             y: 8,
             z: 0
         });
-
         this.geometryController.loadModel("DebugWallTest", "modDebugWallTest", {
            x: 0,
            y: 0,
            z: -96
         });
         */
-        
 
-       
-        this.level = new LevelHangar00(this);
+        this.level = null;
+        this.loadLevel("dream00");
 
         this.modelName = "";
         this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
@@ -231,7 +230,14 @@ export default class Scn3d extends Phaser.Scene {
         if (this.keys.w.isDown) {
             toPos.z += Math.cos(this.player.dir.yaw) * 1;
             toPos.x -= Math.sin(this.player.dir.yaw) * 1;
+        }else{
+            //mouse movement TODO! better and creative solutioned mouse movement
+            if (this.hand.pressed === true) {
+                toPos.z += Math.cos(this.player.dir.yaw) * 1;
+                toPos.x -= Math.sin(this.player.dir.yaw) * 1;
+            }
         }
+
 
         if (this.keys.space.isDown) {
             this.player.pos.y -= 1;
@@ -378,6 +384,22 @@ export default class Scn3d extends Phaser.Scene {
         if(this.hand.vel.y !== 0){
             //this.player.dir.pitch = prevCamDir.pitch;
             this.player.dir.pitch += ((this.hand.vel.y * 0.4) * this.player.dir.spd.pitch);
+        }
+    }
+
+    loadLevel(_name){
+        switch(_name){
+            case "dream00":
+                this.level = new LevelDream00(this);
+                break;
+            case "hangar00":
+                this.level = new LevelHangar00(this);
+            break;
+            case "quarters00":
+                this.level = new LevelQuarters00(this);
+            break;
+            default:
+            break;
         }
     }
 
