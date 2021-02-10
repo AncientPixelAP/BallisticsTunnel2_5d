@@ -73,4 +73,8 @@ export default class LevelQuarters00{
             _this.elevatorDoorRight.action();
         }
     }
+
+    update(){
+        
+    }
 }

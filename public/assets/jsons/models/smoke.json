@@ -1,0 +1,38 @@
+{
+    "name": "Smoke",
+    "quadData": [
+        {
+            "type": "quad",
+            "texture": "texSmokeWhite",
+            "frame": 0,
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "points": [
+                {
+                    "x": -16,
+                    "y": -16,
+                    "z": 0
+                },
+                {
+                    "x": 16,
+                    "y": -16,
+                    "z": 0
+                },
+                {
+                    "x": 16,
+                    "y": 16,
+                    "z": 0
+                },
+                {
+                    "x": -16,
+                    "y": 16,
+                    "z": 0
+                }
+            ]
+        }
+    ],
+    "collisionData": []
+}

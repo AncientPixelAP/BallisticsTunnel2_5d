@@ -21,6 +21,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
         this.load.json("modShipArashiDart", "jsons/models/shipArashiDart.json");
         this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
+        this.load.json("modSmoke", "jsons/models/smoke.json");
+        this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
+        this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -83,6 +86,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texPainting16x16Dart", "sprites/3dTextures/texPainting16x16Dart00.png");
         this.load.image("texSegStartTunnel00", "sprites/segmentsSingles/sprSegStartTunnel00.png");
         this.load.image("texSegStartTunnel02", "sprites/segmentsSingles/sprSegStartTunnel02.png");
+        this.load.image("texSmokeWhite", "sprites/3dTextures/texSmokeWhite.png");
+        this.load.image("texDoor00", "sprites/3dTextures/texDoor00.png");
 
         this.load.image("texBloodLineEnd", "sprites/3dTextures/texBloodLineEnd.png");
         this.load.image("texBloodLineStraight00", "sprites/3dTextures/texBloodLineStraight00.png");

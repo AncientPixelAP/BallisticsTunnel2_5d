@@ -12,6 +12,11 @@ export default class DataQuad{
         this.mipmapped = false;
         this.depth = 0;
         this.shade = 0;
+        this.scale = {
+            x: 1,
+            y: 1,
+        }
+        this.zDepth = 0;
 
         this.screenCoords = [
             { x: 0, y: 0 },
@@ -94,14 +99,19 @@ export default class DataQuad{
         }
     }
 
-    drawNo3d(){
+    drawNo3d(_withScale){
         if (this.quads.length > 0) {
-            this.quads[0].x = this.screenCoords[0].x;
-            this.quads[0].y = this.screenCoords[0].y;
+            this.calculateHelpPoints();
+            this.quads[0].x = this.scM.x;
+            this.quads[0].y = this.scM.y;
+            if(_withScale === true){
+                this.quads[0].setScale(this.zDepth * 20, this.zDepth * 10);
+            }
+            this.quads[0].depth = this.depth;
         }
     }
 
-    calculate3d(_from, _dir) {
+    calculate3d(_from, _dir, _mipmap = true) {
         let recZ = -9999;
         let sumZ = 0;
         for(let [i, p] of this.points.entries()){
@@ -124,6 +134,8 @@ export default class DataQuad{
             let zoom = 400;//2.5 - 0.01
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
+
+            this.zDepth = 32/nz;
 
             //ortho rendering
             /*this.screenCoords[i].x = nx;
@@ -152,7 +164,9 @@ export default class DataQuad{
                 }
                 //quad so near that mipmapping is required?
                 if(this.depth > -50){
-                    this.mipmapQuad();
+                    if(_mipmap === true){
+                        this.mipmapQuad();
+                    }
                 }else{
                     this.unmipmapQuad();
                 }

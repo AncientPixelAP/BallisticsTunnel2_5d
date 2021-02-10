@@ -59,7 +59,13 @@ export default class Model{
 
         this.debug = {
             drawCollisions: false,
-            collisionGraphics: this.scene.add.graphics()
+            collisionGraphics: this.scene.add.graphics(),
+            modes: {
+                d3d: 0,
+                d2d: 1,
+                noscale2d: 2
+            },
+            mode: 0
         }
         this.debug.collisionGraphics.depth = 10000;
     }
@@ -154,8 +160,16 @@ export default class Model{
 
     draw(_from, _dir){
         for (let q of this.quadData){
-            q.calculate3d(_from, _dir);
-            q.draw();
+            if(this.debug.mode === this.debug.modes.d3d){
+                q.calculate3d(_from, _dir);
+                q.draw();
+            }else if(this.debug.mode === this.debug.modes.d2d){
+                q.calculate3d(_from, _dir, false);
+                q.drawNo3d(true);
+            }else{
+                q.calculate3d(_from, _dir);
+                q.drawNo3d(false);
+            }
         }
         if(this.debug.drawCollisions === true){
             this.debug.collisionGraphics.clear();

@@ -152,6 +152,8 @@ export default class Scn3d extends Phaser.Scene {
 
         this.cam.setPositionAndRotation({ x: this.player.pos.x, y: this.player.pos.y - this.player.eyeHeight, z: this.player.pos.z}, this.player.dir);
 
+        this.level.update();
+
         this.geometryController.draw(this.cam.pos, this.cam.dir);
 
         this.hand.lateUpdate();

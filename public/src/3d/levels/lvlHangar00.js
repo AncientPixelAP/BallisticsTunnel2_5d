@@ -93,4 +93,8 @@ export default class LevelHangar00{
             _this.elevatorDoorRight.action();
         }
     }
+
+    update(){
+        
+    }
 }
