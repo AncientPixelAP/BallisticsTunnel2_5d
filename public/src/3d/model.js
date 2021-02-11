@@ -16,6 +16,16 @@ export default class Model{
             pitch: 0,
             roll: 0
         }
+
+        this.trigger = {
+            isTrigger: false,
+            triggered: false,
+            once: true,
+            onEnter: () => {},
+            onExit: () => {},
+            onOverlap: () => {}
+        }
+
         this.data = {};
         this.interact = () => {};
         this.action = () => {};
@@ -116,6 +126,18 @@ export default class Model{
         this.dir.roll += _dir.roll;
         for(let q of this.quadData){
             for(let [i, p] of q.points.entries()){
+                let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
+                let nx = outXZ[0];
+                let ny = outXZ[1];
+                let nz = outXZ[2];
+                let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.pitch);
+                p.x = outYZ[0];
+                p.y = outYZ[1];
+                p.z = outYZ[2];
+            }
+        }
+        for (let q of this.collisionData) {
+            for (let [i, p] of q.points.entries()) {
                 let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
                 let nx = outXZ[0];
                 let ny = outXZ[1];
@@ -293,5 +315,25 @@ export default class Model{
         }
         //log model for saving
         console.log(JSON.stringify(logobj));
+    }
+
+    doTrigger(){
+        if (this.trigger.triggered === false) {
+            this.trigger.triggered = true;
+            this.trigger.onEnter();
+        } else {
+            this.trigger.onOverlap();
+        }
+    }
+
+    destroy(){
+        for (let i = this.quadData.length - 1; i >= 0; i--) {
+            this.quadData[i].destroy();
+            this.quadData.splice(i, 1);
+        }
+        for (let i = this.collisionData.length - 1; i >= 0; i--) {
+            this.collisionData[i].destroy();
+            this.collisionData.splice(i, 1);
+        }
     }
 }

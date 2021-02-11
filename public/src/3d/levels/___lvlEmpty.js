@@ -9,4 +9,12 @@ export default class LevelEmpty00{
             z: 0
         }));*/
     }
+
+    update(){
+        
+    }
+
+    destroy() {
+
+    }
 }

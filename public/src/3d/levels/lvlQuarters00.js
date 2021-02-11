@@ -77,4 +77,8 @@ export default class LevelQuarters00{
     update(){
         
     }
+
+    destroy() {
+
+    }
 }

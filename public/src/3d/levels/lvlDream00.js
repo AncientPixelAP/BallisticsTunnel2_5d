@@ -37,6 +37,28 @@ export default class LevelDream00{
             y: 0,
             z: 868
         });
+        this.doorTrigger = this.scene.geometryController.loadModel("Trigger64x64", "modTrigger64x64", {
+            x: -32,
+            y: 0,
+            z: 804
+        });
+        this.doorTrigger.trigger.isTrigger = true;
+        this.doorTrigger.trigger.onEnter = () => {
+            this.door.mover.isMoving = true;
+            this.door.mover.target.dir.yaw = 2.1;
+            this.door.mover.target.dir.spd = 2.1 * 0.05;
+        }
+
+        this.levelTrigger = this.scene.geometryController.loadModel("Trigger64x64", "modTrigger64x64", {
+            x: -32,
+            y: 0,
+            z: 868
+        });
+        this.levelTrigger.trigger.isTrigger = true;
+        this.levelTrigger.trigger.onEnter = () => {
+            this.scene.player.jumpToPosition({x: 0, y: 0, z: 0});
+            this.scene.loadLevel("hangar00");
+        }
     }
 
     update(){
@@ -59,5 +81,19 @@ export default class LevelDream00{
             pitch: 0,
             roll: 0
         });
+    }
+
+    destroy(){
+        for(let o of this.objects){
+            o.destroy();
+        }
+        for(let s of this.smokes){
+            s.destroy();
+        }
+        this.ship.destroy();
+        this.door.destroy();
+        this.doorFrame.destroy();
+        this.doorTrigger.destroy();
+        this.levelTrigger.destroy();
     }
 }

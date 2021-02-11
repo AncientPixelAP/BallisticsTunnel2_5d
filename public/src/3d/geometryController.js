@@ -17,9 +17,8 @@ export default class GeometryController{
                 for(let c of _collCheckArr){
                     let hitData = this.collide(q, c);
                     if(hitData.pt !== null){
+                        hitData.model = m;
                         c.hit.push(hitData);
-                        //c.hit = hitData;
-                        //console.log(c);
                     }
                 }
             }
@@ -34,24 +33,10 @@ export default class GeometryController{
     }
 
     collide(_quad, _collChecker){
-        /*
-        {//check ground
-            pos: {
-                x: this.pos.x * -1,
-                y: this.pos.y * -1,
-                z: this.pos.z * -1
-            },
-            dir: {
-                x: 0,
-                y: 1,
-                z: 0
-            },
-            hit: []
-        }
-        */
         let h = {
             pt: _quad.getIntersect(_collChecker.pos.x, _collChecker.pos.y, _collChecker.pos.z, _collChecker.dir.x, _collChecker.dir.y, _collChecker.dir.z),
-            quad: _quad
+            quad: _quad,
+            model: null
         }
         return h;
     }

@@ -4,7 +4,13 @@ export class Player3d{
         this.pos = {
             x: 0,
             y: 0,
-            z: 0
+            z: 0,
+            to: {
+                jump: false,
+                x: 0,
+                y: 0,
+                z: 0,
+            }
         }
         this.dir = {
             yaw: 0,
@@ -25,5 +31,23 @@ export class Player3d{
             INTERACT: 1
         }
         this.mode = this.modes.LOOK;
+    }
+
+    update(){
+        if(this.pos.to.jump === true){
+            this.pos.x = this.pos.to.x;
+            this.pos.y = this.pos.to.y;
+            this.pos.z = this.pos.to.z;
+            this.pos.to.jump = false;
+        }
+    }
+
+    jumpToPosition(_pos){
+        //use this to set a neew position even if the collision checks have moved the position around differently
+        //eg if a collision in x resolves in a trigger jumping the player, but collision resolve in z afterwards would reset that
+        this.pos.to.jump = true;
+        this.pos.to.x = _pos.x;
+        this.pos.to.y = _pos.y;
+        this.pos.to.z = _pos.z;
     }
 }

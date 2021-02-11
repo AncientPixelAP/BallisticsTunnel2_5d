@@ -73,4 +73,8 @@ export default class LevelStartWithElevatorBlank00{
             _this.elevatorDoorRight.action();
         }
     }
+
+    destroy() {
+
+    }
 }

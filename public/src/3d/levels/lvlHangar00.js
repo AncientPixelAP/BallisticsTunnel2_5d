@@ -97,4 +97,8 @@ export default class LevelHangar00{
     update(){
         
     }
+
+    destroy() {
+
+    }
 }

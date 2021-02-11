@@ -152,6 +152,7 @@ export default class Scn3d extends Phaser.Scene {
 
         this.cam.setPositionAndRotation({ x: this.player.pos.x, y: this.player.pos.y - this.player.eyeHeight, z: this.player.pos.z}, this.player.dir);
 
+        this.player.update();
         this.level.update();
 
         this.geometryController.draw(this.cam.pos, this.cam.dir);
@@ -308,7 +309,11 @@ export default class Scn3d extends Phaser.Scene {
             }
             //returnColl[input point and direction].hit[nearest = 0].pt[coord x,y,z]
             //teleport to ground
-            this.player.pos.y = nearestHit.pt[1];
+            if(nearestHit.model.trigger.isTrigger === false){
+                this.player.pos.y = nearestHit.pt[1];
+            }else{
+                nearestHit.model.doTrigger();
+            }
         }
 
         //resolve hit in global x axis
@@ -325,8 +330,11 @@ export default class Scn3d extends Phaser.Scene {
             }
             if(dist < this.player.collisionRadius){
                 //only move if you move away from the wall
-                if ((toPos.x < this.player.pos.x && this.player.pos.x < nearestHit.pt[0]) || (toPos.x > this.player.pos.x && this.player.pos.x > nearestHit.pt[0])){
+                if ((toPos.x < this.player.pos.x && this.player.pos.x < nearestHit.pt[0]) || (toPos.x > this.player.pos.x && this.player.pos.x > nearestHit.pt[0]) || nearestHit.model.trigger.isTrigger === true){
                     this.player.pos.x = toPos.x;
+                    if (nearestHit.model.trigger.isTrigger === true){
+                        nearestHit.model.doTrigger();
+                    }
                 }
             }else{
                 //be free to move cause yoou are far away from wall
@@ -350,8 +358,11 @@ export default class Scn3d extends Phaser.Scene {
             }
             if (dist < this.player.collisionRadius) {
                 //only move if you move away from the wall
-                if ((toPos.z < this.player.pos.z && this.player.pos.z < nearestHit.pt[2]) || (toPos.z > this.player.pos.z && this.player.pos.z > nearestHit.pt[2])) {
+                if ((toPos.z < this.player.pos.z && this.player.pos.z < nearestHit.pt[2]) || (toPos.z > this.player.pos.z && this.player.pos.z > nearestHit.pt[2]) || nearestHit.model.trigger.isTrigger === true) {
                     this.player.pos.z = toPos.z;
+                    if (nearestHit.model.trigger.isTrigger === true) {
+                        nearestHit.model.doTrigger();
+                    }
                 }
             }else{
                 //be free to move cause yoou are far away from wall
@@ -390,6 +401,7 @@ export default class Scn3d extends Phaser.Scene {
     }
 
     loadLevel(_name){
+        this.unloadLevel();
         switch(_name){
             case "dream00":
                 this.level = new LevelDream00(this);
@@ -402,6 +414,13 @@ export default class Scn3d extends Phaser.Scene {
             break;
             default:
             break;
+        }
+    }
+
+    unloadLevel(){
+        if(this.level !== null){
+            this.level.destroy();
+            this.level = null;
         }
     }
 
