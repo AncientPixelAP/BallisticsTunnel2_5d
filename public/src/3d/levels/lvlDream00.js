@@ -74,12 +74,12 @@ export default class LevelDream00{
         this.levelTrigger = this.scene.geometryController.loadModel("levelTrigger", "modTrigger64x64", {
             x: -32,
             y: 0,
-            z: 2024
+            z: 1100
         });
         this.levelTrigger.trigger.isTrigger = true;
         this.levelTrigger.trigger.onEnter = () => {
             this.scene.player.jumpToPosition({x: 0, y: 0, z: 0});
-            //this.scene.loadLevel("hangar00");
+            this.scene.loadLevel("hangar00");
         }
 
         //TODO rain that flows upwards and create level trigger only if door is open
