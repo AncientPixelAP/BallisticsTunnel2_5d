@@ -21,6 +21,7 @@ export default class Model{
             isTrigger: false,
             triggered: false,
             once: true,
+            keep: 0, //this is 0 if the trigger is not triggered, 1 onOverlap and will be 2 in update (0 if its already 2 to get onExit recognition)
             onEnter: () => {},
             onExit: () => {},
             onOverlap: () => {}
@@ -100,9 +101,11 @@ export default class Model{
             }
             if (this.dir.yaw != this.mover.target.dir.yaw || this.dir.pitch != this.mover.target.dir.pitch) {
                 finishedTurning = false;
-                toMove.dir.yaw = this.dir.yaw != this.mover.target.dir.yaw ? this.mover.target.dir.spd : 0;
+                /*toMove.dir.yaw = this.dir.yaw != this.mover.target.dir.yaw ? this.mover.target.dir.spd : 0;
                 toMove.dir.pitch = this.dir.yaw != this.mover.target.dir.pitch ? this.mover.target.dir.pitch : 0;
-                toMove.dir.roll = this.dir.yaw != this.mover.target.dir.roll ? this.mover.target.dir.roll : 0;
+                toMove.dir.roll = this.dir.yaw != this.mover.target.dir.roll ? this.mover.target.dir.roll : 0;*/
+                let amt = this.mover.target.dir.yaw - this.dir.yaw;
+                toMove.dir.yaw = Math.abs(amt) < Math.abs(this.mover.target.dir.spd) ? amt : this.mover.target.dir.spd;
             }
             if(d > this.mover.target.pos.spd){
                 finishedMoving = false;
@@ -116,6 +119,15 @@ export default class Model{
             } else {
                 this.mover.isMoving = false;
             }
+        }
+
+        //try to reset the trigger and check if onExit needs to be fired
+        if(this.trigger.keep === 1){
+            this.trigger.keep = 2;
+        }else if(this.trigger.keep === 2){
+            this.trigger.keep = 0;
+            this.trigger.triggered = false;
+            this.trigger.onExit();
         }
     }
 
@@ -317,12 +329,13 @@ export default class Model{
         console.log(JSON.stringify(logobj));
     }
 
-    doTrigger(){
+    updateTrigger(){
         if (this.trigger.triggered === false) {
             this.trigger.triggered = true;
             this.trigger.onEnter();
         } else {
             this.trigger.onOverlap();
+            this.trigger.keep = 1;
         }
     }
 

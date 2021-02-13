@@ -129,6 +129,7 @@ export default class Scn3d extends Phaser.Scene {
         }else{
             this.gameControls();
 
+            //look for models to interact with at center of screen if player click the mouse
             let hits = [];
             //hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
             hits = this.geometryController.getQuadsFromScreenspaceAt(0, 0, false);
@@ -312,7 +313,7 @@ export default class Scn3d extends Phaser.Scene {
             if(nearestHit.model.trigger.isTrigger === false){
                 this.player.pos.y = nearestHit.pt[1];
             }else{
-                nearestHit.model.doTrigger();
+                nearestHit.model.updateTrigger();
             }
         }
 
@@ -333,7 +334,7 @@ export default class Scn3d extends Phaser.Scene {
                 if ((toPos.x < this.player.pos.x && this.player.pos.x < nearestHit.pt[0]) || (toPos.x > this.player.pos.x && this.player.pos.x > nearestHit.pt[0]) || nearestHit.model.trigger.isTrigger === true){
                     this.player.pos.x = toPos.x;
                     if (nearestHit.model.trigger.isTrigger === true){
-                        nearestHit.model.doTrigger();
+                        nearestHit.model.updateTrigger();
                     }
                 }
             }else{
@@ -361,7 +362,7 @@ export default class Scn3d extends Phaser.Scene {
                 if ((toPos.z < this.player.pos.z && this.player.pos.z < nearestHit.pt[2]) || (toPos.z > this.player.pos.z && this.player.pos.z > nearestHit.pt[2]) || nearestHit.model.trigger.isTrigger === true) {
                     this.player.pos.z = toPos.z;
                     if (nearestHit.model.trigger.isTrigger === true) {
-                        nearestHit.model.doTrigger();
+                        nearestHit.model.updateTrigger();
                     }
                 }
             }else{

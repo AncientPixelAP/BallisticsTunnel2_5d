@@ -2,6 +2,12 @@ export default class LevelDream00{
     constructor(_scene){
         this.scene = _scene;
 
+        this.states = {
+            MAZE: 0,
+            ROOM: 1
+        }
+        this.state = this.states.MAZE;
+
         this.objects = [];
         this.objects.push(this.scene.geometryController.loadModel("DreamBloodLine", "modDreamBloodLine", {
             x: 0,
@@ -28,37 +34,61 @@ export default class LevelDream00{
         });
 
         this.door = this.scene.geometryController.loadModel("DreamDoor", "modDreamDoor", {
-            x: -24,
+            x: -22,
             y: 0,
             z: 868
         });
         this.doorFrame = this.scene.geometryController.loadModel("DreamDoorFrame", "modDreamDoorFrame", {
-            x: -24,
+            x: -22,
             y: 0,
             z: 868
         });
-        this.doorTrigger = this.scene.geometryController.loadModel("Trigger64x64", "modTrigger64x64", {
+        this.doorTrigger = this.scene.geometryController.loadModel("doorTrigger", "modTrigger64x64", {
             x: -32,
             y: 0,
-            z: 804
+            z: 836
         });
         this.doorTrigger.trigger.isTrigger = true;
         this.doorTrigger.trigger.onEnter = () => {
             this.door.mover.isMoving = true;
             this.door.mover.target.dir.yaw = 2.1;
             this.door.mover.target.dir.spd = 2.1 * 0.05;
+
+            if(this.state === this.states.MAZE){
+                this.state = this.states.ROOM;
+                for (let o of this.objects) {
+                    o.destroy();
+                }
+                for (let s of this.smokes) {
+                    s.destroy();
+                }
+                this.ship.destroy();
+            }
+        }
+        this.doorTrigger.trigger.onExit = () => {
+            this.door.mover.isMoving = true;
+            this.door.mover.target.dir.yaw = 0;
+            this.door.mover.target.dir.spd = 2.1 * -0.05;
         }
 
-        this.levelTrigger = this.scene.geometryController.loadModel("Trigger64x64", "modTrigger64x64", {
+        this.levelTrigger = this.scene.geometryController.loadModel("levelTrigger", "modTrigger64x64", {
             x: -32,
             y: 0,
-            z: 868
+            z: 2024
         });
         this.levelTrigger.trigger.isTrigger = true;
         this.levelTrigger.trigger.onEnter = () => {
             this.scene.player.jumpToPosition({x: 0, y: 0, z: 0});
-            this.scene.loadLevel("hangar00");
+            //this.scene.loadLevel("hangar00");
         }
+
+        //TODO rain that flows upwards and create level trigger only if door is open
+
+        this.room = this.scene.geometryController.loadModel("dreamRoom", "modDreamRoom", {
+            x: -32,
+            y: 0,
+            z: 880
+        });
     }
 
     update(){

@@ -63,7 +63,8 @@ export default class Editor {
                 "texSegStartTunnel02",
                 "mechanic",
                 "texSmokeWhite",
-                "texDoor00"
+                "texDoor00",
+                "texBlackout"
             ], [
                 "texPlatingRed00",
                 "texPlatingRed01",

@@ -24,6 +24,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modSmoke", "jsons/models/smoke.json");
         this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
         this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");
+        this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
         this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
 
         //3dtex
@@ -89,6 +90,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texSegStartTunnel02", "sprites/segmentsSingles/sprSegStartTunnel02.png");
         this.load.image("texSmokeWhite", "sprites/3dTextures/texSmokeWhite.png");
         this.load.image("texDoor00", "sprites/3dTextures/texDoor00.png");
+        this.load.image("texBlackout", "sprites/3dTextures/texBlackout.png");
 
         this.load.image("texBloodLineEnd", "sprites/3dTextures/texBloodLineEnd.png");
         this.load.image("texBloodLineStraight00", "sprites/3dTextures/texBloodLineStraight00.png");
