@@ -105,7 +105,7 @@ export default class DataQuad{
             this.quads[0].x = this.scM.x;
             this.quads[0].y = this.scM.y;
             if(_withScale === true){
-                this.quads[0].setScale(this.zDepth * 20, this.zDepth * 10);
+                this.quads[0].setScale(this.zDepth * 1, this.zDepth * 1);
             }
             this.quads[0].depth = this.depth;
         }
@@ -135,7 +135,7 @@ export default class DataQuad{
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
 
-            this.zDepth = 32/nz;
+            this.zDepth = (this.scale.x / (Math.abs(nzMod) * 1)) * zoom;// 32/nz;
 
             //ortho rendering
             /*this.screenCoords[i].x = nx;
