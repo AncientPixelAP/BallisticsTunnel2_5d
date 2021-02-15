@@ -111,7 +111,7 @@ export default class Scn3d extends Phaser.Scene {
         */
 
         this.level = null;
-        this.loadLevel("dream00");
+        this.loadLevel("hangar00");
 
         this.modelName = "";
         this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
@@ -147,6 +147,10 @@ export default class Scn3d extends Phaser.Scene {
             if (this.hand.justReleased) {
                 if(this.player.mode === this.player.modes.LOOK && this.input.mouse.locked === false){
                     this.hand.setMouseLock(true);
+                }
+                //log the playre  position as a helper for manual object positioning in level files
+                if(this.keys.q.isDown){
+                    console.log(this.player.pos);
                 }
             }
         }

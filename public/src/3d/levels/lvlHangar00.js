@@ -92,6 +92,14 @@ export default class LevelHangar00{
             }
             _this.elevatorDoorRight.action();
         }
+
+        //CHARACTERS
+        this.engineer = this.scene.geometryController.loadModel("engineer", "modCharacterEngineer", {
+            x: 13,
+            y: 56,
+            z: 198
+        });
+        this.engineer.debug.mode = this.engineer.debug.modes.d2d;
     }
 
     update(){
