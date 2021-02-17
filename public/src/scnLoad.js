@@ -44,6 +44,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texElevatorLight01", "sprites/3dTextures/texElevatorLight01.png");
         this.load.image("texAirVentRotor00", "sprites/3dTextures/texAirVentRotor00.png");
         this.load.image("texTrasseYellow00", "sprites/3dTextures/texTrasseYellow00.png");
+        this.load.image("texTrasseYellow01", "sprites/3dTextures/texTrasseYellow01.png");
 
         this.load.image("texMetalHangar00", "sprites/3dTextures/texMetalHangar00.png");
         this.load.image("texMetalHangar01", "sprites/3dTextures/texMetalHangar01.png");
@@ -112,6 +113,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSliderRight00", "sprites/sprSliderRight00.png");
         this.load.image("sprSliderHighlight00", "sprites/sprSliderHighlight00.png");
 
+        this.load.image("sprUiMenuBg", "sprites/sprUiMenuBg.png");
         this.load.image("sprUiBit", "sprites/sprUiBit.png");
         this.load.image("sprUiCircle", "sprites/sprUiCircle.png");
         this.load.image("sprUiRoll", "sprites/sprUiRoll.png");

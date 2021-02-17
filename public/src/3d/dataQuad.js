@@ -135,7 +135,7 @@ export default class DataQuad{
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
 
-            this.zDepth = (this.scale.x / (Math.abs(nzMod) * 1)) * zoom;// 32/nz;
+            this.zDepth = (this.scale.x / (Math.abs(nz) * 1)) * zoom;// 32/nz;
 
             //ortho rendering
             /*this.screenCoords[i].x = nx;

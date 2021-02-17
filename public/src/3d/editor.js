@@ -36,7 +36,8 @@ export default class Editor {
                 "texElevatorLight01",
                 "texAirVentRotor00",
                 "texElevatorButtonPanel00",
-                "texTrasseYellow00"
+                "texTrasseYellow00",
+                "texTrasseYellow01"
             ],[
                 "texMetalHangar00",
                 "texMetalHangar01",

@@ -33,16 +33,18 @@ export default class LevelHangar00{
             y: 56,
             z: 276
         }));
-        this.objects.push(this.scene.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
-            x: 256,
-            y: 56,
-            z: 256
-        }));
+
         this.objects.push(this.scene.geometryController.loadModel("ShipArashiDart", "modShipArashiDart", {
             x: 256,
             y: 56,
             z: 56
         }));
+
+        this.ship = this.scene.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
+            x: 192,
+            y: 56,
+            z: 256
+        });
 
         this.elevatorDoorRight = this.objects[1];
         this.elevatorDoorLeft = this.objects[2];

@@ -1,6 +1,7 @@
 import Hand from "./ui/hand.js";
 import Button from "./ui/button.js";
 import { SliderHorizontal } from "./ui/slider.js";
+import MovingGrid from "./ui/movingGrid.js";
 
 export default class ScnLogin extends Phaser.Scene {
 
@@ -56,6 +57,9 @@ export default class ScnLogin extends Phaser.Scene {
         OPTIONS.effects.shader = this.saveGame.effects.shader;
 
         this.hand = new Hand(this);
+
+        this.bgGrid = new MovingGrid(this, this.game.config.width, this.game.config.height * 2, 32);
+        this.bgGrid.addPointer("hand", this.hand.pos.x, this.hand.pos.y, 128);
 
         this.btnPlay = new Button(this, { x: -160, y: -66 }, "sprBtn00", "PLAY", false, () => {
             this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
@@ -245,6 +249,10 @@ export default class ScnLogin extends Phaser.Scene {
 
     update(){
         this.hand.update();
+
+        this.bgGrid.updatePointer("hand", this.hand.pos.x, this.hand.pos.y, 128);
+        this.bgGrid.update();
+
 
         this.btnPlay.update();
         this.btnSingleplayer.update();
