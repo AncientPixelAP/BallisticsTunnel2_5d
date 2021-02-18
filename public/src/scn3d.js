@@ -315,7 +315,15 @@ export default class Scn3d extends Phaser.Scene {
             //returnColl[input point and direction].hit[nearest = 0].pt[coord x,y,z]
             //teleport to ground
             if(nearestHit.model.trigger.isTrigger === false){
-                this.player.pos.y = nearestHit.pt[1];
+                if(dist <= this.player.stepHeight){
+                    this.player.vel.y = 0;
+                    this.player.pos.y = nearestHit.pt[1];
+                }else{
+                    if (this.player.vel.y < this.player.gravity.terminal) {
+                        this.player.vel.y += this.player.gravity.y;
+                    }
+                    this.player.pos.y += this.player.vel.y;
+                }
             }else{
                 nearestHit.model.updateTrigger();
             }

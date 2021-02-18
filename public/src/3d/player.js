@@ -22,9 +22,22 @@ export class Player3d{
                 roll: 0.04
             }
         }
+        this.vel = {
+            x: 0,
+            y: 0,
+            z: 0
+        }
         this.eyeHeight = 24;
         this.stepHeight = 9;
         this.collisionRadius = 12;
+
+        this.gravity = {
+            x: 0,
+            y: 0.1,
+            z: 0,
+            grounded: false,
+            terminal: 4
+        }
 
         this.modes = {
             LOOK: 0,
