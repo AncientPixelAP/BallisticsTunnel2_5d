@@ -12,8 +12,8 @@ export default class MovingGrid{
             for (let xx = 0; xx < this.size.x; xx += this.cellSize) {
                 this.points.push({
                     id: this.points.length,
-                    x: xx - this.scene.game.config.width * 0.5,
-                    y: yy - this.scene.game.config.height * 0.5,
+                    x: 16 + xx - this.scene.game.config.width * 0.5,
+                    y: 16 + yy - this.scene.game.config.height * 0.5,
                     sprite: this.scene.add.sprite(xx, yy, "sprUiMenuBg")
                 });
             }

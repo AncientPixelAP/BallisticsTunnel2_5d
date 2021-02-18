@@ -71,12 +71,6 @@ export default class Model{
         this.debug = {
             drawCollisions: false,
             collisionGraphics: this.scene.add.graphics(),
-            modes: {
-                d3d: 0,
-                d2d: 1,
-                noscale2d: 2,
-                billboard: 3
-            },
             mode: 0
         }
         this.debug.collisionGraphics.depth = 10000;
@@ -195,7 +189,7 @@ export default class Model{
 
     setDrawMode(_mode){
         this.debug.mode = _mode;
-        /*if(this.debug.mode === this.debug.modes.d2d){
+        /*if(this.debug.mode === DRAWMODE.D2D){
             for(let q of this.quadData){
                 q.clearQuads();
                 q.createQuad();
@@ -205,13 +199,13 @@ export default class Model{
 
     draw(_from, _dir){
         for (let q of this.quadData){
-            if(this.debug.mode === this.debug.modes.d3d){
+            if(this.debug.mode === DRAWMODE.D3D){
                 q.calculate3d(_from, _dir);
                 q.draw();
-            }else if(this.debug.mode === this.debug.modes.d2d){
+            }else if(this.debug.mode === DRAWMODE.D2D){
                 q.calculate3d(_from, _dir, false);
                 q.drawNo3d(_from, _dir, true);
-            } else if (this.debug.mode === this.debug.modes.billboard){
+            } else if (this.debug.mode === DRAWMODE.BILLBOARD){
                 this.translateAndRotate({
                     x: 0,
                     y: 0,

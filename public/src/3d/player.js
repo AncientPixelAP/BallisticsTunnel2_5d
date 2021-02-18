@@ -39,11 +39,10 @@ export class Player3d{
             terminal: 4
         }
 
-        this.modes = {
-            LOOK: 0,
-            INTERACT: 1
-        }
-        this.mode = this.modes.LOOK;
+        this.mode = PLAYERMODE.LOOK;
+
+        this.panel = null;
+        this.conversation = null;
     }
 
     update(){
@@ -52,6 +51,14 @@ export class Player3d{
             this.pos.y = this.pos.to.y;
             this.pos.z = this.pos.to.z;
             this.pos.to.jump = false;
+        }
+
+        if(this.panel !== null){
+            this.panel.update();
+        }
+
+        if (this.conversation !== null) {
+            this.conversation.update();
         }
     }
 
@@ -62,5 +69,19 @@ export class Player3d{
         this.pos.to.x = _pos.x;
         this.pos.to.y = _pos.y;
         this.pos.to.z = _pos.z;
+    }
+
+    setMode(_mode){
+        this.mode = _mode;
+        switch(_mode){
+            case PLAYERMODE.LOOK:
+
+            break;
+            case PLAYERMODE.INTERACT:
+                this.scene.hand.setMouseLock(false);
+            break;
+            default:
+            break;
+        }
     }
 }

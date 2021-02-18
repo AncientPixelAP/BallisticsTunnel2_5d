@@ -82,6 +82,6 @@ export default class Hand{
                 this.scene.input.mouse.releasePointerLock();
             }
         }
-        console.log("mouselock: " + this.mouselock );
+        //console.log("mouselock: " + this.mouselock );
     }
 }

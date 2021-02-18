@@ -1,3 +1,5 @@
+import PanelElevator from "../../ui/panelElevator.js";
+
 export default class LevelHangar00{
     constructor(_scene){
         this.scene = _scene;
@@ -21,7 +23,7 @@ export default class LevelHangar00{
         this.objects.push(this.scene.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
             x: 22,
             y: -22,
-            z: 31.95
+            z: 31.9
         }));
         this.objects.push(this.scene.geometryController.loadModel("HangarHallway", "modHangarHallway", {
             x: 0,
@@ -84,7 +86,7 @@ export default class LevelHangar00{
             open: true
         }
         this.btnElevator.interact = () => {
-            _this.btnElevator.data.open = !_this.btnElevator.data.open;
+            /*_this.btnElevator.data.open = !_this.btnElevator.data.open;
             if (_this.btnElevator.data.open === true) {
                 _this.elevatorDoorRight.data.currentPosition = 1;
                 _this.elevatorDoorLeft.data.currentPosition = 1;
@@ -92,7 +94,9 @@ export default class LevelHangar00{
                 _this.elevatorDoorRight.data.currentPosition = 0;
                 _this.elevatorDoorLeft.data.currentPosition = 0;
             }
-            _this.elevatorDoorRight.action();
+            _this.elevatorDoorRight.action();*/
+            this.scene.player.setMode(PLAYERMODE.INTERACT);
+            this.scene.player.panel = new PanelElevator(this.scene);
         }
 
         //CHARACTERS
@@ -101,7 +105,7 @@ export default class LevelHangar00{
             y: 60,
             z: 196
         });
-        this.engineer.setDrawMode(this.engineer.debug.modes.billboard);
+        this.engineer.setDrawMode(DRAWMODE.BILLBOARD);
     }
 
     update(){

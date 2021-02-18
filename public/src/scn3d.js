@@ -127,32 +127,37 @@ export default class Scn3d extends Phaser.Scene {
             this.editorControls();
             this.editor.update();
         }else{
-            this.gameControls();
 
-            //look for models to interact with at center of screen if player click the mouse
-            let hits = [];
-            //hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
-            hits = this.geometryController.getQuadsFromScreenspaceAt(0, 0, false);
-            if (hits.length > 0) {
-                hits = hits.sort((a, b) => a.depth - b.depth);
-                this.modelName = hits[hits.length - 1].modelId;
-                this.debugTxt.setText(this.modelName);
+            if(this.player.mode === PLAYERMODE.LOOK){
+
+                this.gameControls();
+
+                //look for models to interact with at center of screen if player click the mouse
+                let hits = [];
+                //hits = this.geometryController.getQuadsFromScreenspaceAt(this.input.activePointer.worldX, this.input.activePointer.worldY, false);
+                hits = this.geometryController.getQuadsFromScreenspaceAt(0, 0, false);
+                if (hits.length > 0) {
+                    hits = hits.sort((a, b) => a.depth - b.depth);
+                    this.modelName = hits[hits.length - 1].modelId;
+                    this.debugTxt.setText(this.modelName);
+
+                    if (this.hand.justReleased) {
+                        let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
+                        model.interact();
+                    }
+                }
 
                 if (this.hand.justReleased) {
-                    let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
-                    model.interact();
+                    if(this.input.mouse.locked === false){
+                        this.hand.setMouseLock(true);
+                    }
+                    //log the playre  position as a helper for manual object positioning in level files
+                    if(this.keys.q.isDown){
+                        console.log(this.player.pos);
+                    }
                 }
             }
 
-            if (this.hand.justReleased) {
-                if(this.player.mode === this.player.modes.LOOK && this.input.mouse.locked === false){
-                    this.hand.setMouseLock(true);
-                }
-                //log the playre  position as a helper for manual object positioning in level files
-                if(this.keys.q.isDown){
-                    console.log(this.player.pos);
-                }
-            }
         }
 
         this.cam.setPositionAndRotation({ x: this.player.pos.x, y: this.player.pos.y - this.player.eyeHeight, z: this.player.pos.z}, this.player.dir);
@@ -208,7 +213,7 @@ export default class Scn3d extends Phaser.Scene {
 
     gameControls(){
         this.keyboardLook();
-        if(this.player.mode === this.player.modes.LOOK){
+        if(this.player.mode === PLAYERMODE.LOOK){
             if(this.hand.mouselock === false){
                 this.hand.setMouseLock(true);
             }

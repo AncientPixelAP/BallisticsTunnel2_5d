@@ -23,7 +23,7 @@ export default class LevelDream00{
                     y: -16,
                     z: Math.sin(i) * d
                 }));
-                this.smokes[this.smokes.length - 1].debug.mode = this.smokes[this.smokes.length - 1].debug.modes.d2d;
+                this.smokes[this.smokes.length - 1].debug.mode = DRAWMODE.D2D;
             }
         }
 
