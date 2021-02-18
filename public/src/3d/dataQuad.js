@@ -5,6 +5,11 @@ export default class DataQuad{
         this.runNo = _runNo;
         this.type = _type;
         this.pos = _pos;
+        this.d2dPos = {
+            x: 0,
+            y: 0,
+            z: 0
+        }
         this.points = _points; //array of 4 xyz coords
         this.texture = _texture;
         this.frame = _frame;
@@ -99,21 +104,45 @@ export default class DataQuad{
         }
     }
 
-    drawNo3d(_withScale){
+    drawNo3d(_from, _dir, _withScale){
         if (this.quads.length > 0) {
-            this.calculateHelpPoints();
-            this.quads[0].x = this.scM.x;
-            this.quads[0].y = this.scM.y;
-            if(_withScale === true){
-                this.quads[0].setScale(this.zDepth * 1, this.zDepth * 1);
+            //this.calculateHelpPoints();
+            //this.quads[0].x = this.scM.x;
+            //this.quads[0].y = this.scM.y;
+
+            //calculate the billboard position of a quad seen from the camera
+            let pt = {
+                x: this.d2dPos.x + this.pos.x - _from.x,
+                y: this.d2dPos.y + this.pos.y - _from.y,
+                z: this.d2dPos.z + this.pos.z - _from.z
             }
-            this.quads[0].depth = this.depth;
+            let outXZ = rti.rotateY([0, 0, 0], [pt.x, pt.y, pt.z], [0, 0, 0], _dir.yaw);
+            let nx = outXZ[0];
+            let ny = outXZ[1];
+            let nz = outXZ[2];
+            let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [0, 0, 0], _dir.pitch);
+            nx = outYZ[0];
+            ny = outYZ[1];
+            nz = outYZ[2];
+
+            let nzMod = nz + 10;
+            let zoom = 400;
+            this.quads[0].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
+            this.quads[0].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
+
+            if(_withScale === true){
+                //this.quads[0].setScale(this.zDepth);
+                this.quads[0].setScale(256/nz);
+            }
+            this.quads[0].depth = nz;
         }
     }
 
     calculate3d(_from, _dir, _mipmap = true) {
         let recZ = -9999;
         let sumZ = 0;
+
+        //calculate the quads point in 3d seen from the camera
         for(let [i, p] of this.points.entries()){
             let pts = {
                 x: p.x + this.pos.x - _from.x,
@@ -135,7 +164,7 @@ export default class DataQuad{
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
 
-            this.zDepth = (this.scale.x / (Math.abs(nz) * 1)) * zoom;// 32/nz;
+            this.zDepth = (1 / Math.abs(nzMod)) * zoom;
 
             //ortho rendering
             /*this.screenCoords[i].x = nx;

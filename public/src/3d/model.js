@@ -74,7 +74,8 @@ export default class Model{
             modes: {
                 d3d: 0,
                 d2d: 1,
-                noscale2d: 2
+                noscale2d: 2,
+                billboard: 3
             },
             mode: 0
         }
@@ -192,6 +193,16 @@ export default class Model{
         }
     }
 
+    setDrawMode(_mode){
+        this.debug.mode = _mode;
+        /*if(this.debug.mode === this.debug.modes.d2d){
+            for(let q of this.quadData){
+                q.clearQuads();
+                q.createQuad();
+            }
+        }*/
+    }
+
     draw(_from, _dir){
         for (let q of this.quadData){
             if(this.debug.mode === this.debug.modes.d3d){
@@ -199,7 +210,19 @@ export default class Model{
                 q.draw();
             }else if(this.debug.mode === this.debug.modes.d2d){
                 q.calculate3d(_from, _dir, false);
-                q.drawNo3d(true);
+                q.drawNo3d(_from, _dir, true);
+            } else if (this.debug.mode === this.debug.modes.billboard){
+                this.translateAndRotate({
+                    x: 0,
+                    y: 0,
+                    z: 0
+                }, {
+                    yaw: (_dir.yaw * -1) - this.dir.yaw,
+                    pitch: 0,
+                    roll: 0
+                });
+                q.calculate3d(_from, _dir, true);
+                q.draw();
             }else{
                 q.calculate3d(_from, _dir);
                 q.drawNo3d(false);

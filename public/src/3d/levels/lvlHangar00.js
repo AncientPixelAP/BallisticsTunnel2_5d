@@ -98,10 +98,10 @@ export default class LevelHangar00{
         //CHARACTERS
         this.engineer = this.scene.geometryController.loadModel("engineer", "modCharacterEngineer", {
             x: 13,
-            y: 56,
-            z: 198
+            y: 60,
+            z: 196
         });
-        this.engineer.debug.mode = this.engineer.debug.modes.d2d;
+        this.engineer.setDrawMode(this.engineer.debug.modes.billboard);
     }
 
     update(){
