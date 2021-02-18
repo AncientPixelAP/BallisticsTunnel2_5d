@@ -7,6 +7,7 @@ import { Player3d } from "./3d/player.js";
 import LevelHangar00 from "./3d/levels/lvlHangar00.js"
 import LevelDream00 from "./3d/levels/lvlDream00.js"
 import LevelQuarters00 from "./3d/levels/lvlQuarters00.js"
+import LevelModelbuilder from "./3d/levels/lvlModelbuilder.js";
 
 export default class Scn3d extends Phaser.Scene {
 
@@ -245,10 +246,10 @@ export default class Scn3d extends Phaser.Scene {
             toPos.x -= Math.sin(this.player.dir.yaw) * 1;
         }else{
             //mouse movement TODO! better and creative solutioned mouse movement
-            if (this.hand.pressed === true) {
+            /*if (this.hand.pressed === true) {
                 toPos.z += Math.cos(this.player.dir.yaw) * 1;
                 toPos.x -= Math.sin(this.player.dir.yaw) * 1;
-            }
+            }*/
         }
 
 
@@ -421,6 +422,9 @@ export default class Scn3d extends Phaser.Scene {
     loadLevel(_name){
         this.unloadLevel();
         switch(_name){
+            case "modelBuilder":
+                this.level = new LevelModelbuilder(this);
+            break;
             case "dream00":
                 this.level = new LevelDream00(this);
                 break;

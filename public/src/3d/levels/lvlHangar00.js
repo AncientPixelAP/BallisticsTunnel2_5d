@@ -113,6 +113,10 @@ export default class LevelHangar00{
     }
 
     destroy() {
-
+        for (let o of this.objects) {
+            o.destroy();
+        }
+        this.ship.destroy();
+        this.engineer.destroy();
     }
 }

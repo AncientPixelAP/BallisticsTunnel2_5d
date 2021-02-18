@@ -18,6 +18,15 @@ export default class PanelElevator{
             this.scene.player.panel = null;
             this.destroy();
         });
+
+        this.btnDream = new Button(this.scene, { x: 160, y: -66 }, "sprBtn00", "DREAM", false, () => {
+            this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            this.scene.loadLevel("dream00");
+
+            this.scene.player.setMode(PLAYERMODE.LOOK);
+            this.scene.player.panel = null;
+            this.destroy();
+        });
     }
 
     update(){
@@ -25,11 +34,13 @@ export default class PanelElevator{
         this.bgGrid.update();
 
         this.btnBack.update();
+        this.btnDream.update();
     }
 
     destroy(){
         this.bgGraphics.destroy();
         this.bgGrid.destroy();
         this.btnBack.destroy();
+        this.btnDream.destroy();
     }
 }
