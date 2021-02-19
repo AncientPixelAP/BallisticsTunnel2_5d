@@ -441,6 +441,7 @@ export default class Scn3d extends Phaser.Scene {
 
     unloadLevel(){
         if(this.level !== null){
+            this.geometryController.destroyModels();
             this.level.destroy();
             this.level = null;
         }

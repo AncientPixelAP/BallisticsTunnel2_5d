@@ -124,4 +124,20 @@ export default class GeometryController{
         );
         return this.models[this.models.length-1];
     }
+
+    destroyModels(){
+        for(let m of this.models){
+            m.destroy();
+        }
+        this.models = [];
+    }
+
+    destroyModelById(_id){
+        for(let i = this.models.length - 1 ; i >= 0 ; i--){
+            if(this.models[i].id === _id){
+                this.models[i].destroy();
+                this.models.splice(i, 1);
+            }
+        }
+    }
 }

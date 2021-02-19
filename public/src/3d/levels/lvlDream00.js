@@ -114,7 +114,7 @@ export default class LevelDream00{
     }
 
     destroy(){
-        for(let o of this.objects){
+        /*for(let o of this.objects){
             o.destroy();
         }
         for(let s of this.smokes){
@@ -124,6 +124,6 @@ export default class LevelDream00{
         this.door.destroy();
         this.doorFrame.destroy();
         this.doorTrigger.destroy();
-        this.levelTrigger.destroy();
+        this.levelTrigger.destroy();*/
     }
 }
