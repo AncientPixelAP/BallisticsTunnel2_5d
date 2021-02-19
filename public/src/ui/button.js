@@ -121,4 +121,12 @@ export default class Button{
         this.sprite.depth = _depth;
         this.txt.depth = _depth;
     }
+
+    setSpriteVisibility(_bool){
+        if(_bool === true){
+            this.sprite.alpha = 1;
+        }else{
+            this.sprite.alpha = 0;
+        }
+    }
 }

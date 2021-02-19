@@ -12,14 +12,16 @@ export default class MovingGrid{
             for (let xx = 0; xx < this.size.x; xx += this.cellSize) {
                 this.points.push({
                     id: this.points.length,
-                    x: 16 + xx - this.scene.game.config.width * 0.5,
-                    y: 16 + yy - this.scene.game.config.height * 0.5,
+                    x: 16 + xx - (this.scene.game.config.width * 0.5),
+                    y: 16 + yy - (this.scene.game.config.height * 0.5),
                     sprite: this.scene.add.sprite(xx, yy, "sprUiMenuBg")
                 });
             }
         }
 
         this.pointers = [];
+
+        this.highlight = this.scene.add.graphics();
     }
 
     update(){
@@ -34,8 +36,19 @@ export default class MovingGrid{
                     p.sprite.x = p.x;
                     p.sprite.y = p.y;
                 }
+                p.sprite.setScale(1);
             }
         }
+
+        this.highlight.clear();
+        this.highlight.lineStyle(1, 0x00ff00);
+        let lx = Math.floor(this.size.x / this.cellSize);
+        let mx = this.scene.input.activePointer.worldX + (this.scene.game.config.width * 0.5) - 16;
+        let my = this.scene.input.activePointer.worldY + (this.scene.game.config.height * 0.5) - 16;
+        let xx = Math.floor(mx / this.cellSize);
+        let yy = Math.floor(my / this.cellSize);
+        let id = Math.max(0, Math.min((yy * lx) + xx, this.points.length-1));
+        this.points[id].sprite.setScale(4);
     }
 
     addPointer(_id, _x, _y, _influence){
