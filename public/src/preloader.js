@@ -10,8 +10,8 @@ export default function() {
         preload: function() {
             this.load.setBaseURL("./assets/");
             this.load.bitmapFont("pixelmix", "fonts/pixelmix.png", "fonts/pixelmix.xml");
+            
             //this.load.bitmapFont("pixochrome", "fonts/pixochrome_8.png", "fonts/pixochrome_8.xml");
-
             this.load.bitmapFont("bravenewEra_16", "fonts/bravenewEra_16.png", "fonts/bravenewEra_16.xml");
             /*this.load.bitmapFont("empire_16", "fonts/empire_16.png", "fonts/empire_16.xml");
             this.load.bitmapFont("omikron_16", "fonts/omikron_16.png", "fonts/omikron_16.xml");
