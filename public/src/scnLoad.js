@@ -27,6 +27,10 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
         this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
         this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
+        //METRO
+        this.load.json("modMetroPlatform", "jsons/models/dream/metroPlatform.json");
+        this.load.json("modMetroTunnel", "jsons/models/dream/metroTunnel.json");
+        this.load.json("modMetroCarriage", "jsons/models/dream/metroCarriage.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -100,6 +104,28 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texBloodLineCurve00", "sprites/3dTextures/texBloodLineCurve00.png");
         this.load.image("texBloodLineCurve01", "sprites/3dTextures/texBloodLineCurve01.png");
         this.load.image("texBloodLineCross00", "sprites/3dTextures/texBloodLineCross00.png");
+
+        this.load.image("texSky00", "sprites/3dTextures/texSky00.png");  
+        this.load.image("texGrass00", "sprites/3dTextures/texGrass00.png");
+        this.load.image("texBush00", "sprites/3dTextures/texBush00.png");
+
+        this.load.image("texMetroCarriageWallDoor00", "sprites/3dTextures/texMetroCarriageWallDoor00.png");
+        this.load.image("texMetroCarriageWallWindow00", "sprites/3dTextures/texMetroCarriageWallWindow00.png");
+        this.load.image("texMetroCarriageWall00", "sprites/3dTextures/texMetroCarriageWall00.png");
+        this.load.image("texMetroCarriageFloor00", "sprites/3dTextures/texMetroCarriageFloor00.png");
+
+        this.load.image("texMetroPlatformWall00", "sprites/3dTextures/texMetroPlatformWall00.png");
+        this.load.image("texMetroPlatformWall01", "sprites/3dTextures/texMetroPlatformWall01.png");
+        this.load.image("texMetroPlatformWall02", "sprites/3dTextures/texMetroPlatformWall02.png");
+        this.load.image("texMetroPlatformWall03", "sprites/3dTextures/texMetroPlatformWall03.png");
+        this.load.image("texMetroPlatformWallName00", "sprites/3dTextures/texMetroPlatformWallName00.png");
+        this.load.image("texMetroPlatformWallName01", "sprites/3dTextures/texMetroPlatformWallName01.png");
+        this.load.image("texMetroPlatformWallName02", "sprites/3dTextures/texMetroPlatformWallName02.png");
+        this.load.image("texMetroPlatformFloor00", "sprites/3dTextures/texMetroPlatformFloor00.png");
+        this.load.image("texMetroPlatformFloor01", "sprites/3dTextures/texMetroPlatformFloor01.png");
+        this.load.image("texMetroPlatformSteel00", "sprites/3dTextures/texMetroPlatformSteel00.png");
+        this.load.image("texMetroPlatformSteel01", "sprites/3dTextures/texMetroPlatformSteel01.png");
+
 
         //this.load.image('image0', '0.png');
         //this.load.json("story1", "storyjson/story1.json");

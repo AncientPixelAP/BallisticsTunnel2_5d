@@ -97,6 +97,27 @@ export default class Editor {
                 "texBloodLineCurve00",
                 "texBloodLineCurve01",
                 "texBloodLineCross00"
+            ],[
+                "texMetroCarriageWallDoor00",
+                "texMetroCarriageWallWindow00",
+                "texMetroCarriageWall00",
+                "texMetroCarriageFloor00",
+            ],[
+                "texMetroPlatformWall00",
+                "texMetroPlatformWall01",
+                "texMetroPlatformWall02",
+                "texMetroPlatformWall03",
+                "texMetroPlatformWallName00",
+                "texMetroPlatformWallName01",
+                "texMetroPlatformWallName02",
+                "texMetroPlatformFloor00",
+                "texMetroPlatformFloor01",
+                "texMetroPlatformSteel00",
+                "texMetroPlatformSteel01"
+            ],[
+                "texSky00",
+                "texGrass00",
+                "texBush00"
             ]],
             position: 0,
             bank: 0

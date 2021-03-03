@@ -9,7 +9,7 @@ export default class LevelDream00{
         this.state = this.states.MAZE;
 
         this.objects = [];
-        this.objects.push(this.scene.geometryController.loadModel("DreamBloodLine", "modDreamBloodLine", {
+        /*this.objects.push(this.scene.geometryController.loadModel("DreamBloodLine", "modDreamBloodLine", {
             x: 0,
             y: 0,
             z: 0
@@ -31,7 +31,25 @@ export default class LevelDream00{
             x: 128,
             y: 0,
             z: 0
+        });*/
+
+
+        this.movingTrain0 = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
+            x: -128,
+            y: 0,
+            z: -300
         });
+        this.movingTrain1 = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
+            x: -128,
+            y: 0,
+            z: 0
+        });
+        this.movingTrain2 = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
+            x: -128,
+            y: 0,
+            z: 300
+        });
+
 
         this.door = this.scene.geometryController.loadModel("DreamDoor", "modDreamDoor", {
             x: -22,
@@ -59,10 +77,10 @@ export default class LevelDream00{
                 for (let o of this.objects) {
                     o.destroy();
                 }
-                for (let s of this.smokes) {
+                /*for (let s of this.smokes) {
                     s.destroy();
                 }
-                this.ship.destroy();
+                this.ship.destroy();*/
             }
         }
         this.doorTrigger.trigger.onExit = () => {
@@ -92,16 +110,7 @@ export default class LevelDream00{
     }
 
     update(){
-        /*this.ship.translateAndRotate({
-            x: Math.sin(this.ship.dir.yaw) * 16,
-            y: 0,
-            z: Math.cos(this.ship.dir.yaw) * 16
-        }, {
-            yaw: -0.05,
-            pitch: 0,
-            roll: 0
-        });*/
-        let toDir = (this.scene.player.dir.yaw * -1) - this.ship.dir.yaw;
+        /*let toDir = (this.scene.player.dir.yaw * -1) - this.ship.dir.yaw;
         this.ship.translateAndRotate({
             x: 0,
             y: 0,
@@ -110,7 +119,7 @@ export default class LevelDream00{
             yaw: toDir,
             pitch: 0,
             roll: 0
-        });
+        });*/
     }
 
     destroy(){
