@@ -6,6 +6,7 @@ import Editor from "./3d/editor.js";
 import { Player3d } from "./3d/player.js";
 import LevelHangar00 from "./3d/levels/lvlHangar00.js"
 import LevelDream00 from "./3d/levels/lvlDream00.js"
+import LevelDream01 from "./3d/levels/lvlDream01.js";
 import LevelQuarters00 from "./3d/levels/lvlQuarters00.js"
 import LevelModelbuilder from "./3d/levels/lvlModelbuilder.js";
 
@@ -112,7 +113,7 @@ export default class Scn3d extends Phaser.Scene {
         */
 
         this.level = null;
-        this.loadLevel("modelBuilder");
+        this.loadLevel("dream01");//modelBuilder dream01
 
         this.modelName = "";
         this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
@@ -427,7 +428,10 @@ export default class Scn3d extends Phaser.Scene {
             break;
             case "dream00":
                 this.level = new LevelDream00(this);
-                break;
+            break;
+            case "dream01":
+                this.level = new LevelDream01(this);
+            break;
             case "hangar00":
                 this.level = new LevelHangar00(this);
             break;
