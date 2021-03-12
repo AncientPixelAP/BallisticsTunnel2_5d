@@ -11,6 +11,10 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.setBaseURL("./assets/");
 
+        //dialogues
+        this.load.json("diaDreambeggar00", "jsons/story/diaDreambeggar00.json");
+
+        //models
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
         this.load.json("modDebugWallTest", "jsons/models/debugWallTest.json");
         this.load.json("modElevatorBase", "jsons/models/elevatorBase.json");
@@ -27,6 +31,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
         this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
         this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
+        this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
         //METRO
         this.load.json("modMetroPlatform", "jsons/models/dream/metroPlatform.json");
         this.load.json("modMetroPlatform01", "jsons/models/dream/metroPlatform01.json");
@@ -127,7 +132,18 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetroPlatformFloor01", "sprites/3dTextures/texMetroPlatformFloor01.png");
         this.load.image("texMetroPlatformSteel00", "sprites/3dTextures/texMetroPlatformSteel00.png");
         this.load.image("texMetroPlatformSteel01", "sprites/3dTextures/texMetroPlatformSteel01.png");
+        this.load.image("texMetroPlatformGarbageTop00", "sprites/3dTextures/texMetroPlatformGarbageTop00.png");
 
+        this.load.image("texMetroTunnelRails00", "sprites/3dTextures/texMetroTunnelRails00.png");
+
+        //characters
+        this.load.image("PaulM_smallBrown", "raw/SebiM_lores00.png");
+        this.load.image("PaulM_smallDog", "raw/PaulM_lores01.png");
+        this.load.image("PaulM_smallGreenn", "raw/PaulM_smallGreenn01.png");
+        this.load.image("mechanic", "sprites/characters/wheelchairMechanic.png");
+        this.load.image("texCharBeggar", "sprites/characters/beggar.png");
+
+        
 
         //this.load.image('image0', '0.png');
         //this.load.json("story1", "storyjson/story1.json");
@@ -161,10 +177,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprStoryLoop00", "sprites/story/storyLoop00.png");
         this.load.image("sprStoryRacing01", "sprites/story/storyRacing01.png");
 
-        this.load.image("PaulM_smallBrown", "raw/SebiM_lores00.png");
-        this.load.image("PaulM_smallDog", "raw/PaulM_lores01.png");
-        this.load.image("PaulM_smallGreenn", "raw/PaulM_smallGreenn01.png");
-        this.load.image("mechanic", "sprites/characters/wheelchairMechanic.png");
+        
 
         //SEGMENTS
         this.load.spritesheet("sprSegMetalRoad00", "sprites/segments/sprSegMetalRoad00.png", { frameWidth: 128, frameHeight: 128 });

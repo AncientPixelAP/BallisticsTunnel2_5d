@@ -1,0 +1,69 @@
+{
+    "name": "Character Beggar",
+    "quadData": [
+        {
+            "type": "quad",
+            "texture": "texCharBeggar",
+            "frame": 0,
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "points": [
+                {
+                    "x": 10,
+                    "y": -20,
+                    "z": 0
+                },
+                {
+                    "x": -10,
+                    "y": -20,
+                    "z": 0
+                },
+                {
+                    "x": -10,
+                    "y": 0,
+                    "z": 0
+                },
+                {
+                    "x": 10,
+                    "y": 0,
+                    "z": 0
+                }
+            ]
+        }
+    ],
+    "collisionData": [
+        {
+            "type": "collisionQuad",
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": 0
+            },
+            "points": [
+                {
+                    "x": -6,
+                    "y": 0,
+                    "z": 0
+                },
+                {
+                    "x": 6,
+                    "y": 0,
+                    "z": 0
+                },
+                {
+                    "x": 6,
+                    "y": -20,
+                    "z": 0
+                },
+                {
+                    "x": -6,
+                    "y": -20,
+                    "z": 0
+                }
+            ]
+        }
+    ]
+}

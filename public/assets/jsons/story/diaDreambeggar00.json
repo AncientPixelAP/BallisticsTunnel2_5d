@@ -1,0 +1,34 @@
+{
+    "title": "The Beggar´s Dream",
+    "cards": [{
+            "id": 0,
+            "text": "Hast du einen Euro?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Excuse me?",
+                    "actions": "GOTO 1"
+                },
+                {
+                    "text": "Commander Circa sent me.",
+                    "actions": "GOTO 2",
+                    "showon": "SentByCmd"
+                }
+            ]
+        },{
+        "id": 1,
+        "text": "Ob du einen Euro hast?",
+        "sprite": "sprCharBeggar",
+        "answers": [
+            {
+                "text": "Sure.",
+                "actions": "GOTO 0",
+                "showon": "DreamHasCoin"
+            },
+            {
+                "text": "Nein, leider.",
+                "actions": "GOTO 0"
+            }
+        ]
+    }]
+}

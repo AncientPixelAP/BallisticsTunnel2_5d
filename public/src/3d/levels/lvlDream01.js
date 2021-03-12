@@ -1,3 +1,5 @@
+import PanelElevator from "../../ui/panelElevator.js";
+
 export default class LevelDream01{
     constructor(_scene){
         this.scene = _scene;
@@ -46,6 +48,18 @@ export default class LevelDream01{
                 y: -48,
                 z: 1324 + (i * 300)
             }));
+        }
+
+        //CHARACTERS
+        this.beggar = this.scene.geometryController.loadModel("texCharBeggar", "modCharacterBeggar", {
+            x: 16,
+            y: 0,
+            z: 144//76
+        });
+        this.beggar.setDrawMode(DRAWMODE.BILLBOARD);
+        this.beggar.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.INTERACT);
+            this.scene.player.panel = new PanelElevator(this.scene);
         }
 
     }
