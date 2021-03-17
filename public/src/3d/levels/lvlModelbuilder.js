@@ -8,11 +8,12 @@ export default class LevelModelbuilder{
             y: 0,
             z: 0
         }));*/
-        this.model = this.scene.geometryController.loadModel("MetroPlatform", "modMetroPlatform", {
+        this.ref = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
             x: 0,
             y: 0,
-            z: -416
+            z: 0
         });
+        
     }
 
     update(){

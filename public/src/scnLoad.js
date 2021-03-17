@@ -125,6 +125,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetroPlatformWall01", "sprites/3dTextures/texMetroPlatformWall01.png");
         this.load.image("texMetroPlatformWall02", "sprites/3dTextures/texMetroPlatformWall02.png");
         this.load.image("texMetroPlatformWall03", "sprites/3dTextures/texMetroPlatformWall03.png");
+        this.load.image("texMetroPlatformWall04", "sprites/3dTextures/texMetroPlatformWall04.png");
+        this.load.image("texMetroPlatformWall05", "sprites/3dTextures/texMetroPlatformWall05.png");
         this.load.image("texMetroPlatformWallName00", "sprites/3dTextures/texMetroPlatformWallName00.png");
         this.load.image("texMetroPlatformWallName01", "sprites/3dTextures/texMetroPlatformWallName01.png");
         this.load.image("texMetroPlatformWallName02", "sprites/3dTextures/texMetroPlatformWallName02.png");
@@ -132,9 +134,11 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetroPlatformFloor01", "sprites/3dTextures/texMetroPlatformFloor01.png");
         this.load.image("texMetroPlatformSteel00", "sprites/3dTextures/texMetroPlatformSteel00.png");
         this.load.image("texMetroPlatformSteel01", "sprites/3dTextures/texMetroPlatformSteel01.png");
-        this.load.image("texMetroPlatformGarbageTop00", "sprites/3dTextures/texMetroPlatformGarbageTop00.png");
+        this.load.image("texMetroPlatformGarbageTop00", "sprites/3dTextures/texMetroPlatformGarbageTop00.png"); 
 
         this.load.image("texMetroTunnelRails00", "sprites/3dTextures/texMetroTunnelRails00.png");
+        this.load.image("texMetroTunnelRails01", "sprites/3dTextures/texMetroTunnelRails01.png");
+        this.load.image("texMetroTunnelRails02", "sprites/3dTextures/texMetroTunnelRails02.png");
 
         //characters
         this.load.image("PaulM_smallBrown", "raw/SebiM_lores00.png");

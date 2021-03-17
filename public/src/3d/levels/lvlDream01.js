@@ -35,7 +35,7 @@ export default class LevelDream01{
         this.trainMoving = [];
         for(let i = -1 ; i < 3 ; i++){
             this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
-                x: -64,
+                x: -68,
                 y: 0,
                 z: i * 300
             }));
@@ -47,6 +47,15 @@ export default class LevelDream01{
                 x: 16,
                 y: -48,
                 z: 1324 + (i * 300)
+            }));
+        }
+
+        this.tunnelMoving = [];
+        for (let i = 0; i < 16; i++) {
+            this.tunnelMoving.push(this.scene.geometryController.loadModel("MetroTunnel", "modMetroTunnel", {
+                x: 16,
+                y: -48,
+                z: 1024 + (128*i)
             }));
         }
 
@@ -68,11 +77,22 @@ export default class LevelDream01{
         for(let t of this.trainMoving){
             t.translateAndRotate({x: 0, y: 0, z: 5}, {yaw: 0, pitch: 0, roll: 0});
         }
-        if(this.trainMoving[0].pos.z === 0){
+        if(this.trainMoving[0].pos.z >= 0){
             for(let t of this.trainMoving){
                 t.translateAndRotate({x: 0, y: 0, z: -300}, {yaw: 0, pitch: 0, roll: 0});
             }
         }
+
+        //TODO segemnet the level with triggers to skip unnecessary calculations
+        for (let t of this.tunnelMoving) {
+            t.translateAndRotate({ x: 0, y: 0, z: -8 }, { yaw: 0, pitch: 0, roll: 0 });
+        }
+        if (this.tunnelMoving[0].pos.z <= 1024) {
+            for (let t of this.tunnelMoving) {
+                t.translateAndRotate({ x: 0, y: 0, z: 128 }, { yaw: 0, pitch: 0, roll: 0 });
+            }
+        }
+        
     }
 
     destroy() {

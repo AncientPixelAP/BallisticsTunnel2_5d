@@ -189,20 +189,20 @@ export default class Scn3d extends Phaser.Scene {
         this.keyboardLook();
 
         if (this.keys.a.isDown) {
-            this.player.pos.z -= Math.cos(this.player.dir.yaw - HALFPI) * 1;
-            this.player.pos.x += Math.sin(this.player.dir.yaw - HALFPI) * 1;
+            this.player.pos.z -= Math.cos(this.player.dir.yaw - HALFPI) * 2;//all move was spd 1
+            this.player.pos.x += Math.sin(this.player.dir.yaw - HALFPI) * 2;
         }
         if (this.keys.d.isDown) {
-            this.player.pos.z -= Math.cos(this.player.dir.yaw + HALFPI) * 1;
-            this.player.pos.x += Math.sin(this.player.dir.yaw + HALFPI) * 1;
+            this.player.pos.z -= Math.cos(this.player.dir.yaw + HALFPI) * 2;
+            this.player.pos.x += Math.sin(this.player.dir.yaw + HALFPI) * 2;
         }
         if (this.keys.s.isDown) {
-            this.player.pos.z -= Math.cos(this.player.dir.yaw) * 1;
-            this.player.pos.x += Math.sin(this.player.dir.yaw) * 1;
+            this.player.pos.z -= Math.cos(this.player.dir.yaw) * 3;
+            this.player.pos.x += Math.sin(this.player.dir.yaw) * 3;
         }
         if (this.keys.w.isDown) {
-            this.player.pos.z += Math.cos(this.player.dir.yaw) * 1;
-            this.player.pos.x -= Math.sin(this.player.dir.yaw) * 1;
+            this.player.pos.z += Math.cos(this.player.dir.yaw) * 3;
+            this.player.pos.x -= Math.sin(this.player.dir.yaw) * 3;
         }
 
         if (this.keys.space.isDown) {

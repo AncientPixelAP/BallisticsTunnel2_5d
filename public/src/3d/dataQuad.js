@@ -65,6 +65,11 @@ export default class DataQuad{
                 this.quads[0].setBottomRight(this.screenCoords[2].x, this.screenCoords[2].y);
                 this.quads[0].setBottomLeft(this.screenCoords[3].x, this.screenCoords[3].y);
                 this.quads[0].depth = this.depth;
+                /*let c = Phaser.Display.Color.GetColor(this.shade, this.shade, this.shade);
+                this.quads[0].topLeftColor = c;
+                this.quads[0].topRightColor = c;
+                this.quads[0].bottomLeftColor = c;
+                this.quads[0].bottomRightColor = c;*/
             }else{
                 this.quads[0].setTopLeft(this.screenCoords[0].x, this.screenCoords[0].y);
                 this.quads[0].setTopRight(this.sc01.x, this.sc01.y);
@@ -91,7 +96,7 @@ export default class DataQuad{
                 this.quads[3].depth = this.depth;
             }
 
-            /*
+            
             let col = Phaser.Display.Color.GetColor(this.shade, this.shade, this.shade);
             for(let q of this.quads){
                 //shading
@@ -100,7 +105,7 @@ export default class DataQuad{
                 q.bottomLeftColor = col;
                 q.bottomRightColor = col;
             }
-            */
+            
         }
     }
 
@@ -180,7 +185,8 @@ export default class DataQuad{
             sumZ += nz;
         }
         this.depth = sumZ * -0.25;
-        this.shade = Math.max(0, 255 - ((recZ + 32) * 0.5));
+        //this.shade = Math.max(0, 255 - ((recZ + 32) * 0.5));
+        this.shade = Math.max(0, 255 - ((recZ + 0) * 0.25));
 
         if(this.type !== "collisionQuad"){
             if(this.depth >= 0){//near clipping plane could be at -25 for example

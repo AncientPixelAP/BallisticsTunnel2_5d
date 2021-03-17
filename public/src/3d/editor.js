@@ -107,13 +107,18 @@ export default class Editor {
                 "texMetroPlatformWall01",
                 "texMetroPlatformWall02",
                 "texMetroPlatformWall03",
+                "texMetroPlatformWall04",
+                "texMetroPlatformWall05",
                 "texMetroPlatformWallName00",
                 "texMetroPlatformWallName01",
                 "texMetroPlatformWallName02",
                 "texMetroPlatformFloor00",
                 "texMetroPlatformFloor01",
                 "texMetroPlatformSteel00",
-                "texMetroPlatformSteel01"
+                "texMetroPlatformSteel01",
+                "texMetroTunnelRails00",
+                "texMetroTunnelRails01",
+                "texMetroTunnelRails02"
             ],[
                 "texSky00",
                 "texGrass00",
