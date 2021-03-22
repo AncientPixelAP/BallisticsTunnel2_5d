@@ -37,6 +37,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modMetroPlatform01", "jsons/models/dream/metroPlatform01.json");
         this.load.json("modMetroTunnel", "jsons/models/dream/metroTunnel.json");
         this.load.json("modMetroCarriage", "jsons/models/dream/metroCarriage.json");
+        this.load.json("modMetroCarriageEnd", "jsons/models/dream/metroCarriageEnd.json");
         this.load.json("modMetroStairCarriageTransition", "jsons/models/dream/metroStairCarriageTransition.json");
 
         //3dtex

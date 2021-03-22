@@ -177,15 +177,15 @@ export default class DataQuad{
 
             //clamp screenCoords
             //this.screenCoords[i].x = Math.max(-this.scene.game.config.width * 20, Math.min(this.scene.game.config.width * 20, this.screenCoords[i].x));
-            //this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 20, Math.min(this.scene.game.config.height * 20, this.screenCoords[i].y));
+            //this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 20, Math.min(this.scene.game.config.height * 20, this.screenCoords[i].y));)
 
             if (nz > recZ) {
                 recZ = nz;
             }
             sumZ += nz;
         }
-        this.depth = sumZ * -0.25;
-        //this.shade = Math.max(0, 255 - ((recZ + 32) * 0.5));
+        //this.depth = sumZ * -0.25;
+        this.depth = recZ*-1;
         this.shade = Math.max(0, 255 - ((recZ + 0) * 0.25));
 
         if(this.type !== "collisionQuad"){
@@ -198,7 +198,7 @@ export default class DataQuad{
                     this.createQuad();
                 }
                 //quad so near that mipmapping is required?
-                if(this.depth > -50){
+                if (this.depth > -50){
                     if(_mipmap === true){
                         this.mipmapQuad();
                     }
@@ -208,10 +208,14 @@ export default class DataQuad{
             }
 
             if (this.quads.length > null) {
-                if (recZ > 16) {
-                    this.quads[0].alphas = [1, 1, 1, 1, 1, 1];
+                if (this.depth < -16) {// (recZ > 16) at sumZ * -0.25
+                    for(let q of this.quads){
+                        q.alphas = [1, 1, 1, 1, 1, 1];
+                    }
                 } else {
-                    this.quads[0].alphas = [0, 0, 0, 0, 0, 0];
+                    for (let q of this.quads) {
+                        q.alphas = [0, 0, 0, 0, 0, 0];
+                    }
                 }
             }
         }
