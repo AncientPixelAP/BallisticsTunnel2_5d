@@ -208,7 +208,7 @@ export default class DataQuad{
             }
 
             if (this.quads.length > null) {
-                if (this.depth < -16) {// (recZ > 16) at sumZ * -0.25
+                if (this.depth < -12) {// (recZ > 16) at sumZ * -0.25
                     for(let q of this.quads){
                         q.alphas = [1, 1, 1, 1, 1, 1];
                     }

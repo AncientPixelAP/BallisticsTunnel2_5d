@@ -8,7 +8,7 @@ export default class LevelModelbuilder{
             y: 0,
             z: 0
         }));*/
-
+        /*
         this.ref = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
             x: 0,
             y: 0,
@@ -18,6 +18,12 @@ export default class LevelModelbuilder{
             x: 0,
             y: 0,
             z: 300
+        });
+        */
+        this.controls = this.scene.geometryController.loadModel("MetroCarriageControls", "modMetroCarriageControls", {
+            x: 0,
+            y: 0,
+            z: 0
         });
         
     }

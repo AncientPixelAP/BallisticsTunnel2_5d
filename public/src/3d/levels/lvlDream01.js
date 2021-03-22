@@ -4,6 +4,8 @@ export default class LevelDream01{
     constructor(_scene){
         this.scene = _scene;
 
+        this.trainMovingSpd = -8;
+
         this.objects = [];
         /*this.objects.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
             x: 0,
@@ -49,6 +51,21 @@ export default class LevelDream01{
                 z: 1324 + (i * 300)
             }));
         }
+        this.trainStationary.push(this.scene.geometryController.loadModel("MetroCarriageEnd", "modMetroCarriageEnd", {
+            x: 16,
+            y: -48,
+            z: 2224
+        }));
+        this.trainControls = this.scene.geometryController.loadModel("MetroCarriageControls", "modMetroCarriageControls", {
+            x: 16,
+            y: -48,
+            z: 2224
+        });
+        this.trainControls.interact = () => {
+            //this.scene.player.setMode(PLAYERMODE.INTERACT);
+            //this.scene.player.panel = new PanelElevator(this.scene);
+            this.trainMovingSpd = 0;
+        }
 
         this.tunnelMoving = [];
         for (let i = 0; i < 16; i++) {
@@ -85,7 +102,7 @@ export default class LevelDream01{
 
         //TODO segemnet the level with triggers to skip unnecessary calculations
         for (let t of this.tunnelMoving) {
-            t.translateAndRotate({ x: 0, y: 0, z: -8 }, { yaw: 0, pitch: 0, roll: 0 });
+            t.translateAndRotate({ x: 0, y: 0, z: this.trainMovingSpd }, { yaw: 0, pitch: 0, roll: 0 });
         }
         if (this.tunnelMoving[0].pos.z <= 1024) {
             for (let t of this.tunnelMoving) {
