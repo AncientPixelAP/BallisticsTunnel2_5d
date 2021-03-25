@@ -29,12 +29,71 @@ export default class LevelDream01{
             z: 832
         });
 
+        this.tunnelEntry = this.scene.geometryController.loadModel("Tunnel Entry", "modMetroTunnelEntry", {
+            x: -68,
+            y: 0,
+            z: -160
+        });
+        this.exitTunnels = [];
+        for (let i = 0; i < 4; i++) {
+            this.exitTunnels.push(this.scene.geometryController.loadModel("MetroTunnel", "modMetroTunnel", {
+                x: -68,
+                y: 0,
+                z: -288 - (128 * i)
+            }));
+        }
+        
+
+        //T crossing as entry with st barbara
         this.hallwayT = this.scene.geometryController.loadModel("Metro Hallway T", "modMetroHallwayT", {
             x: 48,
             y: 0,
             z: 0
         });
+        this.otherPlatform = this.scene.geometryController.loadModel("other MetroPlatform", "modMetroPlatformToHallway", {
+            x: 256,
+            y: 0,
+            z: 8
+        });
+        this.otherPlatform.translateAndRotate({
+            x: 0,
+            y: 0,
+            z: 0
+        }, {
+            yaw: Math.PI,
+            pitch: 0,
+            roll: 0
+        });
+        this.otherTunnelEntry = this.scene.geometryController.loadModel("other Tunnel Entry", "modMetroTunnelEntry", {
+            x: 324,
+            y: 0,
+            z: 168
+        });
+        this.otherTunnelEntry.translateAndRotate({
+            x: 0,
+            y: 0,
+            z: 0
+        }, {
+            yaw: Math.PI,
+            pitch: 0,
+            roll: 0
+        });
+        this.stairsT = this.scene.geometryController.loadModel("stairs behind bars", "modMetroPlatform01", {
+            x: 108,
+            y: 0,
+            z: -236
+        });
+        this.stairsT.translateAndRotate({
+            x: 0,
+            y: 0,
+            z: 0
+        }, {
+            yaw: Math.PI,
+            pitch: 0,
+            roll: 0
+        });
 
+        //uppper level of fake moving train
         this.stairTrainTransition = this.scene.geometryController.loadModel("MetroStairCarriageTransition", "modMetroStairCarriageTransition", {
             x: 16,
             y: -48,
@@ -44,17 +103,13 @@ export default class LevelDream01{
         this.trainMoving = [];
         for(let i = -1 ; i < 3 ; i++){
             this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
-                x: -168,
+                x: -68,
                 y: 0,
                 z: i * 300
             }));
         }
 
-        this.tunnelEntry = this.scene.geometryController.loadModel("Tunnel Entry", "modMetroTunnelEntry", {
-            x: -68,
-            y: 0,
-            z: -160
-        });
+        
 
         this.trainEnd = this.scene.geometryController.loadModel("Tunnel Block Train", "modMetroCarriageEnd", {
             x: -100,
@@ -118,13 +173,24 @@ export default class LevelDream01{
         }
 
         //CHARACTERS
-        this.beggar = this.scene.geometryController.loadModel("texCharBeggar", "modCharacterBeggar", {
+        this.beggar = this.scene.geometryController.loadModel("John Hobo", "modCharacterBeggar", {
             x: 16,
             y: 0,
             z: 144//76
         });
         this.beggar.setDrawMode(DRAWMODE.BILLBOARD);
         this.beggar.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.INTERACT);
+            this.scene.player.panel = new PanelElevator(this.scene);
+        }
+
+        this.barbara = this.scene.geometryController.loadModel("Saint Barbara", "modCharacterStBarbara", {
+            x: 128,
+            y: -12,
+            z: 44//76
+        });
+        this.barbara.setDrawMode(DRAWMODE.BILLBOARD);
+        this.barbara.interact = () => {
             this.scene.player.setMode(PLAYERMODE.INTERACT);
             this.scene.player.panel = new PanelElevator(this.scene);
         }
