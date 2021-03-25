@@ -5,7 +5,7 @@ export default class Model{
         this.scene = _scene;
         this.geometryController = _geometryController;
         this.id = _id;
-        this.modelData = this.scene.cache.json.get(_modelDataJson);
+        this.modelData = JSON.parse(JSON.stringify(this.scene.cache.json.get(_modelDataJson)));
         this.pos = {
             x: _pos.x,
             y: _pos.y,

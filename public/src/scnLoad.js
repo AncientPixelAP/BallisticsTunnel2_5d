@@ -33,9 +33,12 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
         this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
         //METRO
+        this.load.json("modMetroHallwayT", "jsons/models/dream/metroHallwayT.json");
         this.load.json("modMetroPlatform", "jsons/models/dream/metroPlatform.json");
+        this.load.json("modMetroPlatformToHallway", "jsons/models/dream/metroPlatformToHallway.json");
         this.load.json("modMetroPlatform01", "jsons/models/dream/metroPlatform01.json");
         this.load.json("modMetroTunnel", "jsons/models/dream/metroTunnel.json");
+        this.load.json("modMetroTunnelEntry", "jsons/models/dream/metroTunnelEntry.json");
         this.load.json("modMetroCarriage", "jsons/models/dream/metroCarriage.json");
         this.load.json("modMetroCarriageEnd", "jsons/models/dream/metroCarriageEnd.json");
         this.load.json("modMetroCarriageControls", "jsons/models/dream/metroCarriageControls.json");
@@ -99,6 +102,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texPadding00", "sprites/3dTextures/texPadding00.png");
         this.load.image("texPadding01", "sprites/3dTextures/texPadding01.png");
         this.load.image("texPadding02", "sprites/3dTextures/texPadding02.png");
+        this.load.image("texDoorBars00", "sprites/3dTextures/texDoorBars00.png");
 
         this.load.image("texPainting16x16Dart", "sprites/3dTextures/texPainting16x16Dart00.png");
         this.load.image("texSegStartTunnel00", "sprites/segmentsSingles/sprSegStartTunnel00.png");
@@ -148,6 +152,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("PaulM_smallGreenn", "raw/PaulM_smallGreenn01.png");
         this.load.image("mechanic", "sprites/characters/wheelchairMechanic.png");
         this.load.image("texCharBeggar", "sprites/characters/beggar.png");
+        this.load.image("texCharBarbara", "sprites/characters/hlBarabara.png");
+
+        this.load.image("texAdvertNutricubes00", "sprites/clutter/sprAdvertNutricubes00.png");
 
         
 

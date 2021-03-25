@@ -59,10 +59,12 @@ export default class Editor {
                 "sprDebugTexture",
                 "sprLogoArashi",
                 "sprAdvertTeamArashi",
+                "texAdvertNutricubes00",
                 "texPainting16x16Dart",
                 "texSegStartTunnel00",
                 "texSegStartTunnel02",
                 "mechanic",
+                "texCharBarbara",
                 "texSmokeWhite",
                 "texDoor00",
                 "texBlackout"
@@ -89,7 +91,8 @@ export default class Editor {
                 "texGrating02",
                 "texPadding00",
                 "texPadding01",
-                "texPadding02"
+                "texPadding02",
+                "texDoorBars00"
             ],[
                 "texBloodLineEnd",
                 "texBloodLineStraight00",

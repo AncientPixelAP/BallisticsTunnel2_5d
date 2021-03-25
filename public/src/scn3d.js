@@ -231,20 +231,20 @@ export default class Scn3d extends Phaser.Scene {
         }
 
         if (this.keys.a.isDown) {
-            toPos.z -= Math.cos(this.player.dir.yaw - HALFPI) * 1;
-            toPos.x += Math.sin(this.player.dir.yaw - HALFPI) * 1;
+            toPos.z -= Math.cos(this.player.dir.yaw - HALFPI) * 2;
+            toPos.x += Math.sin(this.player.dir.yaw - HALFPI) * 2;
         }
         if (this.keys.d.isDown) {
-            toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * 1;
-            toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * 1;
+            toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * 2;
+            toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * 2;
         }
         if (this.keys.s.isDown) {
-            toPos.z -= Math.cos(this.player.dir.yaw) * 1;
-            toPos.x += Math.sin(this.player.dir.yaw) * 1;
+            toPos.z -= Math.cos(this.player.dir.yaw) * 2;
+            toPos.x += Math.sin(this.player.dir.yaw) * 2;
         }
         if (this.keys.w.isDown) {
-            toPos.z += Math.cos(this.player.dir.yaw) * 1;
-            toPos.x -= Math.sin(this.player.dir.yaw) * 1;
+            toPos.z += Math.cos(this.player.dir.yaw) * 2;
+            toPos.x -= Math.sin(this.player.dir.yaw) * 2;
         }else{
             //mouse movement TODO! better and creative solutioned mouse movement
             /*if (this.hand.pressed === true) {
