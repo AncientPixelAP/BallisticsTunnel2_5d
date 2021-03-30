@@ -28,6 +28,7 @@ export default class Model{
         }
 
         this.data = {};
+        this.interactable = false;
         this.interact = () => {};
         this.action = () => {};
 
@@ -291,6 +292,31 @@ export default class Model{
         this.debug.drawCollisions = !this.debug.drawCollisions;
         if (this.debug.drawCollisions === false) {
             this.debug.collisionGraphics.clear();
+        }
+    }
+
+    getScreenBounds(){
+        let x1 = this.scene.right;
+        let y1 = this.scene.bottom;
+        let x2 = this.scene.left;
+        let y2 = this.scene.top;
+        for(let q of this.quadData){
+            for(let sc of q.screenCoords){
+                x1 = Math.min(x1, sc.x);
+                y1 = Math.min(y1, sc.y);
+                x2 = Math.max(x2, sc.x);
+                y2 = Math.max(y2, sc.y);
+            }
+        }
+        return {
+            p0: {
+                x: x1,
+                y: y1
+            },
+            p1: {
+                x: x2,
+                y: y2
+            }
         }
     }
 

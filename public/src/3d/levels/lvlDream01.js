@@ -7,6 +7,9 @@ export default class LevelDream01{
         this.trainMovingSpd = 5;
         this.tunnelMovingSpd = -8;
 
+        this.state = 0;
+        this.renderAreas = [];
+
         this.objects = [];
         /*this.objects.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
             x: 0,
@@ -42,7 +45,6 @@ export default class LevelDream01{
                 z: -288 - (128 * i)
             }));
         }
-        
 
         //T crossing as entry with st barbara
         this.hallwayT = this.scene.geometryController.loadModel("Metro Hallway T", "modMetroHallwayT", {
@@ -110,6 +112,15 @@ export default class LevelDream01{
         }
 
         
+        //tunnel block off
+        this.blockedTunnel = []
+        for (let i = 0; i < 4; i++) {
+            this.blockedTunnel.push(this.scene.geometryController.loadModel("blocked Tunnel "+String(i), "modMetroTunnel", {
+                x: -68,
+                y: 0,
+                z: 800 + (128 * i)
+            }));
+        }
 
         this.trainEnd = this.scene.geometryController.loadModel("Tunnel Block Train", "modMetroCarriageEnd", {
             x: -100,
@@ -144,6 +155,7 @@ export default class LevelDream01{
             y: -48,
             z: 2224
         });
+        this.trainControls.interactable = true;
         this.trainControls.interact = () => {
             //this.scene.player.setMode(PLAYERMODE.INTERACT);
             //this.scene.player.panel = new PanelElevator(this.scene);
@@ -179,6 +191,7 @@ export default class LevelDream01{
             z: 144//76
         });
         this.beggar.setDrawMode(DRAWMODE.BILLBOARD);
+        this.beggar.interactable = true;
         this.beggar.interact = () => {
             this.scene.player.setMode(PLAYERMODE.INTERACT);
             this.scene.player.panel = new PanelElevator(this.scene);
@@ -190,6 +203,7 @@ export default class LevelDream01{
             z: 44//76
         });
         this.barbara.setDrawMode(DRAWMODE.BILLBOARD);
+        this.barbara.interactable = true;
         this.barbara.interact = () => {
             this.scene.player.setMode(PLAYERMODE.INTERACT);
             this.scene.player.panel = new PanelElevator(this.scene);
@@ -198,23 +212,31 @@ export default class LevelDream01{
     }
 
     update(){
-        for(let t of this.trainMoving){
-            t.translateAndRotate({x: 0, y: 0, z: this.trainMovingSpd}, {yaw: 0, pitch: 0, roll: 0});
-        }
-        if(this.trainMoving[0].pos.z >= 0){
-            for(let t of this.trainMoving){
-                t.translateAndRotate({x: 0, y: 0, z: -300}, {yaw: 0, pitch: 0, roll: 0});
-            }
-        }
+        switch(this.state){
+            case 0:
+                for(let t of this.trainMoving){
+                    t.translateAndRotate({x: 0, y: 0, z: this.trainMovingSpd}, {yaw: 0, pitch: 0, roll: 0});
+                }
+                if(this.trainMoving[0].pos.z >= 0){
+                    for(let t of this.trainMoving){
+                        t.translateAndRotate({x: 0, y: 0, z: -300}, {yaw: 0, pitch: 0, roll: 0});
+                    }
+                }
 
-        //TODO segemnet the level with triggers to skip unnecessary calculations
-        for (let t of this.tunnelMoving) {
-            t.translateAndRotate({ x: 0, y: 0, z: this.tunnelMovingSpd }, { yaw: 0, pitch: 0, roll: 0 });
-        }
-        if (this.tunnelMoving[0].pos.z <= 1024) {
-            for (let t of this.tunnelMoving) {
-                t.translateAndRotate({ x: 0, y: 0, z: 128 }, { yaw: 0, pitch: 0, roll: 0 });
-            }
+                //TODO segemnet the level with triggers to skip unnecessary calculations
+                for (let t of this.tunnelMoving) {
+                    t.translateAndRotate({ x: 0, y: 0, z: this.tunnelMovingSpd }, { yaw: 0, pitch: 0, roll: 0 });
+                }
+                if (this.tunnelMoving[0].pos.z <= 1024) {
+                    for (let t of this.tunnelMoving) {
+                        t.translateAndRotate({ x: 0, y: 0, z: 128 }, { yaw: 0, pitch: 0, roll: 0 });
+                    }
+                }
+            break;
+            case 1:
+            break;
+            default:
+            break;
         }
         
     }

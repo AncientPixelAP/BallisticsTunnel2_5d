@@ -17,19 +17,24 @@ export default class ScnLoad extends Phaser.Scene {
         //models
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
         this.load.json("modDebugWallTest", "jsons/models/debugWallTest.json");
+        //HANGAR
         this.load.json("modElevatorBase", "jsons/models/elevatorBase.json");
         this.load.json("modElevatorButton", "jsons/models/elevatorButton.json");
         this.load.json("modElevatorDoor", "jsons/models/elevatorDoor.json");
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
+        //SHIPS
         this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
         this.load.json("modShipArashiDart", "jsons/models/shipArashiDart.json");
         this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
+        //MISC
         this.load.json("modSmoke", "jsons/models/smoke.json");
         this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
         this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");
         this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
         this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
+        this.load.json("modPowerGeneratorTurbine", "jsons/models/powerGeneratorTurbine.json");
+        //CHARACTERS
         this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
         this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
         this.load.json("modCharacterStBarbara", "jsons/models/characterStBarbara.json");
@@ -170,7 +175,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprSliderLeft00", "sprites/sprSliderLeft00.png");
         this.load.image("sprSliderRight00", "sprites/sprSliderRight00.png");
         this.load.image("sprSliderHighlight00", "sprites/sprSliderHighlight00.png");
-
+        
+        this.load.image("sprUiCrosshairUse", "sprites/sprUiCrosshairUse.png");
+        this.load.image("sprUiCrosshairDot", "sprites/sprUiCrosshairDot.png");
         this.load.image("sprUiMenuBg", "sprites/sprUiMenuBg.png");
         this.load.image("sprUiBit", "sprites/sprUiBit.png");
         this.load.image("sprUiCircle", "sprites/sprUiCircle.png");

@@ -41,6 +41,15 @@ export class Player3d{
 
         this.mode = PLAYERMODE.LOOK;
 
+        this.reticle = this.scene.add.sprite(0, 0, "sprUiCrosshairDot");
+        this.reticle.depth = 9999;
+        this.reticle.alpha = 0;
+        this.lowerHint = this.scene.add.bitmapText(0, (this.scene.game.config.height * 0.4), "bravenewEra_16", "click to use/talk", 16, 1).setOrigin(0.5).setLetterSpacing(1);
+        this.lowerHint.depth = 9999;
+        this.useBox = this.scene.add.graphics({x: 0, y: 0.5});
+        this.useBox.depth = 9999;
+        this.useBoxAnim = 0;
+
         this.panel = null;
         this.conversation = null;
     }
@@ -83,5 +92,48 @@ export class Player3d{
             default:
             break;
         }
+    }
+
+    setHintText(_text){
+        this.lowerHint.setText(_text);
+    }
+
+    setUseBox(_rect){
+        this.useBox.clear();
+        let th = 6;
+
+        //draw faint scanlines
+        this.useBox.lineStyle(3, 0x00e436, 0.25);
+        this.useBox.beginPath();
+        for(let y = _rect.p0.y ; y < _rect.p1.y ; y++){
+            if ((Math.floor(this.scene.game.config.height + y)) % th === Math.floor(this.useBoxAnim)){
+                this.useBox.moveTo(_rect.p0.x, y);
+                this.useBox.lineTo(_rect.p1.x, y);
+            }
+        }
+        this.useBox.strokePath();
+
+        //draw box outline
+        this.useBox.lineStyle(1, 0x00e436, 1);
+        this.useBox.beginPath();
+        this.useBox.moveTo(_rect.p0.x, _rect.p0.y);
+        this.useBox.lineTo(_rect.p1.x, _rect.p0.y);
+        this.useBox.moveTo(_rect.p1.x, _rect.p0.y);
+        this.useBox.lineTo(_rect.p1.x, _rect.p1.y);
+        this.useBox.moveTo(_rect.p1.x, _rect.p1.y);
+        this.useBox.lineTo(_rect.p0.x, _rect.p1.y);
+        this.useBox.moveTo(_rect.p0.x, _rect.p1.y);
+        this.useBox.lineTo(_rect.p0.x, _rect.p0.y);
+        this.useBox.strokePath();
+
+        //advance useBoxAnim to let the scanlines roll
+        this.useBoxAnim += 0.5;
+        if(this.useBoxAnim >= th){
+            this.useBoxAnim = 0;
+        }
+    }
+
+    clearUseBox(){
+        this.useBox.clear();
     }
 }

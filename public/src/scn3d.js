@@ -143,8 +143,17 @@ export default class Scn3d extends Phaser.Scene {
                     this.modelName = hits[hits.length - 1].modelId;
                     this.debugTxt.setText(this.modelName);
 
+                    let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
+                    if (model.interactable === true){
+                        this.player.setHintText("click to use/talk");
+                        this.player.setUseBox(model.getScreenBounds());
+                    }else{
+                        this.player.setHintText("");
+                        this.player.clearUseBox();
+                    }
+
                     if (this.hand.justReleased) {
-                        let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
+                        //let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
                         model.interact();
                     }
                 }
