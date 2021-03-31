@@ -332,6 +332,8 @@ export default class Editor {
             }
             this.scene.hand.setMouseLock(true);
         }
+        this.scene.player.dir.roll = 0;
+        
         console.log("EDITOR " + (this.enabled ? "ENABLED" : "DISABLED"));
     }
 

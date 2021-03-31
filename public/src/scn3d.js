@@ -411,10 +411,18 @@ export default class Scn3d extends Phaser.Scene {
             this.player.dir.pitch -= this.player.dir.spd.pitch;
         }
         if (this.cursors.right.isDown) {
-            this.player.dir.yaw -= this.player.dir.spd.yaw;
+            if(this.keys.q.isDown){
+                this.player.dir.roll -= this.player.dir.spd.roll;
+            }else{
+                this.player.dir.yaw -= this.player.dir.spd.yaw;
+            }
         }
         if (this.cursors.left.isDown) {
-            this.player.dir.yaw += this.player.dir.spd.yaw;
+            if (this.keys.q.isDown) {
+                this.player.dir.roll += this.player.dir.spd.roll;
+            } else {
+                this.player.dir.yaw += this.player.dir.spd.yaw;
+            }
         }
     }
 

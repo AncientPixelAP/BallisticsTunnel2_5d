@@ -155,14 +155,21 @@ export default class DataQuad{
                 z: p.z + this.pos.z - _from.z
             }
 
-            let outXZ = rti.rotateY([0, 0, 0], [pts.x, pts.y, pts.z], [0, 0, 0], _dir.yaw);
-            let nx = outXZ[0];
-            let ny = outXZ[1];
-            let nz = outXZ[2];
+            let nx = pts.x;
+            let ny = pts.y;
+            let nz = pts.z;
+            let outXZ = rti.rotateY([0, 0, 0], [nx, ny, nz], [0, 0, 0], _dir.yaw);
+            nx = outXZ[0];
+            ny = outXZ[1];
+            nz = outXZ[2];
             let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [0, 0, 0], _dir.pitch);
             nx = outYZ[0];
             ny = outYZ[1];
             nz = outYZ[2];
+            let outXY = rti.rotateZ([0, 0, 0], [nx, ny, nz], [0, 0, 0], _dir.roll);
+            nx = outXY[0];
+            ny = outXY[1];
+            nz = outXY[2];
             let nzMod = nz + 10;
 
             let zoom = 400;//2.5 - 0.01
