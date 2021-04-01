@@ -49,6 +49,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modMetroCarriageEnd", "jsons/models/dream/metroCarriageEnd.json");
         this.load.json("modMetroCarriageControls", "jsons/models/dream/metroCarriageControls.json");
         this.load.json("modMetroStairCarriageTransition", "jsons/models/dream/metroStairCarriageTransition.json");
+        //marketsquare
+        
+        this.load.json("modMarketsquareApartements", "jsons/models/marketsquare/marketsquareApartements.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -83,7 +86,6 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetalHangarLineStraight", "sprites/3dTextures/texMetalHangarLineStraight.png");
         this.load.image("texMetalHangarLineCurve", "sprites/3dTextures/texMetalHangarLineCurve.png");
         this.load.image("texMetalHangarLineT", "sprites/3dTextures/texMetalHangarLineT.png");
-        this.load.image("texWallGrind01", "sprites/3dTextures/texWallGrind01.png");
 
         this.load.image("texPlatingYellow00", "sprites/3dTextures/texPlatingYellow00.png");
         this.load.image("texPlatingYellow01", "sprites/3dTextures/texPlatingYellow01.png");
@@ -127,6 +129,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texSky00", "sprites/3dTextures/texSky00.png");  
         this.load.image("texGrass00", "sprites/3dTextures/texGrass00.png");
         this.load.image("texBush00", "sprites/3dTextures/texBush00.png");
+        this.load.image("texKitchenTile00", "sprites/3dTextures/texKitchenTile00.png");
+        this.load.image("texKitchenTile01", "sprites/3dTextures/texKitchenTile01.png");
+        this.load.image("texKitchenTile02", "sprites/3dTextures/texKitchenTile02.png");
 
         this.load.image("texMetroCarriageWallDoor00", "sprites/3dTextures/texMetroCarriageWallDoor00.png");
         this.load.image("texMetroCarriageWallWindow00", "sprites/3dTextures/texMetroCarriageWallWindow00.png");
@@ -151,6 +156,20 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texMetroTunnelRails00", "sprites/3dTextures/texMetroTunnelRails00.png");
         this.load.image("texMetroTunnelRails01", "sprites/3dTextures/texMetroTunnelRails01.png");
         this.load.image("texMetroTunnelRails02", "sprites/3dTextures/texMetroTunnelRails02.png");
+
+        this.load.image("texBuildingWall00", "sprites/3dTextures/texBuildingWall00.png");
+        this.load.image("texBuildingWall01", "sprites/3dTextures/texBuildingWall01.png");
+        this.load.image("texBuildingWall02", "sprites/3dTextures/texBuildingWall02.png");
+        this.load.image("texBuildingWall03", "sprites/3dTextures/texBuildingWall03.png");
+        this.load.image("texBuildingWall04", "sprites/3dTextures/texBuildingWall04.png");
+        this.load.image("texWallGrind01", "sprites/3dTextures/texWallGrind01.png");
+        this.load.image("texWallGrind02", "sprites/3dTextures/texWallGrind02.png");
+        this.load.image("texWallGrind03", "sprites/3dTextures/texWallGrind03.png");
+        this.load.image("texWallGrind04", "sprites/3dTextures/texWallGrind04.png");
+        this.load.image("texWallGrind05", "sprites/3dTextures/texWallGrind05.png");
+        this.load.image("texWallGrind06", "sprites/3dTextures/texWallGrind06.png");
+        this.load.image("texContainerBlueDoor00", "sprites/3dTextures/texContainerBlueDoor00.png");
+        this.load.image("texContainerBrownDoor00", "sprites/3dTextures/texContainerBrownDoor00.png");
 
         //characters
         this.load.image("PaulM_smallBrown", "raw/SebiM_lores00.png");

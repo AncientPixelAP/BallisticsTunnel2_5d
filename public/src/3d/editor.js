@@ -54,7 +54,20 @@ export default class Editor {
                 "texMetalHangar08",
                 "texMetalHangar09",
                 "texMetalHangar10",
-                "texWallGrind01"
+            ],[
+                "texBuildingWall00",
+                "texBuildingWall01",
+                "texBuildingWall02",
+                "texBuildingWall03",
+                "texBuildingWall04",
+                "texWallGrind01",
+                "texWallGrind02",
+                "texWallGrind03",
+                "texWallGrind04",
+                "texWallGrind05",
+                "texWallGrind06",
+                "texContainerBlueDoor00",
+                "texContainerBrownDoor00"
             ],[
                 "sprDebugTexture",
                 "sprLogoArashi",
@@ -125,7 +138,10 @@ export default class Editor {
             ],[
                 "texSky00",
                 "texGrass00",
-                "texBush00"
+                "texBush00",
+                "texKitchenTile00",
+                "texKitchenTile01",
+                "texKitchenTile02"
             ]],
             position: 0,
             bank: 0
