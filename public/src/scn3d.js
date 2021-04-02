@@ -76,6 +76,7 @@ export default class Scn3d extends Phaser.Scene {
             nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE),
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO)
         }
+        this.gamepad = null;
 
         this.hand = new Hand(this);
         this.hand.setMouseLock(true);
@@ -120,6 +121,7 @@ export default class Scn3d extends Phaser.Scene {
     }
 
     update(){
+        this.gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
         this.hand.update();
         /*
         this.btnBack.update();
@@ -254,12 +256,18 @@ export default class Scn3d extends Phaser.Scene {
         if (this.keys.w.isDown) {
             toPos.z += Math.cos(this.player.dir.yaw) * 2;
             toPos.x -= Math.sin(this.player.dir.yaw) * 2;
-        }else{
-            //mouse movement TODO! better and creative solutioned mouse movement
-            /*if (this.hand.pressed === true) {
-                toPos.z += Math.cos(this.player.dir.yaw) * 1;
-                toPos.x -= Math.sin(this.player.dir.yaw) * 1;
-            }*/
+        }
+
+        //TODO move to seperate input handler class and only ask about keybindings
+        if (this.gamepad != null) {
+            if (Math.abs(this.gamepad.axes[0]) > 0.1) {
+                toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * this.gamepad.axes[0];
+                toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * this.gamepad.axes[0];
+            }
+            if (Math.abs(this.gamepad.axes[1]) > 0.1) {
+                toPos.z -= Math.cos(this.player.dir.yaw) * this.gamepad.axes[1];
+                toPos.x += Math.sin(this.player.dir.yaw) * this.gamepad.axes[1];
+            }
         }
 
 

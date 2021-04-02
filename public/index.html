@@ -80,8 +80,9 @@
         
 
         //shader
-
         let greenscalePipeline;
+
+        //adds
         let rti, pip, eud;
 
         //192.168.80.1 //switch between local url for testing and heroko url for deployment
@@ -94,6 +95,26 @@
         var socket = io(window.location.href);
 
         //io.connect("http://starstationfine.eu-4.evennode.com/:3000");///var socket = io.connect("http://10.0.0.2:3000");
+
+        //gamepads
+        let gamepads = {};
+        let gamepadsConnected = 0;
+        function gamepadHandler(_event, _connecting) {
+            var gamepad = _event.gamepad;
+            // Note:
+            // gamepad === navigator.getGamepads()[gamepad.index]
+
+            if (_connecting) {
+                gamepads[gamepad.index] = gamepad;
+                //console.log(gamepad);
+                gamepadsConnected += 1;
+            } else {
+                delete gamepads[gamepad.index];
+                gamepadsConnected -= 1;
+            }
+        }
+        window.addEventListener("gamepadconnected", function (e) { gamepadHandler(e, true); }, false);
+        window.addEventListener("gamepaddisconnected", function (e) { gamepadHandler(e, false); }, false);
     </script>
     <script type="module">
         import Preloader from './src/preloader.js'; 

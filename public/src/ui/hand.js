@@ -29,8 +29,6 @@ export default class Hand{
                 this.vel.y = Math.max(-10, Math.min(10, _pointer.movementY));
                 this.vel.x = Math.round(this.vel.x);
                 this.vel.y = Math.round(this.vel.y);
-                //this.vel.x = Math.floor(_pointer.movementX);
-                //this.vel.y = Math.floor(_pointer.movementY);
                 //console.log(this.vel.x);
             }
         }, this);
@@ -40,13 +38,11 @@ export default class Hand{
         this.pos.x = this.scene.input.activePointer.worldX;
         this.pos.y = this.scene.input.activePointer.worldY;
 
-        //this.mouselock = this.scene.input.mouse.locked;
-        /*if (this.scene.input.mouse.locked === false) {
-            if(this.mouselock === true){
-                this.mouselock = false;
-                this.scene.input.mouse.releasePointerLock();
-            }
-        }*/
+        //TODO move to seperate input handler class and only ask about keybindings
+        if(this.scene.gamepad != null){
+            this.vel.x = Math.abs(this.scene.gamepad.axes[2]) > 0.1 ? this.scene.gamepad.axes[2] : 0;
+            this.vel.y = Math.abs(this.scene.gamepad.axes[3]) > 0.1 ? this.scene.gamepad.axes[3] : 0;
+        }
 
         if(this.scene.input.activePointer.isDown){
             if(this.pressed === false){
