@@ -205,8 +205,10 @@ export default class LevelDream01{
         this.barbara.setDrawMode(DRAWMODE.BILLBOARD);
         this.barbara.interactable = true;
         this.barbara.interact = () => {
-            this.scene.player.setMode(PLAYERMODE.INTERACT);
-            this.scene.player.panel = new PanelElevator(this.scene);
+            //this.scene.player.setMode(PLAYERMODE.INTERACT);
+            //this.scene.player.panel = new PanelElevator(this.scene);
+            this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            this.scene.loadLevel("hangar00");
         }
 
     }
