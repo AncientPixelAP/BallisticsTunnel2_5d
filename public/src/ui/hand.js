@@ -25,8 +25,10 @@ export default class Hand{
 
         this.scene.input.on('pointermove', function (_pointer) {
             if (this.scene.input.mouse.locked === true){
-                this.vel.x = Math.max(-10, Math.min(10, _pointer.movementX));
-                this.vel.y = Math.max(-10, Math.min(10, _pointer.movementY));
+                //this.vel.x = Math.max(-10, Math.min(10, _pointer.movementX));
+                //this.vel.y = Math.max(-10, Math.min(10, _pointer.movementY));
+                this.vel.x = Math.floor(_pointer.movementX);
+                this.vel.y = Math.floor(_pointer.movementY);
             }
         }, this);
     }
