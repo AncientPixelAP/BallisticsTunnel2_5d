@@ -191,8 +191,8 @@ export default class DataQuad{
             }
             sumZ += nz;
         }
-        //this.depth = sumZ * -0.25;
-        this.depth = recZ*-1;
+        this.depth = sumZ * -0.25;
+        //this.depth = recZ*-1;
         this.shade = Math.max(0, 255 - ((recZ + 0) * 0.25));
 
         if(this.type !== "collisionQuad"){

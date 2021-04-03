@@ -7,6 +7,8 @@ import { Player3d } from "./3d/player.js";
 import LevelHangar00 from "./3d/levels/lvlHangar00.js"
 import LevelDream00 from "./3d/levels/lvlDream00.js"
 import LevelDream01 from "./3d/levels/lvlDream01.js";
+import LevelMarketsquare00 from "./3d/levels/lvlMarketsquare00.js"
+//import LevelPlayerApartement00 from "./3d/levels/lvlPlayerApartement00.js"
 import LevelQuarters00 from "./3d/levels/lvlQuarters00.js"
 import LevelModelbuilder from "./3d/levels/lvlModelbuilder.js";
 
@@ -462,6 +464,9 @@ export default class Scn3d extends Phaser.Scene {
             break;
             case "quarters00":
                 this.level = new LevelQuarters00(this);
+            break;
+            case "marketsquare00":
+                this.level = new LevelMarketsquare00(this);
             break;
             default:
             break;
