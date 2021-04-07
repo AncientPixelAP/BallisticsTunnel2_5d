@@ -1,0 +1,53 @@
+{
+    "title": "Saint Barabara",
+    "cards": [
+        {
+            "id": 0,
+            "text": "You see a jar almost filled to the brink with coins.",
+            "sprite": "sprCharBarbara",
+            "answers": [
+                {
+                    "text": "Take some.",
+                    "actions": "GOTO 1 SETFLAG dreamcoin"
+                },{
+                    "text": "Take all.",
+                    "actions": "GOTO 1 SETFLAG dreamcoin"
+                },{
+                    "text": "Leave.",
+                    "actions": "GOTO -1"
+                }
+            ]
+        },{
+            "id": 1,
+            "text": "There is nothing left in the jar.",
+            "answers": [
+                {
+                    "text": "Put the coins back.",
+                    "actions": "GOTO 0",
+                    "showon": "dreamcoin"
+                },
+                {
+                    "text": "Leave.",
+                    "actions": "GOTO -1"
+                }
+            ]
+        },{
+            "id": 2,
+            "text": "The jar is half empty.",
+            "answers": [
+                {
+                    "text": "Put the coins back.",
+                    "actions": "GOTO 0",
+                    "showon": "dreamcoin"
+                },{
+                    "text": "Get the rest of the coins.",
+                    "actions": "GOTO 1",
+                    "showon": "dreamcoin"
+                },{
+                    "text": "Leave.",
+                    "actions": "GOTO -1"
+                }
+            ]
+        }
+    ]
+}
