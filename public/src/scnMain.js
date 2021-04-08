@@ -144,6 +144,8 @@ export default class ScnMain extends Phaser.Scene {
         this.zoom = 16;
         this.player = {
             waitingTunnel: false,
+            inSlipstream: false,
+            justOutOfSlipstream: false,
             controls: SHIPCONTROLS.free,
             spd: 0,
             spdMax: 0.25,

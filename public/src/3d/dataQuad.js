@@ -147,6 +147,8 @@ export default class DataQuad{
         let recZ = -9999;
         let sumZ = 0;
 
+        let outsideScreenSafe = false;
+
         //calculate the quads point in 3d seen from the camera
         for(let [i, p] of this.points.entries()){
             let pts = {
@@ -175,6 +177,10 @@ export default class DataQuad{
             let zoom = 400;//2.5 - 0.01
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
+            
+            if (outsideScreenSafe === false) {
+                outsideScreenSafe = this.screenCoords[i].x <= this.scene.left || this.screenCoords[i].x >= this.scene.right || this.screenCoords[i].y <= this.scene.top || this.screenCoords[i].y >= this.scene.bottom;
+            }
 
             this.zDepth = (1 / Math.abs(nzMod)) * zoom;
 
@@ -205,12 +211,15 @@ export default class DataQuad{
                     this.createQuad();
                 }
                 //quad so near that mipmapping is required?
-                if (this.depth > -50){
-                    if(_mipmap === true){
+                //if (this.depth > -50){
+                if(outsideScreenSafe === true){
+                    if (_mipmap === true && this.quads.length > 0){
                         this.mipmapQuad();
                     }
                 }else{
-                    this.unmipmapQuad();
+                    if(this.quads.length > 0){
+                        this.unmipmapQuad();
+                    }
                 }
             }
 
