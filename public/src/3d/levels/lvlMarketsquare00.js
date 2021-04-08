@@ -19,6 +19,13 @@ export default class LevelMarketsquare00{
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             this.scene.loadLevel("dream01");
         }
+
+        this.ship = this.scene.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
+            x: -16,
+            y: 0,
+            z: 168
+        });
+        this.ship.translateAndRotate({ x: 0, y: 0, z: 0 }, { yaw: 0, pitch: Math.PI * 0.5, roll: 0});
         
     }
 

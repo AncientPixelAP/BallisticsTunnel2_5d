@@ -79,6 +79,7 @@ export default class Editor {
                 "mechanic",
                 "texCharBarbara",
                 "texSmokeWhite",
+                "texGlowSquareWhite",
                 "texDoor00",
                 "texBlackout"
             ], [
