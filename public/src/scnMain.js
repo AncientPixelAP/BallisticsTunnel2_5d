@@ -59,6 +59,11 @@ export default class ScnMain extends Phaser.Scene {
             }, this);
         }
 
+        this.keys.q.on("down", (_key, _event) => {
+            _event.stopPropagation();
+            console.log(navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)]);
+        }, this);
+
         this.keys.plus.on("down", (_key, _event) => {
             _event.stopPropagation();
             socket.emit("forceSwitchTrack", {
@@ -156,6 +161,7 @@ export default class ScnMain extends Phaser.Scene {
                 y: 0,
                 z: 0
             },
+            radius: 24,
             yaw: 0,
             pitch: 0,
             roll: 0,
@@ -265,6 +271,7 @@ export default class ScnMain extends Phaser.Scene {
         //console.log(_time);
 
         this.hand.update();
+        this.fillInputs();
 
         this.delta.current += _delta;
         while (this.delta.current >= this.delta.treshold){
@@ -276,11 +283,12 @@ export default class ScnMain extends Phaser.Scene {
                 case SHIPCONTROLS.free:
                     if (this.hand.pressed === false) {
                         //KEYBOARD CONTROLS
-                        if (this.cursors.up.isDown) {
+                        //gas gas gas
+                        if (INPUTS.stickLeft.vertical < -0.3) {//if (this.cursors.up.isDown) {
                             if (this.player.spd < this.player.spdMax) {
                                 this.player.spd = Math.min(this.player.spdMax, this.player.spd + this.player.stats.acceleration);
                             }
-                        } else if (this.cursors.down.isDown) {
+                        } else if (INPUTS.stickLeft.vertical > 0.3) {//} else if (this.cursors.down.isDown) {
                             if (this.player.spd > 0) {
                                 this.player.spd = Math.max(0, this.player.spd - this.player.stats.brake);
                             }
@@ -294,11 +302,18 @@ export default class ScnMain extends Phaser.Scene {
                             this.player.spd = Math.max(0, this.player.spd - this.player.stats.speedDeg);
                         }
 
-                        if (this.cursors.left.isDown) {
-                            this.player.roll -= this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.left.getDuration() * 0.005));
-                        }
-                        if (this.cursors.right.isDown) {
-                            this.player.roll += this.player.stats.roll * Math.max(0, Math.min(1, this.cursors.right.getDuration() * 0.005));
+                        //roll around the tunnel
+                        this.player.roll += this.player.stats.roll * Math.max(-1, Math.min(1, Math.abs(INPUTS.stickLeft.horizontal) > 0.3 ? INPUTS.stickLeft.horizontal : 0));
+                    
+                        //pitch nose up or down
+                        this.player.pitch += INPUTS.stickRight.vertical;
+                        this.player.pitch = Math.max(this.player.stats.pitchMin, Math.min(this.player.stats.pitchMax, this.player.pitch));
+                        this.player.radius = this.player.stats.rideHeight + this.player.pitch;
+                        if(Math.abs(INPUTS.stickRight.vertical <= 0.3)){
+                            this.player.pitch += this.player.pitch < 0 ? 0.1 : -0.1;
+                            if (this.player.pitch <= 0.1 && this.player.pitch >= -0.1){
+                                this.player.pitch = 0;
+                            }
                         }
                     } else {
                         //MOUSE CONTROLS
@@ -401,6 +416,21 @@ export default class ScnMain extends Phaser.Scene {
                 //CHECK MAX SPEED
                 let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
                 let modify = Math.round(checkY * -0.01);
+                if(modify < 0){//curve down
+                    if(this.player.radius < this.player.stats.rideHeight){
+                        
+                    }else{
+                        //heat up
+                        console.log("HEATING UP");
+                    }
+                } else if (modify > 0){//curve up
+                    if (this.player.radius > this.player.stats.rideHeight) {
+                        //heat up
+                        console.log("SCRAPING FLOOR")
+                    } else {
+                        //cool
+                    }
+                }
 
                 //adaptivespeed
                 this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
@@ -1035,5 +1065,90 @@ export default class ScnMain extends Phaser.Scene {
         socket.off("kickPlayer");
 
         this.scene.start("ScnLogin");
+    }
+
+    fillInputs(){
+        let gamepad = null;
+        gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
+        INPUTS.stickLeft.vertical = 0;
+        INPUTS.stickLeft.horizontal = 0;
+        //UP-DOWN
+        if(this.keys.w.isDown || (gamepad !== null ? gamepad.buttons[7].pressed : false)){
+            INPUTS.stickLeft.vertical = -1;
+        } else if (this.keys.s.isDown || (gamepad !== null ? gamepad.buttons[6].pressed : false)) {
+            INPUTS.stickLeft.vertical = 1;
+        }else{
+            if(gamepad !== null){
+                //INPUTS.stickLeft.vertical = gamepad.axes[1];
+            }
+        }
+        //LEFT-RIGHT
+        if (this.keys.a.isDown || this.cursors.left.isDown) {
+            INPUTS.stickLeft.horizontal = -1;
+        } else if (this.keys.d.isDown || this.cursors.right.isDown) {
+            INPUTS.stickLeft.horizontal = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickLeft.horizontal = gamepad.axes[0];
+            }
+        }
+        INPUTS.stickRight.vertical = 0;
+        INPUTS.stickRight.horizontal = 0;
+        //UP-DOWN
+        if (this.cursors.up.isDown) {
+            INPUTS.stickRight.vertical = -1;
+        } else if (this.cursors.down.isDown) {
+            INPUTS.stickRight.vertical = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickRight.vertical = gamepad.axes[3];
+            }
+        }
+        /*//LEFT-RIGHT
+        if (this.cursors.left.isDown) {
+            INPUTS.stickRight.horizontal = -1;
+        } else if (this.cursors.right.isDown) {
+            INPUTS.stickRight.horizontal = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickRight.horizontal = gamepad.axes[2];
+            }
+        }*/
+        //TAB
+        if (this.keys.tab.isDown || (gamepad !== null ? gamepad.buttons[4].pressed : false)) {
+            if (INPUTS.btnShoulderLeft.pressed === false) {
+                INPUTS.btnShoulderLeft.justPressed = true;
+                INPUTS.btnShoulderLeft.pressed = true;
+                INPUTS.btnShoulderLeft.justReleased = false;
+            } else {
+                INPUTS.btnShoulderLeft.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnShoulderLeft.pressed === true) {
+                INPUTS.btnShoulderLeft.pressed = false;
+                INPUTS.btnShoulderLeft.justReleased = true;
+                INPUTS.btnShoulderLeft.justPressed = false;
+            } else {
+                INPUTS.btnShoulderLeft.justReleased = false;
+            }
+        }
+        //A
+        if (this.keys.end.isDown || (gamepad !== null ? gamepad.buttons[0].pressed : false)) {
+            if (INPUTS.btnA.pressed === false) {
+                INPUTS.btnA.justPressed = true;
+                INPUTS.btnA.pressed = true;
+                INPUTS.btnA.justReleased = false;
+            } else {
+                INPUTS.btnA.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnA.pressed === true) {
+                INPUTS.btnA.pressed = false;
+                INPUTS.btnA.justReleased = true;
+                INPUTS.btnA.justPressed = false;
+            } else {
+                INPUTS.btnA.justReleased = false;
+            }
+        }
     }
 }

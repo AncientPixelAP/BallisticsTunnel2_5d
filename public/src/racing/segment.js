@@ -25,7 +25,7 @@ export default class Segment{
 
         this.screenPos = {
             x: Math.cos(ang) * len,
-            y: (Math.sin(ang) * len) - (24 * this.scene.zoom)
+            y: (Math.sin(ang) * len) - ((this.scene.player.stats.rideHeight + (this.scene.player.pitch * this.pos.z)) * this.scene.zoom)
         }
 
         if(this.pos.z > 0){

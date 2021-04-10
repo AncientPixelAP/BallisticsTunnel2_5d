@@ -125,6 +125,7 @@ export default class Scn3d extends Phaser.Scene {
     update(){
         this.gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
         this.hand.update();
+        this.fillInputs();
         /*
         this.btnBack.update();
         */
@@ -483,6 +484,10 @@ export default class Scn3d extends Phaser.Scene {
 
     gotoMenu(){
         this.scene.start("ScnLogin");
+    }
+
+    fillInputs(){
+        
     }
 
 }

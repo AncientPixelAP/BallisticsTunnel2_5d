@@ -24,7 +24,7 @@ export default class Obstacle{
 
         this.screenPos = {
             x: Math.cos(ang) * len,
-            y: (Math.sin(ang) * len) - (24 * this.scene.zoom)
+            y: (Math.sin(ang) * len) - (this.scene.player.radius * this.scene.zoom)
         }
 
         if (this.pos.z > 0) {

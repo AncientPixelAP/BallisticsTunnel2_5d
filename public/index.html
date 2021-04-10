@@ -6,6 +6,7 @@
     
     <script src="/socket.io/socket.io.js"></script>
 
+    <script src="src/inputs.js"></script>
     <script src="src/shaderGreenscale.js"></script>
 </head>
 
@@ -35,8 +36,8 @@
             NOSCALE2D: 2,
             BILLBOARD: 3
         }
-
-        var OPTIONS = {
+        
+        let OPTIONS = {
             sound: {
                 music: 0.5,
                 sfx: 0.5,
@@ -106,7 +107,7 @@
 
             if (_connecting) {
                 gamepads[gamepad.index] = gamepad;
-                //console.log(gamepad);
+                console.log(gamepad);
                 gamepadsConnected += 1;
             } else {
                 delete gamepads[gamepad.index];
