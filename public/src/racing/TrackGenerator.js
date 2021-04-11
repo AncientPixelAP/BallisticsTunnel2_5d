@@ -379,11 +379,15 @@ export default class TrackGenerator{
                         jumpTo: 4,
                         segments:[
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
-
-                            this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
+                            
+                            /*this.createSegment(0, 0, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
                             this.createSegment(0.05, 0, Math.PI * -1, "sprSegMetalRoad02", [0, 1], 1, 64),
                             this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegMetalRoad00", [0], 0, 64),
-                            this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 64),
+                            this.createSegment(0, -0.025, 0, "sprSegMetalRoad00", [0], 0, 64),*/
+                            this.createSegment(0, 0, Math.PI * -1, "sprSegCanalRoad00", [0, 1, 2, 3], -1, 64),
+                            this.createSegment(0.05, 0, Math.PI * -1, "sprSegCanalRoad00", [0, 1, 2, 3], -1, 64),
+                            this.createSegment(-0.05, 0.025, Math.PI * -1, "sprSegCanalRoad00", [0, 1, 2, 3], -1, 64),
+                            this.createSegment(0, -0.025, 0, "sprSegCanalRoad00", [0, 1, 2, 3], -1, 64),
                         ]
                     },{
                         id: 4,

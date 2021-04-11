@@ -27,18 +27,6 @@ export default class Hand{
             y: 0
         }
 
-        /*this.scene.input.on('pointermove', function (_pointer) {
-            if (this.scene.input.mouse.locked === true){
-                this.vel.x = Math.max(-10, Math.min(10, _pointer.movementX));
-                this.vel.y = Math.max(-10, Math.min(10, _pointer.movementY));
-                this.vel.x = Math.round(this.vel.x);
-                this.vel.y = Math.round(this.vel.y);
-                if(this.justPressed === true){
-                    //console.log(this.vel.x);
-                    console.log(this.scene.input);
-                }
-            }
-        }, this);*/
         this.scene.input.activePointer.smoothFactor = 0.2;
     }
 
@@ -51,15 +39,14 @@ export default class Hand{
                 this.vel.x = Math.max(-10, Math.min(10, this.scene.input.activePointer.movementX));
                 this.vel.y = Math.max(-10, Math.min(10, this.scene.input.activePointer.movementY));
             }else{
-                //TODO move to seperate input handler class and only ask about keybindings
-                if (this.scene.gamepad != null) {
-                    this.vel.x = Math.abs(this.scene.gamepad.axes[2]) > 0.1 ? this.scene.gamepad.axes[2] : 0;
-                    this.vel.y = Math.abs(this.scene.gamepad.axes[3]) > 0.1 ? this.scene.gamepad.axes[3] : 0;
+                if (gamepadsConnected > 0) {
+                    this.vel.x = Math.abs(INPUTS.stickRight.horizontal) > 0.1 ? INPUTS.stickRight.horizontal : 0;
+                    this.vel.y = Math.abs(INPUTS.stickRight.vertical) > 0.1 ? INPUTS.stickRight.vertical : 0;
                 }
             }
         }
 
-        if (this.scene.input.activePointer.isDown){//} || ((this.scene.gamepad !== null) ? this.scene.gamepad.buttons[0].pressed : false)){
+        if (this.scene.input.activePointer.isDown || INPUTS.btnA.pressed){
             if(this.pressed === false){
                 this.justPressed = true;
                 this.pressed = true;
@@ -100,6 +87,5 @@ export default class Hand{
                 this.scene.input.mouse.releasePointerLock();
             }
         }
-        //console.log("mouselock: " + this.mouselock );
     }
 }

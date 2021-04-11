@@ -23,8 +23,10 @@ export default class Obstacle{
         let ang = Phaser.Math.Angle.Between(0, 0, this.pos.x, this.pos.y) + this.scene.player.roll;
 
         this.screenPos = {
-            x: Math.cos(ang) * len,
-            y: (Math.sin(ang) * len) - (this.scene.player.radius * this.scene.zoom)
+            //x: Math.cos(ang) * len,
+            //y: (Math.sin(ang) * len) - (this.scene.player.radius * this.scene.zoom)
+            x: (Math.cos(ang) * len) - ((this.scene.player.yaw * this.pos.z) * this.scene.zoom),
+            y: (Math.sin(ang) * len) - ((this.scene.player.stats.rideHeight + (this.scene.player.pitch * this.pos.z)) * this.scene.zoom)
         }
 
         if (this.pos.z > 0) {

@@ -152,9 +152,11 @@ export default class ScnMain extends Phaser.Scene {
             inSlipstream: false,
             justOutOfSlipstream: false,
             controls: SHIPCONTROLS.free,
+            energy: 100,
+            heat: 0,
             spd: 0,
             spdMax: 0.25,
-            slipstream: 0,
+            slipstreamBoost: 0,
             stats: this.bikeData,
             vel: {
                 x: 0,
@@ -306,13 +308,23 @@ export default class ScnMain extends Phaser.Scene {
                         this.player.roll += this.player.stats.roll * Math.max(-1, Math.min(1, Math.abs(INPUTS.stickLeft.horizontal) > 0.3 ? INPUTS.stickLeft.horizontal : 0));
                     
                         //pitch nose up or down
-                        this.player.pitch += INPUTS.stickRight.vertical;
+                        this.player.pitch += INPUTS.stickRight.vertical * 0.1;
                         this.player.pitch = Math.max(this.player.stats.pitchMin, Math.min(this.player.stats.pitchMax, this.player.pitch));
                         this.player.radius = this.player.stats.rideHeight + this.player.pitch;
-                        if(Math.abs(INPUTS.stickRight.vertical <= 0.3)){
+                        if (Math.abs(INPUTS.stickRight.vertical) <= 0.3){
                             this.player.pitch += this.player.pitch < 0 ? 0.1 : -0.1;
                             if (this.player.pitch <= 0.1 && this.player.pitch >= -0.1){
                                 this.player.pitch = 0;
+                            }
+                        }
+
+                        //yaw nose left or right
+                        this.player.yaw += INPUTS.stickRight.horizontal * 0.1;
+                        this.player.yaw = Math.max(-1, Math.min(1, this.player.yaw));
+                        if (Math.abs(INPUTS.stickRight.horizontal) <= 0.3) {
+                            this.player.yaw += this.player.yaw < 0 ? 0.1 : -0.1;
+                            if (this.player.yaw <= 0.1 && this.player.yaw >= -0.1) {
+                                this.player.yaw = 0;
                             }
                         }
                     } else {
@@ -414,26 +426,41 @@ export default class ScnMain extends Phaser.Scene {
                 
 
                 //CHECK MAX SPEED
-                let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
+                //let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
+                let checkY = this.segments[16].resistance - (this.player.pitch * 50);// + (24 * this.zoom);
                 let modify = Math.round(checkY * -0.01);
                 if(modify < 0){//curve down
                     if(this.player.radius < this.player.stats.rideHeight){
-                        
+                        this.player.heat -= 0.1;
                     }else{
                         //heat up
-                        console.log("HEATING UP");
+                        //console.log("HEATING UP");
+                        this.player.heat -= modify * 0.1;
                     }
                 } else if (modify > 0){//curve up
                     if (this.player.radius > this.player.stats.rideHeight) {
                         //heat up
-                        console.log("SCRAPING FLOOR")
+                        //console.log("SCRAPING FLOOR");
+                        this.player.heat += modify * 0.1;
                     } else {
                         //cool
+                        this.player.heat -= 0.1;
                     }
                 }
+                this.player.heat = Math.max(0, Math.min(this.player.stats.heatMax, this.player.heat));
 
                 //adaptivespeed
-                this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstream + ((modify * this.player.stats.curveMod) * 0.1)));
+                this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstreamBoost + ((modify * this.player.stats.curveMod) * 0.1)));
+                if (this.player.heat >= this.player.stats.heatMax) {
+                    this.player.energy -= 1;
+                    if (this.player.energy <= 0) {
+                        this.player.energy = 0;
+                        this.player.spdMax = 0;
+                        console.log("OUT OF ENERGY");
+                    }
+                }else{
+                    this.player.energy = Math.min(this.player.stats.energyMax, this.player.energy + 1);
+                }
 
                 this.ui.tacho.setReticleTunnelPos(this.segments[this.segments.length - 2].sprite.x, this.segments[this.segments.length - 2].sprite.y, 16 - Math.floor(this.player.spd * 16));
             }
@@ -774,9 +801,9 @@ export default class ScnMain extends Phaser.Scene {
 
         if (target !== null) {
             this.ui.tacho.setReticlePos(target.sprite.x, target.sprite.y, 1 / (Math.floor(target.trackPos) - _adjPlayerPosition));
-            this.player.slipstream = this.player.stats.slipMax;
+            this.player.slipstreamBoost = this.player.stats.slipMax;
         } else {
-            this.player.slipstream = 0;
+            this.player.slipstreamBoost = 0;
             this.ui.tacho.setReticlePos(99999, 9999, 0);
         }
     }
@@ -986,6 +1013,8 @@ export default class ScnMain extends Phaser.Scene {
         this.player.lapTime.current = 0;
         this.player.lapTime.best = -1;
         this.player.lapTime.start = -1;
+        this.player.yaw = 0;
+        this.player.pitch = 0;
     }
 
     jumpToWaitTunnel() {
@@ -1070,9 +1099,10 @@ export default class ScnMain extends Phaser.Scene {
     fillInputs(){
         let gamepad = null;
         gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
+        
+        //GAS-BREAK
         INPUTS.stickLeft.vertical = 0;
         INPUTS.stickLeft.horizontal = 0;
-        //UP-DOWN
         if(this.keys.w.isDown || (gamepad !== null ? gamepad.buttons[7].pressed : false)){
             INPUTS.stickLeft.vertical = -1;
         } else if (this.keys.s.isDown || (gamepad !== null ? gamepad.buttons[6].pressed : false)) {
@@ -1092,9 +1122,9 @@ export default class ScnMain extends Phaser.Scene {
                 INPUTS.stickLeft.horizontal = gamepad.axes[0];
             }
         }
+        //PITCH UP-DOWN
         INPUTS.stickRight.vertical = 0;
         INPUTS.stickRight.horizontal = 0;
-        //UP-DOWN
         if (this.cursors.up.isDown) {
             INPUTS.stickRight.vertical = -1;
         } else if (this.cursors.down.isDown) {
@@ -1104,16 +1134,16 @@ export default class ScnMain extends Phaser.Scene {
                 INPUTS.stickRight.vertical = gamepad.axes[3];
             }
         }
-        /*//LEFT-RIGHT
-        if (this.cursors.left.isDown) {
+        //LOOK LEFT-RIGHT
+        if (this.keys.q.isDown) {
             INPUTS.stickRight.horizontal = -1;
-        } else if (this.cursors.right.isDown) {
+        } else if (this.keys.e.isDown) {
             INPUTS.stickRight.horizontal = 1;
         } else {
             if (gamepad !== null) {
                 INPUTS.stickRight.horizontal = gamepad.axes[2];
             }
-        }*/
+        }
         //TAB
         if (this.keys.tab.isDown || (gamepad !== null ? gamepad.buttons[4].pressed : false)) {
             if (INPUTS.btnShoulderLeft.pressed === false) {
@@ -1133,7 +1163,7 @@ export default class ScnMain extends Phaser.Scene {
             }
         }
         //A
-        if (this.keys.end.isDown || (gamepad !== null ? gamepad.buttons[0].pressed : false)) {
+        if (this.keys.end.isDown || (gamepad !== null ? gamepad.buttons[1].pressed : false)) {
             if (INPUTS.btnA.pressed === false) {
                 INPUTS.btnA.justPressed = true;
                 INPUTS.btnA.pressed = true;

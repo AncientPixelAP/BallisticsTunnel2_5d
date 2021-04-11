@@ -62,7 +62,10 @@ export default class Scn3d extends Phaser.Scene {
             eight: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT),
             nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE),
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO),
-            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB)
+            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB),
+            enter: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
+            escape: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESCAPE),
+            backspace: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE),
         }
         this.numkeys = {
             plus: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ADD),
@@ -78,7 +81,6 @@ export default class Scn3d extends Phaser.Scene {
             nine: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_NINE),
             zero: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO)
         }
-        this.gamepad = null;
 
         this.hand = new Hand(this);
         this.hand.setMouseLock(true);
@@ -123,9 +125,8 @@ export default class Scn3d extends Phaser.Scene {
     }
 
     update(){
-        this.gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
-        this.hand.update();
         this.fillInputs();
+        this.hand.update();
         /*
         this.btnBack.update();
         */
@@ -244,40 +245,19 @@ export default class Scn3d extends Phaser.Scene {
             z: this.player.pos.z
         }
 
-        if (this.keys.a.isDown) {
-            toPos.z -= Math.cos(this.player.dir.yaw - HALFPI) * 2;
-            toPos.x += Math.sin(this.player.dir.yaw - HALFPI) * 2;
+        if (Math.abs(INPUTS.stickLeft.horizontal) > 0.1) {
+            toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * INPUTS.stickLeft.horizontal;
+            toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * INPUTS.stickLeft.horizontal;
         }
-        if (this.keys.d.isDown) {
-            toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * 2;
-            toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * 2;
-        }
-        if (this.keys.s.isDown) {
-            toPos.z -= Math.cos(this.player.dir.yaw) * 2;
-            toPos.x += Math.sin(this.player.dir.yaw) * 2;
-        }
-        if (this.keys.w.isDown) {
-            toPos.z += Math.cos(this.player.dir.yaw) * 2;
-            toPos.x -= Math.sin(this.player.dir.yaw) * 2;
+        if (Math.abs(INPUTS.stickLeft.vertical) > 0.1) {
+            toPos.z -= Math.cos(this.player.dir.yaw) * INPUTS.stickLeft.vertical;
+            toPos.x += Math.sin(this.player.dir.yaw) * INPUTS.stickLeft.vertical;
         }
 
-        //TODO move to seperate input handler class and only ask about keybindings
-        if (this.gamepad != null) {
-            if (Math.abs(this.gamepad.axes[0]) > 0.1) {
-                toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * this.gamepad.axes[0];
-                toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * this.gamepad.axes[0];
-            }
-            if (Math.abs(this.gamepad.axes[1]) > 0.1) {
-                toPos.z -= Math.cos(this.player.dir.yaw) * this.gamepad.axes[1];
-                toPos.x += Math.sin(this.player.dir.yaw) * this.gamepad.axes[1];
-            }
-        }
-
-
-        if (this.keys.space.isDown) {
+        if (INPUTS.btnShoulderRight.pressed) {
             this.player.pos.y -= 1;
         }
-        if (this.keys.c.isDown) {
+        if (INPUTS.btnShoulderLeft.pressed) {
             this.player.pos.y += 1;
         }
 
@@ -487,7 +467,125 @@ export default class Scn3d extends Phaser.Scene {
     }
 
     fillInputs(){
-        
+        let gamepad = null;
+        gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
+
+        //FORWARDS-BACKWARDDS
+        INPUTS.stickLeft.vertical = 0;
+        INPUTS.stickLeft.horizontal = 0;
+        if (this.keys.w.isDown) {
+            INPUTS.stickLeft.vertical = -1;
+        } else if (this.keys.s.isDown) {
+            INPUTS.stickLeft.vertical = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickLeft.vertical = gamepad.axes[1];
+            }
+        }
+        //STRAFE
+        if (this.keys.a.isDown) {
+            INPUTS.stickLeft.horizontal = -1;
+        } else if (this.keys.d.isDown) {
+            INPUTS.stickLeft.horizontal = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickLeft.horizontal = gamepad.axes[0];
+            }
+        }
+        //LOOK UP-DOWN
+        INPUTS.stickRight.vertical = 0;
+        INPUTS.stickRight.horizontal = 0;
+        if (this.cursors.up.isDown) {
+            INPUTS.stickRight.vertical = -1;
+        } else if (this.cursors.down.isDown) {
+            INPUTS.stickRight.vertical = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickRight.vertical = gamepad.axes[3];
+            }
+        }
+        //LOOK LEFT-RIGHT
+        if (this.cursors.left.isDown) {
+            INPUTS.stickRight.horizontal = -1;
+        } else if (this.cursors.right.isDown) {
+            INPUTS.stickRight.horizontal = 1;
+        } else {
+            if (gamepad !== null) {
+                INPUTS.stickRight.horizontal = gamepad.axes[2];
+            }
+        }
+        //CROUCH
+        if (this.keys.tab.isDown || (gamepad !== null ? gamepad.buttons[4].pressed : false)) {
+            if (INPUTS.btnShoulderLeft.pressed === false) {
+                INPUTS.btnShoulderLeft.justPressed = true;
+                INPUTS.btnShoulderLeft.pressed = true;
+                INPUTS.btnShoulderLeft.justReleased = false;
+            } else {
+                INPUTS.btnShoulderLeft.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnShoulderLeft.pressed === true) {
+                INPUTS.btnShoulderLeft.pressed = false;
+                INPUTS.btnShoulderLeft.justReleased = true;
+                INPUTS.btnShoulderLeft.justPressed = false;
+            } else {
+                INPUTS.btnShoulderLeft.justReleased = false;
+            }
+        }
+        //JUMP
+        if (this.keys.space.isDown || (gamepad !== null ? gamepad.buttons[5].pressed : false)) {
+            if (INPUTS.btnShoulderRight.pressed === false) {
+                INPUTS.btnShoulderRight.justPressed = true;
+                INPUTS.btnShoulderRight.pressed = true;
+                INPUTS.btnShoulderRight.justReleased = false;
+            } else {
+                INPUTS.btnShoulderRight.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnShoulderRight.pressed === true) {
+                INPUTS.btnShoulderRight.pressed = false;
+                INPUTS.btnShoulderRight.justReleased = true;
+                INPUTS.btnShoulderRight.justPressed = false;
+            } else {
+                INPUTS.btnShoulderRight.justReleased = false;
+            }
+        }
+        //A
+        if (this.keys.enter.isDown || (gamepad !== null ? gamepad.buttons[1].pressed : false)) {
+            if (INPUTS.btnA.pressed === false) {
+                INPUTS.btnA.justPressed = true;
+                INPUTS.btnA.pressed = true;
+                INPUTS.btnA.justReleased = false;
+            } else {
+                INPUTS.btnA.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnA.pressed === true) {
+                INPUTS.btnA.pressed = false;
+                INPUTS.btnA.justReleased = true;
+                INPUTS.btnA.justPressed = false;
+            } else {
+                INPUTS.btnA.justReleased = false;
+            }
+        }
+        //B
+        if (this.keys.escape.isDown || (gamepad !== null ? gamepad.buttons[0].pressed : false)) {
+            if (INPUTS.btnA.pressed === false) {
+                INPUTS.btnA.justPressed = true;
+                INPUTS.btnA.pressed = true;
+                INPUTS.btnA.justReleased = false;
+            } else {
+                INPUTS.btnA.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnA.pressed === true) {
+                INPUTS.btnA.pressed = false;
+                INPUTS.btnA.justReleased = true;
+                INPUTS.btnA.justPressed = false;
+            } else {
+                INPUTS.btnA.justReleased = false;
+            }
+        }
     }
 
 }
