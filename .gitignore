@@ -1,4 +1,5 @@
 node_modules/
 promo/
+mood/
 package.json
 package-lock.json
