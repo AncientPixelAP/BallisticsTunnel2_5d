@@ -429,34 +429,46 @@ export default class ScnMain extends Phaser.Scene {
                 //let checkY = this.segments[16].screenPos.y + (24 * this.zoom);
                 let checkY = this.segments[16].resistance - (this.player.pitch * 50);// + (24 * this.zoom);
                 let modify = Math.round(checkY * -0.01);
+                let scrape = false;
                 if(modify < 0){//curve down
-                    if(this.player.radius < this.player.stats.rideHeight){
+                    if(this.player.pitch * 2 <= modify){
                         this.player.heat -= 0.1;
                     }else{
-                        //heat up
-                        //console.log("HEATING UP");
                         this.player.heat -= modify * 0.1;
+                        scrape = true;
                     }
                 } else if (modify > 0){//curve up
-                    if (this.player.radius > this.player.stats.rideHeight) {
-                        //heat up
+                    if (this.player.pitch * -1 < modify) {
                         //console.log("SCRAPING FLOOR");
                         this.player.heat += modify * 0.1;
+                        scrape = true;
                     } else {
-                        //cool
+                        this.player.heat -= 0.1;
+                    }
+                }else{
+                    if (this.player.pitch * -1 < modify) {
+                        this.player.heat += modify * 0.1;
+                        scrape = true;
+                    } else {
                         this.player.heat -= 0.1;
                     }
                 }
                 this.player.heat = Math.max(0, Math.min(this.player.stats.heatMax, this.player.heat));
+                if(scrape === true){
+                    //TODO sparks flying and only shake at extreme pitch
+                    this.cameras.main.shake(125, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, (_cam, _pct) => {
+                        
+                    }, this);
+                }
 
                 //adaptivespeed
                 this.player.spdMax = Math.max(0.05, Math.min(0.9, this.player.stats.spd + this.player.slipstreamBoost + ((modify * this.player.stats.curveMod) * 0.1)));
                 if (this.player.heat >= this.player.stats.heatMax) {
-                    this.player.energy -= 1;
+                    this.player.energy -= 0.1;
                     if (this.player.energy <= 0) {
                         this.player.energy = 0;
                         this.player.spdMax = 0;
-                        console.log("OUT OF ENERGY");
+                        //console.log("OUT OF ENERGY");
                     }
                 }else{
                     this.player.energy = Math.min(this.player.stats.energyMax, this.player.energy + 1);

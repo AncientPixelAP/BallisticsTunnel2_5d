@@ -422,7 +422,7 @@ class Tacho{
         this.spdTxt.x = this.pos.x - 24;
         this.textWrap.spd.x = this.pos.x;
 
-        this.slpTxt.setText("SLP " + String(this.scene.player.slipstreamBoost.toFixed(2)) + "    TMP " + String(this.scene.player.heat));
+        this.slpTxt.setText("SLP " + String(this.scene.player.slipstreamBoost.toFixed(2)) + "    TMP " + zeroPad(Math.floor(this.scene.player.heat), 3));
         if (this.scene.player.slipstreamBoost > 0) {
             if (this.overSlp === false) {
                 this.overSlp = true;
@@ -440,7 +440,7 @@ class Tacho{
         this.textWrap.slp.x = this.pos.x;
 
         let res = 1 - this.scene.player.spdMax;
-        this.resTxt.setText("RES " + String(res.toFixed(2)) + "    NRG " + String(this.scene.player.energy));
+        this.resTxt.setText("RES " + String(res.toFixed(2)) + "    NRG " + zeroPad(this.scene.player.energy, 3));
         if (res >= 0.70) {
             if (this.overRes === false) {
                 this.overRes = true;
