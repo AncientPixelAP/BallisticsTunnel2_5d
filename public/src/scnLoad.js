@@ -52,6 +52,7 @@ export default class ScnLoad extends Phaser.Scene {
         //marketsquare
         this.load.json("modMarketsquareApartements", "jsons/models/marketsquare/marketsquareApartements.json");
         this.load.json("modPlayerApartement", "jsons/models/marketsquare/playerApartement.json");
+        this.load.json("modLounge", "jsons/models/marketsquare/lounge.json");
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -118,6 +119,11 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texSmokeWhite", "sprites/3dTextures/texSmokeWhite.png");
         this.load.image("texGlowSquareWhite", "sprites/3dTextures/texGlowSquareWhite00.png");
         this.load.image("texDoor00", "sprites/3dTextures/texDoor00.png");
+        this.load.image("texPCKeyboard00", "sprites/3dTextures/texPCKeyboard00.png");
+        this.load.image("texPCMonitor00", "sprites/3dTextures/texPCMonitor00.png");
+        this.load.image("texPCMonitor01", "sprites/3dTextures/texPCMonitor01.png");
+        this.load.image("texPCMonitorSide00", "sprites/3dTextures/texPCMonitorSide00.png");
+        this.load.image("texPCMonitorSide01", "sprites/3dTextures/texPCMonitorSide01.png");
         this.load.image("texBlackout", "sprites/3dTextures/texBlackout.png");
 
         this.load.image("texBloodLineEnd", "sprites/3dTextures/texBloodLineEnd.png");

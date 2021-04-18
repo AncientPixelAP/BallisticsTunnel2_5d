@@ -8,6 +8,12 @@ export default class LevelMarketsquare00{
             z: 0
         });
 
+        this.lounge = this.scene.geometryController.loadModel("Drivers Lounge", "modLounge", {
+            x: 192,
+            y: -64,
+            z: 192
+        });
+
         this.barbara = this.scene.geometryController.loadModel("Saint Barbara", "modCharacterStBarbara", {
             x: 192,
             y: 0,

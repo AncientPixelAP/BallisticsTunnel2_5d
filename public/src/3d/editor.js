@@ -81,6 +81,11 @@ export default class Editor {
                 "texSmokeWhite",
                 "texGlowSquareWhite",
                 "texDoor00",
+                "texPCKeyboard00",
+                "texPCMonitor00",
+                "texPCMonitor01",
+                "texPCMonitorSide00",
+                "texPCMonitorSide01",
                 "texBlackout"
             ], [
                 "texPlatingRed00",
