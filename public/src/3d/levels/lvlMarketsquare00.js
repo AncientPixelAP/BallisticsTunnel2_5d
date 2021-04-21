@@ -9,8 +9,8 @@ export default class LevelMarketsquare00{
         });
 
         this.lounge = this.scene.geometryController.loadModel("Drivers Lounge", "modLounge", {
-            x: 192,
-            y: -64,
+            x: 176,
+            y: -60,
             z: 192
         });
 
