@@ -24,10 +24,12 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
         //SHIPS
-        this.load.json("modShipHamptonAegis", "jsons/models/shipHamptonAegis.json");
-        this.load.json("modShipArashiDart", "jsons/models/shipArashiDart.json");
-        this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
+        this.load.json("modShipHamptonAegis", "jsons/models/ships/shipHamptonAegis.json");
+        this.load.json("modShipArashiDart", "jsons/models/ships/shipArashiDart.json");
+        this.load.json("modShipFormulaE", "jsons/models/ships/shipFormulaE.json");
+        this.load.json("modShipFormulaOne", "jsons/models/ships/shipFormulaOne.json");
         //MISC
+        this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
         this.load.json("modSmoke", "jsons/models/smoke.json");
         this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
         this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");

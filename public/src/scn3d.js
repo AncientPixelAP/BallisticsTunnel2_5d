@@ -49,6 +49,7 @@ export default class Scn3d extends Phaser.Scene {
             z: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z),
             space: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
             ctrl: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL),
+            shift: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT),
             alt: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT),
             end: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.END),
             del: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DELETE),
@@ -118,7 +119,7 @@ export default class Scn3d extends Phaser.Scene {
         */
 
         this.level = null;
-        this.loadLevel("marketsquare00");//modelBuilder dream01
+        this.loadLevel("marketsquare00");//modelBuilder dream01 marketsquare00
 
         this.modelName = "";
         this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
@@ -151,17 +152,25 @@ export default class Scn3d extends Phaser.Scene {
 
                     let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
                     if (model.interactable === true){
-                        this.player.setHintText("click to use/talk");
-                        this.player.setUseBox(model.getScreenBounds());
+                        if (eud.distance([this.player.pos.x, this.player.pos.y, this.player.pos.z], [model.pos.x, model.pos.y, model.pos.z]) < 48) {
+                            this.player.setHintText("click to use/talk");
+                            this.player.setUseBox(model.getScreenBounds());
+                        }else{
+                            this.player.setHintText("");
+                            this.player.clearUseBox();
+                        }
+
+                        if (this.hand.justReleased || INPUTS.btnA.justReleased) {
+                            //let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
+                            model.interact();
+                        }
                     }else{
                         this.player.setHintText("");
                         this.player.clearUseBox();
                     }
-
-                    if (this.hand.justReleased) {
-                        //let model = this.geometryController.getModelById(this.modelName = hits[hits.length - 1].modelId);
-                        model.interact();
-                    }
+                }else{
+                    this.debugTxt.setText("");
+                    this.player.clearUseBox();
                 }
 
                 if (this.hand.justReleased) {
@@ -229,6 +238,8 @@ export default class Scn3d extends Phaser.Scene {
     }
 
     gameControls(){
+        let isMoving = false;
+        
         this.keyboardLook();
         if(this.player.mode === PLAYERMODE.LOOK){
             if(this.hand.mouselock === false){
@@ -246,16 +257,22 @@ export default class Scn3d extends Phaser.Scene {
         }
 
         if (Math.abs(INPUTS.stickLeft.horizontal) > 0.1) {
-            toPos.z -= Math.cos(this.player.dir.yaw + HALFPI) * INPUTS.stickLeft.horizontal;
-            toPos.x += Math.sin(this.player.dir.yaw + HALFPI) * INPUTS.stickLeft.horizontal;
+            toPos.z -= (Math.cos(this.player.dir.yaw + HALFPI) * INPUTS.stickLeft.horizontal) * this.player.spd.normal;
+            toPos.x += (Math.sin(this.player.dir.yaw + HALFPI) * INPUTS.stickLeft.horizontal) * this.player.spd.normal;
+            isMoving = true;
         }
         if (Math.abs(INPUTS.stickLeft.vertical) > 0.1) {
-            toPos.z -= Math.cos(this.player.dir.yaw) * INPUTS.stickLeft.vertical;
-            toPos.x += Math.sin(this.player.dir.yaw) * INPUTS.stickLeft.vertical;
+            toPos.z -= (Math.cos(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * (INPUTS.btnTriggerLeft.pressed ? this.player.spd.sprint : this.player.spd.normal);
+            toPos.x += (Math.sin(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * (INPUTS.btnTriggerLeft.pressed ? this.player.spd.sprint : this.player.spd.normal);
+            isMoving = true;
         }
 
+        //JUMP
         if (INPUTS.btnShoulderRight.pressed) {
-            this.player.pos.y -= 1;
+            if (this.player.vel.y === 0) {
+                this.player.vel.y = -2;
+                this.player.pos.y += this.player.vel.y;
+            }
         }
         if (INPUTS.btnShoulderLeft.pressed) {
             this.player.pos.y += 1;
@@ -321,17 +338,21 @@ export default class Scn3d extends Phaser.Scene {
             }
             //returnColl[input point and direction].hit[nearest = 0].pt[coord x,y,z]
             //teleport to ground
-            if(nearestHit.model.trigger.isTrigger === false){
-                if(dist <= this.player.stepHeight){
+            if (nearestHit.model.trigger.isTrigger === false) {
+                if (dist <= this.player.stepHeight) {
                     this.player.vel.y = 0;
                     this.player.pos.y = nearestHit.pt[1];
-                }else{
+                    this.player.gravity.grounded = true;
+                    //this.player.asset = "sprTroglodyte00";
+                } else {
                     if (this.player.vel.y < this.player.gravity.terminal) {
                         this.player.vel.y += this.player.gravity.y;
                     }
                     this.player.pos.y += this.player.vel.y;
+                    this.player.gravity.grounded = false;
+                    //this.player.asset = "sprTroglodyte02";
                 }
-            }else{
+            } else {
                 nearestHit.model.updateTrigger();
             }
         }
@@ -466,14 +487,17 @@ export default class Scn3d extends Phaser.Scene {
         this.scene.start("ScnLogin");
     }
 
-    fillInputs(){
+    fillInputs() {
         let gamepad = null;
         gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
+        if (gamepad === undefined) {
+            gamepad = null;
+        }
 
         //FORWARDS-BACKWARDDS
         INPUTS.stickLeft.vertical = 0;
         INPUTS.stickLeft.horizontal = 0;
-        if (this.keys.w.isDown) {
+        if (this.keys.w.isDown) {// || this.hand.pressed === true) {
             INPUTS.stickLeft.vertical = -1;
         } else if (this.keys.s.isDown) {
             INPUTS.stickLeft.vertical = 1;
@@ -550,8 +574,26 @@ export default class Scn3d extends Phaser.Scene {
                 INPUTS.btnShoulderRight.justReleased = false;
             }
         }
+        //SPRINT
+        if (this.keys.shift.isDown || (gamepad !== null ? gamepad.buttons[6].pressed : false)) {
+            if (INPUTS.btnTriggerLeft.pressed === false) {
+                INPUTS.btnTriggerLeft.justPressed = true;
+                INPUTS.btnTriggerLeft.pressed = true;
+                INPUTS.btnTriggerLeft.justReleased = false;
+            } else {
+                INPUTS.btnTriggerLeft.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnTriggerLeft.pressed === true) {
+                INPUTS.btnTriggerLeft.pressed = false;
+                INPUTS.btnTriggerLeft.justReleased = true;
+                INPUTS.btnTriggerLeft.justPressed = false;
+            } else {
+                INPUTS.btnTriggerLeft.justReleased = false;
+            }
+        }
         //A
-        if (this.keys.enter.isDown || (gamepad !== null ? gamepad.buttons[1].pressed : false)) {
+        if (this.keys.enter.isDown || (gamepad !== null ? gamepad.buttons[0].pressed : false)) {
             if (INPUTS.btnA.pressed === false) {
                 INPUTS.btnA.justPressed = true;
                 INPUTS.btnA.pressed = true;
@@ -569,21 +611,21 @@ export default class Scn3d extends Phaser.Scene {
             }
         }
         //B
-        if (this.keys.escape.isDown || (gamepad !== null ? gamepad.buttons[0].pressed : false)) {
-            if (INPUTS.btnA.pressed === false) {
-                INPUTS.btnA.justPressed = true;
-                INPUTS.btnA.pressed = true;
-                INPUTS.btnA.justReleased = false;
+        if (this.keys.backspace.isDown || (gamepad !== null ? gamepad.buttons[1].pressed : false)) {
+            if (INPUTS.btnB.pressed === false) {
+                INPUTS.btnB.justPressed = true;
+                INPUTS.btnB.pressed = true;
+                INPUTS.btnB.justReleased = false;
             } else {
-                INPUTS.btnA.justPressed = false;
+                INPUTS.btnB.justPressed = false;
             }
         } else {
-            if (INPUTS.btnA.pressed === true) {
-                INPUTS.btnA.pressed = false;
-                INPUTS.btnA.justReleased = true;
-                INPUTS.btnA.justPressed = false;
+            if (INPUTS.btnB.pressed === true) {
+                INPUTS.btnB.pressed = false;
+                INPUTS.btnB.justReleased = true;
+                INPUTS.btnB.justPressed = false;
             } else {
-                INPUTS.btnA.justReleased = false;
+                INPUTS.btnB.justReleased = false;
             }
         }
     }

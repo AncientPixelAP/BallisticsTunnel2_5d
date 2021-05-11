@@ -1,7 +1,7 @@
 import DataQuad from "./dataQuad.js";
 
-export default class Model{
-    constructor(_scene, _geometryController, _id, _modelDataJson, _pos){
+export default class Model {
+    constructor(_scene, _geometryController, _id, _modelDataJson, _pos) {
         this.scene = _scene;
         this.geometryController = _geometryController;
         this.id = _id;
@@ -22,15 +22,15 @@ export default class Model{
             triggered: false,
             once: true,
             keep: 0, //this is 0 if the trigger is not triggered, 1 onOverlap and will be 2 in update (0 if its already 2 to get onExit recognition)
-            onEnter: () => {},
-            onExit: () => {},
-            onOverlap: () => {}
+            onEnter: () => { },
+            onExit: () => { },
+            onOverlap: () => { }
         }
 
         this.data = {};
         this.interactable = false;
-        this.interact = () => {};
-        this.action = () => {};
+        this.interact = () => { };
+        this.action = () => { };
 
         this.mover = {
             isMoving: false,
@@ -50,7 +50,7 @@ export default class Model{
             },
             targets: [],
         }
-        
+
 
         this.quadData = [];
         for (let [i, q] of this.modelData.quadData.entries()) {
@@ -75,10 +75,15 @@ export default class Model{
             mode: 0
         }
         this.debug.collisionGraphics.depth = 10000;
+
+        this.flags = {
+            draw: false,
+            drawn: false
+        }
     }
 
-    update(){
-        if(this.mover.isMoving){
+    update() {
+        if (this.mover.isMoving) {
             let finishedMoving = true;
             let finishedTurning = true;
             let d = eud.distance([this.pos.x, this.pos.y, this.pos.z], [this.mover.target.pos.x, this.mover.target.pos.y, this.mover.target.pos.z]);
@@ -103,14 +108,14 @@ export default class Model{
                 let amt = this.mover.target.dir.yaw - this.dir.yaw;
                 toMove.dir.yaw = Math.abs(amt) < Math.abs(this.mover.target.dir.spd) ? amt : this.mover.target.dir.spd;
             }
-            if(d > this.mover.target.pos.spd){
+            if (d > this.mover.target.pos.spd) {
                 finishedMoving = false;
                 let a = Phaser.Math.Angle.Between(this.pos.x, this.pos.z, this.mover.target.pos.x, this.mover.target.pos.z);
                 toMove.offset.x = Math.cos(a) * this.mover.target.pos.spd;
                 toMove.offset.z = Math.sin(a) * this.mover.target.pos.spd;
             }
 
-            if (finishedMoving === false || finishedTurning === false){
+            if (finishedMoving === false || finishedTurning === false) {
                 this.translateAndRotate(toMove.offset, toMove.dir);
             } else {
                 this.mover.isMoving = false;
@@ -118,22 +123,30 @@ export default class Model{
         }
 
         //try to reset the trigger and check if onExit needs to be fired
-        if(this.trigger.keep === 1){
+        if (this.trigger.keep === 1) {
             this.trigger.keep = 2;
-        }else if(this.trigger.keep === 2){
+        } else if (this.trigger.keep === 2) {
             this.trigger.keep = 0;
             this.trigger.triggered = false;
             this.trigger.onExit();
         }
+
+        //clear quads and stop drawing if not in view but have been previously
+        if (this.flags.drawn === true && this.flags.draw === false) {
+            this.flags.drawn = false;
+            for (let q of this.quadData) {
+                q.clearQuads();
+            }
+        }
     }
 
-    translateAndRotate(_offset, _dir){
+    translateAndRotate(_offset, _dir) {
         // roates
         this.dir.yaw += _dir.yaw;
         this.dir.pitch += _dir.pitch;
         this.dir.roll += _dir.roll;
-        for(let q of this.quadData){
-            for(let [i, p] of q.points.entries()){
+        for (let q of this.quadData) {
+            for (let [i, p] of q.points.entries()) {
                 let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
                 let nx = outXZ[0];
                 let ny = outXZ[1];
@@ -160,7 +173,7 @@ export default class Model{
         this.pos.x += _offset.x;
         this.pos.y += _offset.y;
         this.pos.z += _offset.z;
-        for(let q of this.quadData){
+        for (let q of this.quadData) {
             q.pos.x += _offset.x;
             q.pos.y += _offset.y;
             q.pos.z += _offset.z;
@@ -172,7 +185,7 @@ export default class Model{
         }
     }
 
-    jumpToPosition(_pos){
+    jumpToPosition(_pos) {
         this.pos.x = _pos.x;
         this.pos.y = _pos.y;
         this.pos.z = _pos.z;
@@ -188,7 +201,7 @@ export default class Model{
         }
     }
 
-    setDrawMode(_mode){
+    setDrawMode(_mode) {
         this.debug.mode = _mode;
         /*if(this.debug.mode === DRAWMODE.D2D){
             for(let q of this.quadData){
@@ -198,15 +211,17 @@ export default class Model{
         }*/
     }
 
-    draw(_from, _dir){
-        for (let q of this.quadData){
-            if(this.debug.mode === DRAWMODE.D3D){
+    draw(_from, _dir) {
+        this.flags.drawn = true;
+        this.flags.draw = true;
+        for (let q of this.quadData) {
+            if (this.debug.mode === DRAWMODE.D3D) {
                 q.calculate3d(_from, _dir);
                 q.draw();
-            }else if(this.debug.mode === DRAWMODE.D2D){
+            } else if (this.debug.mode === DRAWMODE.D2D) {
                 q.calculate3d(_from, _dir, false);
                 q.drawNo3d(_from, _dir, true);
-            } else if (this.debug.mode === DRAWMODE.BILLBOARD){
+            } else if (this.debug.mode === DRAWMODE.BILLBOARD) {
                 this.translateAndRotate({
                     x: 0,
                     y: 0,
@@ -218,18 +233,18 @@ export default class Model{
                 });
                 q.calculate3d(_from, _dir, true);
                 q.draw();
-            }else{
+            } else {
                 q.calculate3d(_from, _dir);
                 q.drawNo3d(false);
             }
         }
-        if(this.debug.drawCollisions === true){
+        if (this.debug.drawCollisions === true) {
             this.debug.collisionGraphics.clear();
             this.debug.collisionGraphics.lineStyle(1, 0x00e436);
-            for(let q of this.collisionData){
+            for (let q of this.collisionData) {
                 q.calculate3d(_from, _dir);
                 this.debug.collisionGraphics.beginPath();
-                
+
                 this.debug.collisionGraphics.moveTo(q.screenCoords[0].x, q.screenCoords[0].y);
                 this.debug.collisionGraphics.lineTo(q.screenCoords[1].x, q.screenCoords[1].y);
                 this.debug.collisionGraphics.moveTo(q.screenCoords[1].x, q.screenCoords[1].y);
@@ -247,18 +262,18 @@ export default class Model{
         }
     }
 
-    addQuadFromData(_q){
+    addQuadFromData(_q) {
         let pos = {
             x: _q.position.x + this.pos.x,
             y: _q.position.y + this.pos.y,
             z: _q.position.z + this.pos.z
         }
-        if(_q.type !== "collisionQuad"){
+        if (_q.type !== "collisionQuad") {
             let no = this.quadData.length;
             this.quadData.push(
                 new DataQuad(this.scene, this.id, no, _q.type, pos, _q.points, _q.texture, _q.frame)
             );
-        }else{
+        } else {
             let no = this.collisionData.length;
             this.collisionData.push(
                 new DataQuad(this.scene, this.id, no, _q.type, pos, _q.points, "none", 0)
@@ -266,17 +281,17 @@ export default class Model{
         }
     }
 
-    deleteQuad(_q, _isCollisionQuad){
-        if(_isCollisionQuad === true){
-            for(let i = this.collisionData.length-1 ; i >= 0 ; i--){
-                if (this.collisionData[i].runNo === _q.runNo){
+    deleteQuad(_q, _isCollisionQuad) {
+        if (_isCollisionQuad === true) {
+            for (let i = this.collisionData.length - 1; i >= 0; i--) {
+                if (this.collisionData[i].runNo === _q.runNo) {
                     this.collisionData[i].destroy();
                     this.collisionData.splice(i, 1);
                 }
             }
             //this.collisionData[_q.runNo].destroy();
             //this.collisionData.splice(_q.runNo, 1);
-        }else{
+        } else {
             for (let i = this.quadData.length - 1; i >= 0; i--) {
                 if (this.quadData[i].runNo === _q.runNo) {
                     this.quadData[i].destroy();
@@ -288,20 +303,20 @@ export default class Model{
         }
     }
 
-    toggleDrawCollisions(){
+    toggleDrawCollisions() {
         this.debug.drawCollisions = !this.debug.drawCollisions;
         if (this.debug.drawCollisions === false) {
             this.debug.collisionGraphics.clear();
         }
     }
 
-    getScreenBounds(){
+    getScreenBounds() {
         let x1 = this.scene.right;
         let y1 = this.scene.bottom;
         let x2 = this.scene.left;
         let y2 = this.scene.top;
-        for(let q of this.quadData){
-            for(let sc of q.screenCoords){
+        for (let q of this.quadData) {
+            for (let sc of q.screenCoords) {
                 x1 = Math.min(x1, sc.x);
                 y1 = Math.min(y1, sc.y);
                 x2 = Math.max(x2, sc.x);
@@ -320,16 +335,16 @@ export default class Model{
         }
     }
 
-    log(){
+    log() {
         let logobj = {
             name: this.modelData.name,
             quadData: [],
             collisionData: []
         }
         //add quad Data from model
-        for(let q of this.quadData){
+        for (let q of this.quadData) {
             let pts = [];
-            for(let p of q.points){
+            for (let p of q.points) {
                 pts.push({
                     x: p.x,// + this.pos.x,
                     y: p.y,// + this.pos.y,
@@ -372,7 +387,7 @@ export default class Model{
         console.log(JSON.stringify(logobj));
     }
 
-    updateTrigger(){
+    updateTrigger() {
         if (this.trigger.triggered === false) {
             this.trigger.triggered = true;
             this.trigger.onEnter();
@@ -382,7 +397,7 @@ export default class Model{
         }
     }
 
-    destroy(){
+    destroy() {
         for (let i = this.quadData.length - 1; i >= 0; i--) {
             this.quadData[i].destroy();
             this.quadData.splice(i, 1);

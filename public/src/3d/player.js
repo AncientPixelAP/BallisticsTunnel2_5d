@@ -10,6 +10,11 @@ export class Player3d{
                 x: 0,
                 y: 0,
                 z: 0,
+            },
+            last: {
+                x: 0,
+                y: 0,
+                z: 0
             }
         }
         this.dir = {
@@ -30,6 +35,10 @@ export class Player3d{
         this.eyeHeight = 24;
         this.stepHeight = 9;
         this.collisionRadius = 12;
+        this.spd = {
+            normal: 2,
+            sprint: 3
+        }
 
         this.gravity = {
             x: 0,
@@ -61,6 +70,20 @@ export class Player3d{
             this.pos.z = this.pos.to.z;
             this.pos.to.jump = false;
         }
+
+        /*//footsteps
+        if (eud.distance([this.pos.x, this.pos.y, this.pos.z], [this.pos.last.x, this.pos.last.y, this.pos.last.z]) > 48) {
+            this.travelLength += 48;
+            this.pos.last.x = this.pos.x;
+            this.pos.last.y = this.pos.y;
+            this.pos.last.z = this.pos.z;
+            //if (this.gravity.grounded === true){
+            if (Math.abs(this.vel.y) < 1) {
+                this.sndStep.volume = (0.5 + (Math.random() * 0.5)) * OPTIONS.sfx;
+                this.sndStep.play();
+            }
+        }
+        */
 
         if(this.panel !== null){
             this.panel.update();

@@ -1,5 +1,5 @@
-export default class DataQuad{
-    constructor(_scene, _modelId, _runNo, _type, _pos, _points, _texture, _frame){
+export default class DataQuad {
+    constructor(_scene, _modelId, _runNo, _type, _pos, _points, _texture, _frame) {
         this.scene = _scene;
         this.modelId = _modelId;
         this.runNo = _runNo;
@@ -53,24 +53,19 @@ export default class DataQuad{
         }
     }
 
-    update(){
+    update() {
 
     }
 
-    draw(){
-        if(this.quads.length > 0){
-            if(this.mipmapped === false){
+    draw() {
+        if (this.quads.length > 0) {
+            if (this.mipmapped === false) {
                 this.quads[0].setTopLeft(this.screenCoords[0].x, this.screenCoords[0].y);
                 this.quads[0].setTopRight(this.screenCoords[1].x, this.screenCoords[1].y);
                 this.quads[0].setBottomRight(this.screenCoords[2].x, this.screenCoords[2].y);
                 this.quads[0].setBottomLeft(this.screenCoords[3].x, this.screenCoords[3].y);
                 this.quads[0].depth = this.depth;
-                /*let c = Phaser.Display.Color.GetColor(this.shade, this.shade, this.shade);
-                this.quads[0].topLeftColor = c;
-                this.quads[0].topRightColor = c;
-                this.quads[0].bottomLeftColor = c;
-                this.quads[0].bottomRightColor = c;*/
-            }else{
+            } else {
                 this.quads[0].setTopLeft(this.screenCoords[0].x, this.screenCoords[0].y);
                 this.quads[0].setTopRight(this.sc01.x, this.sc01.y);
                 this.quads[0].setBottomRight(this.scM.x, this.scM.y);
@@ -96,20 +91,20 @@ export default class DataQuad{
                 this.quads[3].depth = this.depth;
             }
 
-            
+
             let col = Phaser.Display.Color.GetColor(this.shade, this.shade, this.shade);
-            for(let q of this.quads){
+            for (let q of this.quads) {
                 //shading
                 q.topLeftColor = col;
                 q.topRightColor = col;
                 q.bottomLeftColor = col;
                 q.bottomRightColor = col;
             }
-            
+
         }
     }
 
-    drawNo3d(_from, _dir, _withScale){
+    drawNo3d(_from, _dir, _withScale) {
         if (this.quads.length > 0) {
             //this.calculateHelpPoints();
             //this.quads[0].x = this.scM.x;
@@ -135,9 +130,9 @@ export default class DataQuad{
             this.quads[0].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.quads[0].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
 
-            if(_withScale === true){
+            if (_withScale === true) {
                 //this.quads[0].setScale(this.zDepth);
-                this.quads[0].setScale(256/nz);
+                this.quads[0].setScale(256 / nz);
             }
             this.quads[0].depth = nz;
         }
@@ -148,9 +143,10 @@ export default class DataQuad{
         let sumZ = 0;
 
         let outsideScreenSafe = false;
+        let cull = false;
 
         //calculate the quads point in 3d seen from the camera
-        for(let [i, p] of this.points.entries()){
+        for (let [i, p] of this.points.entries()) {
             let pts = {
                 x: p.x + this.pos.x - _from.x,
                 y: p.y + this.pos.y - _from.y,
@@ -172,12 +168,22 @@ export default class DataQuad{
             nx = outXY[0];
             ny = outXY[1];
             nz = outXY[2];
+
+            /*if(nz < 0.1){
+                nz = 0.1;
+            }*/
+            if (nz < -100) {
+                cull = true;
+            }
+            if (nz < 0) {
+                nz *= 0.01;
+            }
             let nzMod = nz + 10;
 
             let zoom = 400;//2.5 - 0.01
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
-            
+
             if (outsideScreenSafe === false) {
                 outsideScreenSafe = this.screenCoords[i].x <= this.scene.left || this.screenCoords[i].x >= this.scene.right || this.screenCoords[i].y <= this.scene.top || this.screenCoords[i].y >= this.scene.bottom;
             }
@@ -201,23 +207,23 @@ export default class DataQuad{
         //this.depth = recZ*-1;
         this.shade = Math.max(0, 255 - ((recZ + 0) * 0.25));
 
-        if(this.type !== "collisionQuad"){
-            if(this.depth >= 0){//near clipping plane could be at -25 for example
+        if (this.type !== "collisionQuad") {
+            if (cull === true) {//if(this.depth >= 0 || cull === true){//near clipping plane could be at -25 for example
                 if (this.quads.length > 0) {
                     this.clearQuads();
                 }
-            }else if(this.depth < 0){
+            } else {// if(this.depth < 0){
                 if (this.quads.length === 0) {
                     this.createQuad();
                 }
                 //quad so near that mipmapping is required?
                 //if (this.depth > -50){
-                if(outsideScreenSafe === true){
-                    if (_mipmap === true && this.quads.length > 0){
+                if (outsideScreenSafe === true) {
+                    if (_mipmap === true && this.quads.length > 0) {
                         this.mipmapQuad();
                     }
-                }else{
-                    if(this.quads.length > 0){
+                } else {
+                    if (this.quads.length > 0) {
                         this.unmipmapQuad();
                     }
                 }
@@ -225,7 +231,7 @@ export default class DataQuad{
 
             if (this.quads.length > null) {
                 if (this.depth < -12) {// (recZ > 16) at sumZ * -0.25
-                    for(let q of this.quads){
+                    for (let q of this.quads) {
                         q.alphas = [1, 1, 1, 1, 1, 1];
                     }
                 } else {
@@ -240,8 +246,8 @@ export default class DataQuad{
     getIntersect(_x, _y, _z, _toX, _toY, _toZ) {
         // probe first tri of quad
         let tri = [
-            [this.points[0].x + this.pos.x, this.points[0].y + this.pos.y, this.points[0].z + this.pos.z], 
-            [this.points[1].x + this.pos.x, this.points[1].y + this.pos.y, this.points[1].z + this.pos.z], 
+            [this.points[0].x + this.pos.x, this.points[0].y + this.pos.y, this.points[0].z + this.pos.z],
+            [this.points[1].x + this.pos.x, this.points[1].y + this.pos.y, this.points[1].z + this.pos.z],
             [this.points[2].x + this.pos.x, this.points[2].y + this.pos.y, this.points[2].z + this.pos.z],
         ];
         let pt = [_x, _y, _z];
@@ -268,23 +274,23 @@ export default class DataQuad{
         return null;
     }
 
-    clearQuads(){
+    clearQuads() {
         this.mipmapped = false;
-        for(let i = this.quads.length-1 ; i >= 0 ; i--){
+        for (let i = this.quads.length - 1; i >= 0; i--) {
             this.quads[i].destroy();
         }
         this.quads = [];
     }
 
-    createQuad(){
+    createQuad() {
         this.quads.push(this.scene.add.quad(0, 0, this.texture));
         //console.log(this.quads[0].uv);
     }
 
-    mipmapQuad(){
+    mipmapQuad() {
         this.calculateHelpPoints();
 
-        if(this.mipmapped === false){
+        if (this.mipmapped === false) {
             this.mipmapped = true;
 
             this.quads.push(this.scene.add.quad(0, 0, this.texture));
@@ -298,8 +304,8 @@ export default class DataQuad{
         }
     }
 
-    unmipmapQuad(){
-        if(this.mipmapped === true){
+    unmipmapQuad() {
+        if (this.mipmapped === true) {
             this.mipmapped = false;
 
             this.clearQuads();
@@ -309,7 +315,7 @@ export default class DataQuad{
         }
     }
 
-    calculateHelpPoints(){
+    calculateHelpPoints() {
         this.sc01.x = (this.screenCoords[0].x + this.screenCoords[1].x) * 0.5;
         this.sc01.y = (this.screenCoords[0].y + this.screenCoords[1].y) * 0.5;
         this.sc03.x = (this.screenCoords[0].x + this.screenCoords[3].x) * 0.5;
@@ -322,7 +328,7 @@ export default class DataQuad{
         this.scM.y = (this.sc03.y + this.sc12.y) * 0.5;
     }
 
-    recalculatePosition(){
+    recalculatePosition() {
         /*
         //TODO rework this - this doesnt calculate the mdipoint of the quad
         this.pos = {
@@ -332,14 +338,14 @@ export default class DataQuad{
         };*/
     }
 
-    cyclePoints(_cw){
-        if(_cw === true){
+    cyclePoints(_cw) {
+        if (_cw === true) {
             let help = {
                 x: this.points[0].x,
                 y: this.points[0].y,
                 z: this.points[0].z
             }
-            for(let i = 0 ; i < 3 ; i++){
+            for (let i = 0; i < 3; i++) {
                 this.points[i].x = this.points[i + 1].x;
                 this.points[i].y = this.points[i + 1].y;
                 this.points[i].z = this.points[i + 1].z;
@@ -347,7 +353,7 @@ export default class DataQuad{
             this.points[3].x = help.x;
             this.points[3].y = help.y;
             this.points[3].z = help.z;
-        }else{
+        } else {
             let help = {
                 x: this.points[3].x,
                 y: this.points[3].y,
@@ -364,14 +370,19 @@ export default class DataQuad{
         }
     }
 
-    setTexture(_tex){
+    setTexture(_tex) {
         this.texture = _tex;
-        for(let q of this.quads){
+        for (let q of this.quads) {
+            let saveUv = [];
+            for (let c of q.uv) {
+                saveUv.push(c);
+            }
             q.setTexture(this.texture, this.frame);
+            q.uv = saveUv;
         }
     }
 
-    destroy(){
+    destroy() {
         this.clearQuads();
     }
 }
