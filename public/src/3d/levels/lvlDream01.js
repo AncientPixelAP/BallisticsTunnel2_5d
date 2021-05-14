@@ -8,7 +8,6 @@ export default class LevelDream01{
         this.tunnelMovingSpd = -8;
 
         this.state = 0;
-        this.renderAreas = [];
 
         this.objects = [];
         /*this.objects.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
@@ -16,33 +15,59 @@ export default class LevelDream01{
             y: 0,
             z: 0
         }));*/
+        //player starts on this platform
         this.model = this.scene.geometryController.loadModel("MetroPlatform", "modMetroPlatformToHallway", {
             x: 0,
             y: 0,
             z: 0
         });
+        this.model.flags.draw = true;
         this.model1 = this.scene.geometryController.loadModel("MetroPlatform", "modMetroPlatform", {
             x: 0,
             y: 0,
             z: 416
         });
+        this.model1.flags.draw = true;
         this.stairs = this.scene.geometryController.loadModel("modMetroPlatform01", "modMetroPlatform01", {
             x: 0,
             y: 0,
             z: 832
         });
+        this.stairs.flags.draw = true;
 
         this.tunnelEntry = this.scene.geometryController.loadModel("Tunnel Entry", "modMetroTunnelEntry", {
             x: -68,
             y: 0,
             z: -160
         });
+        this.tunnelEntry.flags.draw = true;
         this.exitTunnels = [];
         for (let i = 0; i < 4; i++) {
             this.exitTunnels.push(this.scene.geometryController.loadModel("MetroTunnel", "modMetroTunnel", {
                 x: -68,
                 y: 0,
                 z: -288 - (128 * i)
+            }));
+            //this.exitTunnels[this.exitTunnels.length-1].flags.draw = true;
+        }
+
+        this.trainMoving = [];
+        for (let i = -1; i < 3; i++) {
+            this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriageOutside", "modMetroCarriageOutside", {
+                x: -68,
+                y: 0,
+                z: i * 300
+            }));
+            this.trainMoving[this.trainMoving.length - 1].flags.draw = true;
+        }
+
+        //tunnel block off
+        this.blockedTunnel = []
+        for (let i = 0; i < 4; i++) {
+            this.blockedTunnel.push(this.scene.geometryController.loadModel("blocked Tunnel " + String(i), "modMetroTunnel", {
+                x: -68,
+                y: 0,
+                z: 800 + (128 * i)
             }));
         }
 
@@ -52,11 +77,13 @@ export default class LevelDream01{
             y: 0,
             z: 0
         });
+        this.hallwayT.flags.draw = true;
         this.otherPlatform = this.scene.geometryController.loadModel("other MetroPlatform", "modMetroPlatformToHallway", {
             x: 256,
             y: 0,
             z: 8
         });
+        this.otherPlatform.flags.draw = true;
         this.otherPlatform.translateAndRotate({
             x: 0,
             y: 0,
@@ -71,6 +98,7 @@ export default class LevelDream01{
             y: 0,
             z: 168
         });
+        this.otherTunnelEntry.flags.draw = true;
         this.otherTunnelEntry.translateAndRotate({
             x: 0,
             y: 0,
@@ -85,6 +113,7 @@ export default class LevelDream01{
             y: 0,
             z: -236
         });
+        this.stairsT.flags.draw = true;
         this.stairsT.translateAndRotate({
             x: 0,
             y: 0,
@@ -101,26 +130,7 @@ export default class LevelDream01{
             y: -48,
             z: 1024
         });
-
-        this.trainMoving = [];
-        for(let i = -1 ; i < 3 ; i++){
-            this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
-                x: -68,
-                y: 0,
-                z: i * 300
-            }));
-        }
-
-        
-        //tunnel block off
-        this.blockedTunnel = []
-        for (let i = 0; i < 4; i++) {
-            this.blockedTunnel.push(this.scene.geometryController.loadModel("blocked Tunnel "+String(i), "modMetroTunnel", {
-                x: -68,
-                y: 0,
-                z: 800 + (128 * i)
-            }));
-        }
+        this.stairTrainTransition.flags.draw = true;
 
         this.trainEnd = this.scene.geometryController.loadModel("Tunnel Block Train", "modMetroCarriageEnd", {
             x: -100,
@@ -210,6 +220,36 @@ export default class LevelDream01{
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             this.scene.loadLevel("hangar00");
         }
+
+        //TRIGGERS
+        this.barbara.flags.draw = true;
+        this.beggar.flags.draw = true;
+        this.model.flags.draw = true;
+        this.model1.flags.draw = true;
+
+        this.initTrigger = this.scene.geometryController.loadModel("doorTrigger", "modTrigger64x64", {
+            x: -32,
+            y: 0,
+            z: 836
+        });
+        this.initTrigger.trigger.isTrigger = true;
+        this.initTrigger.trigger.onEnter = () => {
+            
+        }
+        this.initTrigger.trigger.onExit = () => {
+            
+        }
+
+        /*this.levelTrigger = this.scene.geometryController.loadModel("levelTrigger", "modTrigger64x64", {
+            x: -32,
+            y: 0,
+            z: 1100
+        });
+        this.levelTrigger.trigger.isTrigger = true;
+        this.levelTrigger.trigger.onEnter = () => {
+            this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            this.scene.loadLevel("hangar00");
+        }*/
 
     }
 

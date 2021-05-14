@@ -106,6 +106,14 @@ export default class LevelHangar00{
             z: 196
         });
         this.engineer.setDrawMode(DRAWMODE.BILLBOARD);
+
+        //TRIGGER
+        this.engineer.flags.draw = true;
+        this.ship.flags.draw = true;
+        this.ship.flags.draw = true;
+        for(let o of this.objects){
+            o.flags.draw = true;
+        }
     }
 
     update(){

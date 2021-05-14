@@ -131,7 +131,7 @@ export default class Model {
             this.trigger.onExit();
         }
 
-        //clear quads and stop drawing if not in view but have been previously
+        //clear quads and stop drawing if draw has been set to false in the meantime (eg out of view (set int geometry controller))
         if (this.flags.drawn === true && this.flags.draw === false) {
             this.flags.drawn = false;
             for (let q of this.quadData) {

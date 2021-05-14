@@ -8,7 +8,7 @@ export default class GeometryController{
         this.geometry = [];
         this.models = [];
         this.collisionDistance = 128;
-        this.drawDistance = 1536;
+        this.drawDistance = 256;
     }
 
     update(_collCheckArr){
@@ -32,10 +32,11 @@ export default class GeometryController{
 
     draw(_from, _dir){
         for(let m of this.models){
-            m.flags.draw = false;
+            //m.flags.draw = false;
             //if (Phaser.Math.Distance.Between(m.pos.x, m.pos.z, this.scene.player.pos.x, this.scene.player.pos.z) < this.drawDistance) {
+            if(m.flags.draw === true){
                 m.draw(_from, _dir);
-            //}
+            }
         }
     }
 
