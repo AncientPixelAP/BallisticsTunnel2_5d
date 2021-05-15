@@ -71,6 +71,8 @@ export class Player3d{
             this.pos.to.jump = false;
         }
 
+        this.dir.yaw = normAngle(this.dir.yaw);
+
         /*//footsteps
         if (eud.distance([this.pos.x, this.pos.y, this.pos.z], [this.pos.last.x, this.pos.last.y, this.pos.last.z]) > 48) {
             this.travelLength += 48;

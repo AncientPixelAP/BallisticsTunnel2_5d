@@ -78,7 +78,8 @@ export default class Model {
 
         this.flags = {
             draw: false,
-            drawn: false
+            drawn: false,
+            update: true
         }
     }
 
@@ -182,6 +183,23 @@ export default class Model {
             q.pos.x += _offset.x;
             q.pos.y += _offset.y;
             q.pos.z += _offset.z;
+        }
+    }
+
+    scale(_scale){
+        for (let q of this.quadData) {
+            for (let [i, p] of q.points.entries()) {
+                p.x *= _scale.x;
+                p.y *= _scale.y;
+                p.z *= _scale.z;
+            }
+        }
+        for (let q of this.collisionData) {
+            for (let [i, p] of q.points.entries()) {
+                p.x *= _scale.x;
+                p.y *= _scale.y;
+                p.z *= _scale.z;
+            }
         }
     }
 

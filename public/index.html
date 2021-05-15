@@ -57,6 +57,17 @@
             return d;
         }
 
+        function normAngle(_val){
+            let v = _val;
+            while(v > Math.PI){
+                v -= Math.PI * 2;
+            }
+            while(v < Math.PI * -1){
+                v += Math.PI * 2;
+            }
+            return v;
+        }
+
         function zeroPad(_num, _pad){
             let str = String(_num);
             for(let i = str.length ; i < _pad ; i++){

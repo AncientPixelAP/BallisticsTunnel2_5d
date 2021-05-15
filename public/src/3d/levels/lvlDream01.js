@@ -42,21 +42,21 @@ export default class LevelDream01{
         });
         this.tunnelEntry.flags.draw = true;
         this.exitTunnels = [];
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 8; i++) {
             this.exitTunnels.push(this.scene.geometryController.loadModel("MetroTunnel", "modMetroTunnel", {
                 x: -68,
                 y: 0,
                 z: -288 - (128 * i)
             }));
-            //this.exitTunnels[this.exitTunnels.length-1].flags.draw = true;
+            this.exitTunnels[this.exitTunnels.length-1].flags.draw = true;
         }
 
         this.trainMoving = [];
-        for (let i = -1; i < 3; i++) {
+        for (let i = -1; i < 4; i++) {
             this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriageOutside", "modMetroCarriageOutside", {
                 x: -68,
                 y: 0,
-                z: i * 300
+                z: -300 + (i * 300)
             }));
             this.trainMoving[this.trainMoving.length - 1].flags.draw = true;
         }
@@ -169,6 +169,8 @@ export default class LevelDream01{
         this.trainControls.interact = () => {
             //this.scene.player.setMode(PLAYERMODE.INTERACT);
             //this.scene.player.panel = new PanelElevator(this.scene);
+            this.trainEnd.flags.draw = true;
+
             this.trainMovingSpd = 0;
             this.tunnelMovingSpd = 0;
 
@@ -227,17 +229,98 @@ export default class LevelDream01{
         this.model.flags.draw = true;
         this.model1.flags.draw = true;
 
-        this.initTrigger = this.scene.geometryController.loadModel("doorTrigger", "modTrigger64x64", {
-            x: -32,
+
+
+        this.triggerInit = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+            x: 0,
             y: 0,
-            z: 836
+            z: 64
         });
-        this.initTrigger.trigger.isTrigger = true;
-        this.initTrigger.trigger.onEnter = () => {
-            
+        this.triggerInit.scale({x: 36, y: 32, z: 1})
+        this.triggerInit.trigger.isTrigger = true;
+        this.triggerInit.trigger.onEnter = () => {
+            this.otherPlatform.flags.draw = !this.otherPlatform.flags.draw;
+            this.otherTunnelEntry.flags.draw = !this.otherTunnelEntry.flags.draw;
+            this.stairsT.flags.draw = !this.stairsT.flags.draw;
         }
-        this.initTrigger.trigger.onExit = () => {
-            
+        this.triggerInit.flags.draw = true;
+
+
+
+        this.triggerStairsBottom = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+            x: 0,
+            y: 0,
+            z: 768
+        });
+        this.triggerStairsBottom.scale({x: 36, y: 32, z: 1})
+        this.triggerStairsBottom.trigger.isTrigger = true;
+        this.triggerStairsBottom.trigger.onEnter = () => {
+            for(let t of this.tunnelMoving){
+                t.flags.draw = !t.flags.draw;
+            }
+            for(let s of this.trainStationary){
+                s.flags.draw = !s.flags.draw;
+            }
+            this.trainControls.flags.draw = !this.trainControls.flags.draw;
+        }
+
+
+        this.triggerStairsTop = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+            x: 0,
+            y: -48,
+            z: 1243
+        });
+        this.triggerStairsTop.scale({ x: 36, y: 32, z: 1 })
+        this.triggerStairsTop.trigger.isTrigger = true;
+        this.triggerStairsTop.trigger.onEnter = () => {
+            this.model.flags.draw = !this.model.flags.draw;
+            this.model1.flags.draw = !this.model1.flags.draw;
+            for(let t of this.trainMoving){
+                t.flags.draw = !t.flags.draw;
+            }
+            this.hallwayT.flags.draw = !this.hallwayT.flags.draw;
+            this.tunnelEntry.flags.draw = !this.tunnelEntry.flags.draw;
+            for(let t of this.exitTunnels){
+                t.flags.draw = !t.flags.draw;
+            }
+        }
+
+        this.triggerTrainRun = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+            x: -82,
+            y: 16,
+            z: -208
+        });
+        this.triggerTrainRun.flags.draw = true;
+        this.triggerTrainRun.scale({ x: 36, y: 32, z: 4 })
+        this.triggerTrainRun.trigger.isTrigger = true;
+        this.triggerTrainRun.trigger.onEnter = () => {
+            if(this.state === 0){
+                this.state = 1;
+            }
+        }
+        this.triggerTrainRun.trigger.onOverlap = () => {
+            if (this.scene.player.dir.yaw > Math.PI * 0.5 || this.scene.player.dir.yaw < Math.PI * -0.5) {
+                this.triggerTrainRun.translateAndRotate({ x: 0, y: 0, z: -64 }, { yaw: 0, pitch: 0, roll: 0 });
+                if(this.triggerTrainRun.pos.z < -464){
+                    this.trainEnd.translateAndRotate({ x: 0, y: 0, z: 256 }, { yaw: 0, pitch: 0, roll: 0 });
+                    this.triggerTrainRun.translateAndRotate({ x: 0, y: 0, z: 256 }, { yaw: 0, pitch: 0, roll: 0 });
+                    this.scene.player.jumpToPosition({x: this.scene.player.pos.x, y: this.scene.player.pos.y, z: this.scene.player.pos.z + 256});
+                }
+            }
+        }
+
+
+
+        this.triggerWood = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+            x: -82,
+            y: 16,
+            z: 1188
+        });
+        this.triggerWood.flags.draw = true;
+        this.triggerWood.scale({ x: 36, y: 32, z: 8 })
+        this.triggerWood.trigger.isTrigger = true;
+        this.triggerWood.trigger.onEnter = () => {
+            this.state = 2;
         }
 
         /*this.levelTrigger = this.scene.geometryController.loadModel("levelTrigger", "modTrigger64x64", {
@@ -259,7 +342,7 @@ export default class LevelDream01{
                 for(let t of this.trainMoving){
                     t.translateAndRotate({x: 0, y: 0, z: this.trainMovingSpd}, {yaw: 0, pitch: 0, roll: 0});
                 }
-                if(this.trainMoving[0].pos.z >= 0){
+                if(this.trainMoving[0].pos.z >= -300){
                     for(let t of this.trainMoving){
                         t.translateAndRotate({x: 0, y: 0, z: -300}, {yaw: 0, pitch: 0, roll: 0});
                     }
@@ -276,6 +359,10 @@ export default class LevelDream01{
                 }
             break;
             case 1:
+                this.trainEnd.translateAndRotate({ x: 0, y: 0, z: this.trainEnd.pos.z - this.triggerTrainRun.pos.z > 128 ? -4 : 0 }, { yaw: 0, pitch: 0, roll: 0});
+            break;
+            case 2:
+                //wood turing in onto the player
             break;
             default:
             break;

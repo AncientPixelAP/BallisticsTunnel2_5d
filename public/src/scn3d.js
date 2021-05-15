@@ -179,7 +179,7 @@ export default class Scn3d extends Phaser.Scene {
                     }
                     //log the playre  position as a helper for manual object positioning in level files
                     if(this.keys.q.isDown){
-                        console.log(this.player.pos);
+                        console.log({playerPos: this.player.pos, playerDir: this.player.dir});
                     }
                 }
             }
