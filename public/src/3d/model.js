@@ -153,9 +153,13 @@ export default class Model {
                 let ny = outXZ[1];
                 let nz = outXZ[2];
                 let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.pitch);
-                p.x = outYZ[0];
-                p.y = outYZ[1];
-                p.z = outYZ[2];
+                nx = outYZ[0];
+                ny = outYZ[1];
+                nz = outYZ[2];
+                let outXY = rti.rotateZ([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.roll);
+                p.x = outXY[0];
+                p.y = outXY[1];
+                p.z = outXY[2];
             }
         }
         for (let q of this.collisionData) {
@@ -165,9 +169,13 @@ export default class Model {
                 let ny = outXZ[1];
                 let nz = outXZ[2];
                 let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.pitch);
-                p.x = outYZ[0];
-                p.y = outYZ[1];
-                p.z = outYZ[2];
+                nx = outYZ[0];
+                ny = outYZ[1];
+                nz = outYZ[2];
+                let outXY = rti.rotateZ([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.roll);
+                p.x = outXY[0];
+                p.y = outXY[1];
+                p.z = outXY[2];
             }
         }
         //translate

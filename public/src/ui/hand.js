@@ -30,7 +30,8 @@ export default class Hand{
             y: 0
         }
 
-        this.scene.input.activePointer.smoothFactor = 0.2;
+        //is set in game config, but maybe needs to be reset by a player in the options
+        //this.scene.input.activePointer.smoothFactor = 0.2;
     }
 
     update(){
