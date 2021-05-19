@@ -17,6 +17,7 @@ export default class GeometryController{
                 m.update();
 
                 //if (Phaser.Math.Distance.Between(m.pos.x, m.pos.z, this.scene.player.pos.x, this.scene.player.pos.z) < this.collisionDistance) {
+                if(m.flags.collision === true){
                     for (let q of m.collisionData){
                         for(let c of _collCheckArr){
                             let hitData = this.collide(q, c);
@@ -26,6 +27,7 @@ export default class GeometryController{
                             }
                         }
                     }
+                }
                 //}
             }
         }

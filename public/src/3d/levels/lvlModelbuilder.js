@@ -8,14 +8,14 @@ export default class LevelModelbuilder{
             z: 0
         });*/
 
-        /*this.ref = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriageOutside", {
+        this.ref = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriageEnd", {
             x: 0,
             y: 0,
             z: 0
         });
-        this.ref.flags.draw = true;*/
+        this.ref.flags.draw = true;
 
-        this.ships = [];
+        /*this.ships = [];
         this.ships.push(this.scene.geometryController.loadModel("Ship A", "modShipHamptonAegis", {
             x: 0,
             y: 0,
@@ -39,7 +39,7 @@ export default class LevelModelbuilder{
         
         for(let s of this.ships){
             s.flag.draw = true;
-        }
+        }*/
     }
 
     update(){

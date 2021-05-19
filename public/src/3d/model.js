@@ -79,7 +79,8 @@ export default class Model {
         this.flags = {
             draw: false,
             drawn: false,
-            update: true
+            update: true,
+            collision: true
         }
     }
 
@@ -141,8 +142,24 @@ export default class Model {
         }
     }
 
-    translateAndRotate(_offset, _dir) {
-        // roates
+    translateAndRotate(_offset, _dir = { yaw: 0, pitch: 0, roll: 0 }, _p = {x: 0, y: 0, z: 0}) {
+        // rotates all points of the model quads around a pivot[_p] << todo
+
+        //translate to pivot
+        /*this.pos.x += _p.x;
+        this.pos.y += _p.y;
+        this.pos.z += _p.z;
+        for (let q of this.quadData) {
+            q.pos.x += _p.x;
+            q.pos.y += _p.y;
+            q.pos.z += _p.z;
+        }
+        for (let q of this.collisionData) {
+            q.pos.x += _p.x;
+            q.pos.y += _p.y;
+            q.pos.z += _p.z;
+        }*/
+
         this.dir.yaw += _dir.yaw;
         this.dir.pitch += _dir.pitch;
         this.dir.roll += _dir.roll;
@@ -432,5 +449,7 @@ export default class Model {
             this.collisionData[i].destroy();
             this.collisionData.splice(i, 1);
         }
+        this.debug.collisionGraphics.clear();
+        this.debug.collisionGraphics.destroy();
     }
 }

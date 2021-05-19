@@ -43,7 +43,7 @@ export default class LevelDream01{
         this.tunnelEntry.flags.draw = true;
         this.exitTunnels = [];
         for (let i = 0; i < 8; i++) {
-            this.exitTunnels.push(this.scene.geometryController.loadModel("MetroTunnel", "modMetroTunnel", {
+            this.exitTunnels.push(this.scene.geometryController.loadModel("MetroTunnel"+String(i), "modMetroTunnel", {
                 x: -68,
                 y: 0,
                 z: -288 - (128 * i)
@@ -53,13 +53,28 @@ export default class LevelDream01{
 
         this.trainMoving = [];
         for (let i = -1; i < 4; i++) {
-            this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriageOutside", "modMetroCarriageOutside", {
+            this.trainMoving.push(this.scene.geometryController.loadModel("MetroCarriageOutside"+String(i+1), "modMetroCarriageOutside", {
                 x: -68,
                 y: 0,
                 z: -300 + (i * 300)
             }));
             this.trainMoving[this.trainMoving.length - 1].flags.draw = true;
         }
+        this.trainMoving.push(this.scene.geometryController.loadModel("Tunnel Block Train", "modMetroCarriageEnd", {
+            x: -100,
+            y: 0,
+            z: -600
+        }));
+        this.trainMoving[this.trainMoving.length-1].translateAndRotate({
+            x: 0,
+            y: 0,
+            z: 0
+        }, {
+            yaw: Math.PI,
+            pitch: 0,
+            roll: 0
+        });
+        this.trainMoving[this.trainMoving.length - 1].flags.draw = true;
 
         //tunnel block off
         this.blockedTunnel = []
@@ -69,6 +84,7 @@ export default class LevelDream01{
                 y: 0,
                 z: 800 + (128 * i)
             }));
+            this.blockedTunnel[i].flags.draw = true;
         }
 
         //T crossing as entry with st barbara
@@ -132,21 +148,6 @@ export default class LevelDream01{
         });
         this.stairTrainTransition.flags.draw = true;
 
-        this.trainEnd = this.scene.geometryController.loadModel("Tunnel Block Train", "modMetroCarriageEnd", {
-            x: -100,
-            y: 0,
-            z: 800
-        });
-        this.trainEnd.translateAndRotate({
-            x: 0,
-            y: 0,
-            z: 0
-        }, {
-            yaw: Math.PI,
-            pitch: 0,
-            roll: 0
-        });
-
         this.trainStationary = [];
         for(let i = 0 ; i < 3 ; i++){
             this.trainStationary.push(this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriage", {
@@ -169,21 +170,24 @@ export default class LevelDream01{
         this.trainControls.interact = () => {
             //this.scene.player.setMode(PLAYERMODE.INTERACT);
             //this.scene.player.panel = new PanelElevator(this.scene);
-            this.trainEnd.flags.draw = true;
 
-            this.trainMovingSpd = 0;
-            this.tunnelMovingSpd = 0;
+            if (this.trainMovingSpd !== 0){
+                this.trainMovingSpd = 0;
+                this.tunnelMovingSpd = 0;
 
-            for (let t of this.trainMoving){
-                t.translateAndRotate({
-                    x: -128,
-                    y: 0,
-                    z: 0
-                }, {
-                    yaw: 0,
-                    pitch: 0,
-                    roll: 0
-                });
+                //shorten the train in the middle
+                this.scene.geometryController.destroyModelById("MetroCarriageOutside1");
+                this.scene.geometryController.destroyModelById("MetroCarriageOutside2");
+                this.scene.geometryController.destroyModelById("MetroCarriageOutside3");
+                this.trainMoving.splice(1, 3);
+
+                //move the train out of the way, so that the player can jump off the platform
+                this.trainMoving[0].jumpToPosition({ x: this.trainMoving[0].pos.x, y: 0, z: 800})
+                for (let[i,t] of this.trainMoving.entries()){
+                    t.jumpToPosition({x: t.pos.x, y: t.pos.y, z: this.trainMoving[0].pos.z + (i * 300)})
+                }
+                //move train end back in front of train[0]
+                this.trainMoving[this.trainMoving.length - 1].jumpToPosition({ x: this.trainMoving[this.trainMoving.length-1].pos.x, y: this.trainMoving[0].pos.y, z: this.trainMoving[0].pos.z - 112})
             }
         }
 
@@ -195,6 +199,9 @@ export default class LevelDream01{
                 z: 1024 + (128*i)
             }));
         }
+
+        this.ships = [];
+
 
         //CHARACTERS
         this.beggar = this.scene.geometryController.loadModel("John Hobo", "modCharacterBeggar", {
@@ -261,6 +268,9 @@ export default class LevelDream01{
             for(let s of this.trainStationary){
                 s.flags.draw = !s.flags.draw;
             }
+            for (let b of this.blockedTunnel){
+                b.flags.draw = !b.flags.draw;
+            }
             this.trainControls.flags.draw = !this.trainControls.flags.draw;
         }
 
@@ -302,25 +312,77 @@ export default class LevelDream01{
             if (this.scene.player.dir.yaw > Math.PI * 0.5 || this.scene.player.dir.yaw < Math.PI * -0.5) {
                 this.triggerTrainRun.translateAndRotate({ x: 0, y: 0, z: -64 }, { yaw: 0, pitch: 0, roll: 0 });
                 if(this.triggerTrainRun.pos.z < -464){
-                    this.trainEnd.translateAndRotate({ x: 0, y: 0, z: 256 }, { yaw: 0, pitch: 0, roll: 0 });
+                    //this.trainEnd.translateAndRotate({ x: 0, y: 0, z: 256 }, { yaw: 0, pitch: 0, roll: 0 });
+                    for(let t of this.trainMoving){
+                        t.translateAndRotate({ x: 0, y: 0, z: 256 }, { yaw: 0, pitch: 0, roll: 0 });
+                    }
                     this.triggerTrainRun.translateAndRotate({ x: 0, y: 0, z: 256 }, { yaw: 0, pitch: 0, roll: 0 });
                     this.scene.player.jumpToPosition({x: this.scene.player.pos.x, y: this.scene.player.pos.y, z: this.scene.player.pos.z + 256});
                 }
             }
         }
 
-
-
-        this.triggerWood = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+        this.triggerShips = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
             x: -82,
             y: 16,
-            z: 1188
+            z: -800
         });
-        this.triggerWood.flags.draw = true;
-        this.triggerWood.scale({ x: 36, y: 32, z: 8 })
-        this.triggerWood.trigger.isTrigger = true;
-        this.triggerWood.trigger.onEnter = () => {
+        this.triggerShips.flags.draw = true;
+        this.triggerShips.scale({ x: 36, y: 32, z: 8 })
+        this.triggerShips.trigger.isTrigger = true;
+        this.triggerShips.trigger.onEnter = () => {
+            if(this.state !== 2){
+                this.state = 2;
+
+                //add ships that rush down the tunnel
+                this.ships.push(this.scene.geometryController.loadModel("Ship A", "modShipHamptonAegis", {
+                    x: -82,
+                    y: 16,
+                    z: -1200
+                }));
+                this.ships[0].data = {
+                    pivot: {
+                        x: -82,
+                        y: -24,
+                        z: -1200
+                    },
+                    radius: 40,
+                    angle: Math.PI * 0.5
+                }
+                this.ships[0].flags.draw = true;
+                this.ships[0].flags.collision = false;
+                
+                this.ships.push(this.scene.geometryController.loadModel("Ship B", "modShipArashiDart", {
+                    x: -82,
+                    y: 16,
+                    z: -1300
+                }));
+                this.ships[1].data = {
+                    pivot: {
+                        x: -82,
+                        y: -24,
+                        z: -1300
+                    },
+                    radius: 48,
+                    angle: Math.PI * -0.5
+                }
+                this.ships[1].flags.draw = true;
+                this.ships[1].flags.collision = false;
+                this.ships[1].translateAndRotate({ x: 0, y: 0, z: 0 }, { yaw: 0, pitch: 0, roll: Math.PI });
+            }
+        }
+
+        this.triggerForest = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+            x: -82,
+            y: 16,
+            z: -1188
+        });
+        this.triggerForest.flags.draw = true;
+        this.triggerForest.scale({ x: 36, y: 32, z: 8 })
+        this.triggerForest.trigger.isTrigger = true;
+        this.triggerForest.trigger.onEnter = () => {
             this.state = 2;
+            console.log("trigger forest section")
         }
 
         /*this.levelTrigger = this.scene.geometryController.loadModel("levelTrigger", "modTrigger64x64", {
@@ -342,13 +404,14 @@ export default class LevelDream01{
                 for(let t of this.trainMoving){
                     t.translateAndRotate({x: 0, y: 0, z: this.trainMovingSpd}, {yaw: 0, pitch: 0, roll: 0});
                 }
-                if(this.trainMoving[0].pos.z >= -300){
-                    for(let t of this.trainMoving){
-                        t.translateAndRotate({x: 0, y: 0, z: -300}, {yaw: 0, pitch: 0, roll: 0});
+                if(this.trainMovingSpd != 0){
+                    if(this.trainMoving[0].pos.z >= -300){
+                        for(let t of this.trainMoving){
+                            t.translateAndRotate({x: 0, y: 0, z: -300}, {yaw: 0, pitch: 0, roll: 0});
+                        }
                     }
                 }
 
-                //TODO segemnet the level with triggers to skip unnecessary calculations
                 for (let t of this.tunnelMoving) {
                     t.translateAndRotate({ x: 0, y: 0, z: this.tunnelMovingSpd }, { yaw: 0, pitch: 0, roll: 0 });
                 }
@@ -359,10 +422,22 @@ export default class LevelDream01{
                 }
             break;
             case 1:
-                this.trainEnd.translateAndRotate({ x: 0, y: 0, z: this.trainEnd.pos.z - this.triggerTrainRun.pos.z > 128 ? -4 : 0 }, { yaw: 0, pitch: 0, roll: 0});
+                //this.trainEnd.translateAndRotate({ x: 0, y: 0, z: this.trainEnd.pos.z - this.triggerTrainRun.pos.z > 128 ? -4 : 0 }, { yaw: 0, pitch: 0, roll: 0});
+                for(let t of this.trainMoving){
+                    t.translateAndRotate({ x: 0, y: 0, z: this.trainMoving[0].pos.z - this.triggerTrainRun.pos.z > 256 ? -4 : 0 }, { yaw: 0, pitch: 0, roll: 0 });
+                }
             break;
             case 2:
-                //wood turing in onto the player
+                //ships rushing down the tunnel
+                //move and rotate ships
+                for (let s of this.ships) {
+                    s.data.angle += 0.01;
+                    s.translateAndRotate({ x: 0, y: 0, z: 0 }, { yaw: 0, pitch: 0, roll: 0.01 });
+                    s.jumpToPosition({ x: s.data.pivot.x + (Math.cos(s.data.angle) * s.data.radius), y: s.data.pivot.y + (Math.sin(s.data.angle) * s.data.radius), z: s.data.pivot.z });
+                }
+            break;
+            case 3:
+                //forest turnign in onto player
             break;
             default:
             break;
