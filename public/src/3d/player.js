@@ -1,3 +1,5 @@
+import ConversationManager from "../ui/conversation/conversationManager.js";
+
 export class Player3d{
     constructor(_scene) {
         this.scene = _scene;
@@ -61,6 +63,7 @@ export class Player3d{
 
         this.panel = null;
         this.conversation = null;
+        this.conversationManager = new ConversationManager(this.scene);
     }
 
     update(){

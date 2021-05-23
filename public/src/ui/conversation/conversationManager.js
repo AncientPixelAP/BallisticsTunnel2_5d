@@ -1,6 +1,19 @@
 export default class ConversationManager{
     constructor(_scene){
+        this.scene = _scene;
+        this.btnOptions = [];
+        this.npc = null;
+        this.npcSprite = null;
+        this.npcText = this.scene.add.bitmapText(0, (this.scene.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
+        this.conversation = {
+            file: null,
+            treePosition: 0,
+            speakingTo: {
+                name: ""
+            }
+        }
 
+        //this.npcText.setText("");
     }
     
     createOptions(_elem) {
@@ -31,12 +44,6 @@ export default class ConversationManager{
                     data: a,
                     btn: new ListButton(this.scene, { x: this.pos.x - 150, y: this.pos.y - 8 + (i * 18) }, a.text, false, () => {
                         this.interpret(a.actions.split(" "));
-                        socket.emit("talkToNPC", {
-                            npcName: this.npcName,
-                            npcTreePosition: this.conversation.treePosition,
-                            playerId: this.scene.playerData.id,
-                            playerName: this.scene.playerData.name
-                        });
                     })
                 });
             }
@@ -72,20 +79,15 @@ export default class ConversationManager{
         }
         this.npcSprite = this.scene.add.sprite(this.pos.x - 142, this.pos.y - 85, elem.sprite);
 
-        if (_id === 0 && this.npc.conversation.speakingTo.id !== null) {
-            socket.emit("stopTalkToNPC", {
-                npcName: this.npc.name
-            })
-        }
         this.createOptions(elem);
     }
 
     replaceCheck(_str) {
-        if (this.npc !== null) {
+        /*if (this.npc !== null) {
             _str = _str.replace("PLAYERNAME", this.npc.conversation.speakingTo.name !== null ? this.npc.conversation.speakingTo.name : this.scene.playerData.name);
         } else {
             _str = _str.replace("PLAYERNAME", this.scene.playerData.name);
-        }
+        }*/
         return _str;
     }
 
