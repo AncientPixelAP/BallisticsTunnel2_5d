@@ -1,10 +1,12 @@
+import ConversationOption from "./conversationOption.js"
+
 export default class ConversationManager{
     constructor(_scene){
         this.scene = _scene;
         this.btnOptions = [];
         this.npc = null;
         this.npcSprite = null;
-        this.npcText = this.scene.add.bitmapText(0, (this.scene.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
+        this.npcText = this.scene.add.bitmapText(0, -32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.conversation = {
             file: null,
             treePosition: 0,
@@ -14,6 +16,12 @@ export default class ConversationManager{
         }
 
         //this.npcText.setText("");
+    }
+
+    update(){
+        for (let b of this.btnOptions) {
+            b.btn.update();
+        }
     }
     
     createOptions(_elem) {
@@ -42,7 +50,7 @@ export default class ConversationManager{
             if (valid === true) {
                 this.btnOptions.push({
                     data: a,
-                    btn: new ListButton(this.scene, { x: this.pos.x - 150, y: this.pos.y - 8 + (i * 18) }, a.text, false, () => {
+                    btn: new ConversationOption(this.scene, { x: 0, y: (i * 18) }, a.text, () => {
                         this.interpret(a.actions.split(" "));
                     })
                 });
@@ -77,7 +85,9 @@ export default class ConversationManager{
         if (this.npcSprite !== null) {
             this.npcSprite.destroy();
         }
-        this.npcSprite = this.scene.add.sprite(this.pos.x - 142, this.pos.y - 85, elem.sprite);
+        if(elem.sprite !== undefined){
+            this.npcSprite = this.scene.add.sprite(-142, -85, elem.sprite);
+        }
 
         this.createOptions(elem);
     }
@@ -95,5 +105,16 @@ export default class ConversationManager{
         this.conversation.file = this.scene.cache.json.get(_fileName);
         this.conversation.treePosition = _startId;
         this.goto(_startId);
+    }
+
+    clearConversation(){
+        this.npcText.setText("");
+        for (let b of this.btnOptions) {
+            b.btn.destroy();
+        }
+        this.btnOptions = [];
+        if (this.npcSprite !== null) {
+            this.npcSprite.destroy();
+        }
     }
 }

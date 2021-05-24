@@ -212,8 +212,9 @@ export default class LevelDream01{
         this.beggar.setDrawMode(DRAWMODE.BILLBOARD);
         this.beggar.interactable = true;
         this.beggar.interact = () => {
-            this.scene.player.setMode(PLAYERMODE.INTERACT);
-            this.scene.player.panel = new PanelElevator(this.scene);
+            this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+            this.scene.player.conversationManager.setConversation("diaDreambeggar00", 0)
+            //this.scene.player.panel = new PanelElevator(this.scene);
         }
 
         this.barbara = this.scene.geometryController.loadModel("Saint Barbara", "modCharacterStBarbara", {

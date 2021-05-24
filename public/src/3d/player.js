@@ -97,6 +97,8 @@ export class Player3d{
         if (this.conversation !== null) {
             this.conversation.update();
         }
+
+        this.conversationManager.update();
     }
 
     jumpToPosition(_pos){
@@ -115,6 +117,9 @@ export class Player3d{
 
             break;
             case PLAYERMODE.INTERACT:
+                this.scene.hand.setMouseLock(false);
+            break;
+            case PLAYERMODE.DIALOGUE:
                 this.scene.hand.setMouseLock(false);
             break;
             default:
