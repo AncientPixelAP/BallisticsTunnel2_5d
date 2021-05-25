@@ -1,8 +1,9 @@
 {
     "title": "The Beggar´s Dream",
-    "cards": [{
+    "cards": [
+        {
             "id": 0,
-            "text": "Hast du einen Euro?",
+            "text": "Hey yo, young one...",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
@@ -10,25 +11,58 @@
                     "actions": "GOTO 1"
                 },
                 {
-                    "text": "Commander Circa sent me.",
-                    "actions": "GOTO 2",
-                    "showon": "SentByCmd"
+                    "text": "I´m not that young actually...",
+                    "actions": "GOTO 2"
+                },
+                {
+                    "text": "cancel",
+                    "actions": "EXIT"
                 }
             ]
         },{
-        "id": 1,
-        "text": "Ob du einen Euro hast?",
-        "sprite": "sprCharBeggar",
-        "answers": [
-            {
-                "text": "Sure.",
-                "actions": "GOTO 0",
-                "showon": "DreamHasCoin"
-            },
-            {
-                "text": "Nein, leider.",
-                "actions": "GOTO 0"
-            }
-        ]
-    }]
+            "id": 1,
+            "text": "Spare a coin?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Sure.",
+                    "actions": "GOTO 3",
+                    "checkFlag": "dreamcoin"
+                },
+                {
+                    "text": "Nope, sorry.",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 2,
+            "text": "Well, then maybe you have some money?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Sure.",
+                    "actions": "GOTO 3",
+                    "checkFlag": "dreamcoin"
+                },
+                {
+                    "text": "Nope, sorry.",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 3,
+            "text": "Thanks a lot mate!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Take care.",
+                    "actions": "EXIT"
+                },
+                {
+                    "text": "Yeah, yeah...",
+                    "actions": "EXIT"
+                }
+            ]
+        }
+    ]
 }

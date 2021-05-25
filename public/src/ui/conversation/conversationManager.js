@@ -36,16 +36,18 @@ export default class ConversationManager{
             if (a.checkFlag !== undefined) {
                 valid = false;
                 //todo check if flag is set
-                valid = true;
+                if (flagManager.getFlagById(a.checkFlag) !== null){
+                    valid = true;
+                }
             }
-            if (a.checkPlayerInventory !== undefined) {
+            /*if (a.checkPlayerInventory !== undefined) {
                 valid = false;
                 for (let i of this.scene.playerData.inventory) {
                     if (i.type === a.checkPlayerInventory.type && i.data.id === a.checkPlayerInventory.dataId) {
                         valid = true;
                     }
                 }
-            }
+            }*/
             //push conversation option
             if (valid === true) {
                 this.btnOptions.push({
@@ -64,10 +66,22 @@ export default class ConversationManager{
             case "GOTO":
                 this.goto(Number(arr[1]));
                 arr.splice(0, 2);
-                break;
+            break;
+            case "SETFILE":
+                arr.splice(0, 1);
+            break;
+            case "EXIT":
+                arr.splice(0, 1);
+                this.clearConversation();
+                this.scene.player.mode = PLAYERMODE.LOOK;
+            break;
+            case "SETFLAG":
+                flagManager.setFlag(arr[1], arr[2]);
+                arr.splice(0, 3);
+            break;
             default:
                 arr.splice(0, 1);
-                break;
+            break;
         }
         if (arr.length > 0) {
             this.interpret(arr);
@@ -86,7 +100,8 @@ export default class ConversationManager{
             this.npcSprite.destroy();
         }
         if(elem.sprite !== undefined){
-            this.npcSprite = this.scene.add.sprite(-142, -85, elem.sprite);
+            //TODO eventually adding a sprite for people who speak to you
+            //this.npcSprite = this.scene.add.sprite(-142, -85, elem.sprite);
         }
 
         this.createOptions(elem);

@@ -204,7 +204,7 @@ export default class LevelDream01{
 
 
         //CHARACTERS
-        this.beggar = this.scene.geometryController.loadModel("John Hobo", "modCharacterBeggar", {
+        this.beggar = this.scene.geometryController.loadModel("Old poor man", "modCharacterBeggar", {
             x: 16,
             y: 0,
             z: 144//76
@@ -213,8 +213,7 @@ export default class LevelDream01{
         this.beggar.interactable = true;
         this.beggar.interact = () => {
             this.scene.player.setMode(PLAYERMODE.DIALOGUE);
-            this.scene.player.conversationManager.setConversation("diaDreambeggar00", 0)
-            //this.scene.player.panel = new PanelElevator(this.scene);
+            this.scene.player.conversationManager.setConversation("diaDreamBeggar00", 0);
         }
 
         this.barbara = this.scene.geometryController.loadModel("Saint Barbara", "modCharacterStBarbara", {
@@ -225,10 +224,11 @@ export default class LevelDream01{
         this.barbara.setDrawMode(DRAWMODE.BILLBOARD);
         this.barbara.interactable = true;
         this.barbara.interact = () => {
-            //this.scene.player.setMode(PLAYERMODE.INTERACT);
-            //this.scene.player.panel = new PanelElevator(this.scene);
-            this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
-            this.scene.loadLevel("hangar00");
+            //this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            //this.scene.loadLevel("hangar00");
+
+            this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+            this.scene.player.conversationManager.setConversation("diaDreamBarbara00", 0);
         }
 
         //TRIGGERS

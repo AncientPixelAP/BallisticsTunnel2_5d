@@ -23,14 +23,14 @@ export default class ConversationOption{
 
         this.colorInState(this.state);
 
-        //let tb = this.txt.getTextBounds();
+        let tb = this.txt.getTextBounds();
         //console.log(tb);
+        this.rect = new Phaser.GameObjects.Rectangle(this.scene, tb.local.x, tb.local.y + this.txt.y, tb.local.width, tb.local.height);
     }
 
     update(){
-        let tb = this.txt.getTextBounds();
-        let rect = new Phaser.GameObjects.Rectangle(this.scene, tb.global.x, tb.global.y, tb.global.width, tb.global.height);
-        if(rect.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)){
+        
+        if(this.rect.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)){
             if(this.scene.hand.pressed === false){
                 if(this.active === false){
                     this.switchState(this.states.over);

@@ -8,13 +8,13 @@
             "answers": [
                 {
                     "text": "Take some.",
-                    "actions": "GOTO 1 SETFLAG dreamcoin"
+                    "actions": "GOTO 2 SETFLAG dreamcoin"
                 },{
                     "text": "Take all.",
                     "actions": "GOTO 1 SETFLAG dreamcoin"
                 },{
                     "text": "Leave.",
-                    "actions": "GOTO -1"
+                    "actions": "EXIT"
                 }
             ]
         },{
@@ -24,11 +24,11 @@
                 {
                     "text": "Put the coins back.",
                     "actions": "GOTO 0",
-                    "showon": "dreamcoin"
+                    "checkFlag": "dreamcoin"
                 },
                 {
                     "text": "Leave.",
-                    "actions": "GOTO -1"
+                    "actions": "EXIT"
                 }
             ]
         },{
@@ -38,14 +38,14 @@
                 {
                     "text": "Put the coins back.",
                     "actions": "GOTO 0",
-                    "showon": "dreamcoin"
+                    "checkFlag": "dreamcoin"
                 },{
                     "text": "Get the rest of the coins.",
                     "actions": "GOTO 1",
-                    "showon": "dreamcoin"
+                    "checkFlag": "dreamcoin"
                 },{
                     "text": "Leave.",
-                    "actions": "GOTO -1"
+                    "actions": "EXIT"
                 }
             ]
         }
