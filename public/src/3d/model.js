@@ -16,6 +16,11 @@ export default class Model {
             pitch: 0,
             roll: 0
         }
+        this.lookDir = {
+            yaw: 0,
+            pitch: 0,
+            roll: 0
+        }
 
         this.trigger = {
             isTrigger: false,
@@ -80,7 +85,8 @@ export default class Model {
             draw: false,
             drawn: false,
             update: true,
-            collision: true
+            collision: true,
+            is8way: false
         }
     }
 
@@ -245,6 +251,12 @@ export default class Model {
     }
 
     setDrawMode(_mode) {
+        /*
+            D3D: 0,
+            D2D: 1,
+            NOSCALE2D: 2,
+            BILLBOARD: 3
+        */
         this.debug.mode = _mode;
         /*if(this.debug.mode === DRAWMODE.D2D){
             for(let q of this.quadData){
@@ -265,6 +277,13 @@ export default class Model {
                 q.calculate3d(_from, _dir, false);
                 q.drawNo3d(_from, _dir, true);
             } else if (this.debug.mode === DRAWMODE.BILLBOARD) {
+                //set image data according to own and camera direction
+                if(this.flags.is8way === true){
+                    let nDir = normAngle(this.lookDir.yaw - _dir.yaw);
+                    q.frame = Math.floor((nDir / Math.PI) * 4) + 4;
+                    q.setTexture(q.texture, q.frame, false);
+                }
+                //rotate all quads facing the camera
                 this.translateAndRotate({
                     x: 0,
                     y: 0,

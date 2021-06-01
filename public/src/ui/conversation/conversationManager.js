@@ -6,7 +6,7 @@ export default class ConversationManager{
         this.btnOptions = [];
         this.npc = null;
         this.npcSprite = null;
-        this.npcText = this.scene.add.bitmapText(0, -32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
+        this.npcText = this.scene.add.bitmapText(0, -32, "pixelmix", "", 8, 1).setOrigin(0.5);
         this.conversation = {
             file: null,
             treePosition: 0,
@@ -14,8 +14,6 @@ export default class ConversationManager{
                 name: ""
             }
         }
-
-        //this.npcText.setText("");
     }
 
     update(){

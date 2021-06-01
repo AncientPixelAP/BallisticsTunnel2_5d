@@ -42,6 +42,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
         this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
         this.load.json("modCharacterStBarbara", "jsons/models/characterStBarbara.json");
+        this.load.json("modCharacterTurnaroundTest", "jsons/models/characterTurnaroundTest.json");
         //METRO
         this.load.json("modMetroHallwayT", "jsons/models/dream/metroHallwayT.json");
         this.load.json("modMetroPlatform", "jsons/models/dream/metroPlatform.json");
@@ -190,6 +191,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("mechanic", "sprites/characters/wheelchairMechanic.png");
         this.load.image("texCharBeggar", "sprites/characters/beggar.png");
         this.load.image("texCharBarbara", "sprites/characters/hlBarabara.png");
+        this.load.spritesheet("turnaroundHumansheet00", "sprites/characters/turnaroundHumansheet00.png", { frameWidth: 46, frameHeight: 128 });
 
         this.load.image("texAdvertNutricubes00", "sprites/clutter/sprAdvertNutricubes00.png");
 
@@ -230,7 +232,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("sprStoryRacing01", "sprites/story/storyRacing01.png");
 
         
-
+        
         //SEGMENTS
         this.load.spritesheet("sprSegMetalRoad00", "sprites/segments/sprSegMetalRoad00.png", { frameWidth: 128, frameHeight: 128 });
         this.load.spritesheet("sprSegMetalRoad01", "sprites/segments/sprSegMetalRoad01.png", { frameWidth: 128, frameHeight: 128 });

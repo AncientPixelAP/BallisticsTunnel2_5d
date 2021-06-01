@@ -283,7 +283,7 @@ export default class DataQuad {
     }
 
     createQuad() {
-        this.quads.push(this.scene.add.quad(0, 0, this.texture));
+        this.quads.push(this.scene.add.quad(0, 0, this.texture, this.frame));
         //console.log(this.quads[0].uv);
     }
 
@@ -293,14 +293,17 @@ export default class DataQuad {
         if (this.mipmapped === false) {
             this.mipmapped = true;
 
-            this.quads.push(this.scene.add.quad(0, 0, this.texture));
-            this.quads.push(this.scene.add.quad(0, 0, this.texture));
-            this.quads.push(this.scene.add.quad(0, 0, this.texture));
+            this.quads.push(this.scene.add.quad(0, 0, this.texture, this.frame));
+            this.quads.push(this.scene.add.quad(0, 0, this.texture, this.frame));
+            this.quads.push(this.scene.add.quad(0, 0, this.texture, this.frame));
 
-            this.quads[0].uv = [0, 0, 0, 0.5, 0.5, 0.5, 0, 0, 0.5, 0.5, 0.5, 0];
+            this.calculateUVs();
+
+            //old method for single images
+            /*this.quads[0].uv = [0, 0, 0, 0.5, 0.5, 0.5, 0, 0, 0.5, 0.5, 0.5, 0];
             this.quads[1].uv = [0.5, 0, 0.5, 0.5, 1, 0.5, 0.5, 0, 1, 0.5, 1, 0];
             this.quads[2].uv = [0.5, 0.5, 0.5, 1, 1, 1, 0.5, 0.5, 1, 1, 1, 0.5];
-            this.quads[3].uv = [0, 0.5, 0, 1, 0.5, 1, 0, 0.5, 0.5, 1, 0.5, 0.5];
+            this.quads[3].uv = [0, 0.5, 0, 1, 0.5, 1, 0, 0.5, 0.5, 1, 0.5, 0.5];*/
         }
     }
 
@@ -311,7 +314,31 @@ export default class DataQuad {
             this.clearQuads();
             this.createQuad();
 
-            this.quads[0].uv = [0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0];
+            //this.quads[0].uv = [0, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 0];
+            this.setTexture(this.texture, this.frame);
+        }
+    }
+
+    calculateUVs(){
+        if(this.quads.length > 1){
+            //hard copy original uvs
+            let saveUv = [];
+            for (let c of this.quads[0].uv) {
+                saveUv.push(c);
+            }
+
+            //calculate mid point of the part of the image from the used texture
+            let m = {
+                x: (saveUv[0] + saveUv[4]) * 0.5,
+                y: (saveUv[1] + saveUv[5]) * 0.5
+            }
+
+            if(this.quads.length > 1){
+                this.quads[0].uv = [saveUv[0], saveUv[1], saveUv[2], m.y, m.x, m.y, saveUv[6], saveUv[7], m.x, m.y, m.x, saveUv[11]];
+                this.quads[1].uv = [m.x, saveUv[1], m.x, m.y, saveUv[4], m.y, m.x, saveUv[7], saveUv[8], m.y, saveUv[10], saveUv[11]];
+                this.quads[2].uv = [m.x, m.y, m.x, saveUv[3], saveUv[4], saveUv[5], m.x, m.y, saveUv[8], saveUv[9], saveUv[10], m.y];
+                this.quads[3].uv = [saveUv[0], m.y, saveUv[2], saveUv[3], m.x, saveUv[5], saveUv[6], m.y, m.x, saveUv[9], m.x, m.y];
+            }
         }
     }
 
@@ -370,15 +397,23 @@ export default class DataQuad {
         }
     }
 
-    setTexture(_tex) {
+    setTexture(_tex, _frame = 0, _saveUv = true) {
         this.texture = _tex;
-        for (let q of this.quads) {
+        this.frame = _frame;
+        for (let qq of this.quads) {
             let saveUv = [];
-            for (let c of q.uv) {
+            for (let c of qq.uv) {
                 saveUv.push(c);
             }
-            q.setTexture(this.texture, this.frame);
-            q.uv = saveUv;
+            qq.setTexture(this.texture, this.frame);
+            if(_saveUv === true){
+                qq.uv = saveUv;
+            }else{
+                
+            }
+        }
+        if (_saveUv === false) {
+            this.calculateUVs();
         }
     }
 

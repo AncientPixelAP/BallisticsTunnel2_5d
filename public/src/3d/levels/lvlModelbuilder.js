@@ -8,12 +8,33 @@ export default class LevelModelbuilder{
             z: 0
         });*/
 
-        this.ref = this.scene.geometryController.loadModel("MetroCarriage", "modMetroCarriageEnd", {
-            x: 0,
+
+        this.ref = this.scene.geometryController.loadModel("debug Tile", "modDebugTile", {
+            x: 16,
             y: 0,
-            z: 0
+            z: 180
         });
         this.ref.flags.draw = true;
+
+        this.hooman = this.scene.geometryController.loadModel("turnAroundTest", "modCharacterTurnaroundTest", {
+            x: 16,
+            y: 0,
+            z: 180
+        });
+        this.hooman.setDrawMode(DRAWMODE.BILLBOARD);
+        /*for (let qd of this.hooman.quadData) {
+            qd.frame = 3;
+            qd.setTexture(qd.texture, 3);
+        }*/
+        this.hooman.flags.draw = true;
+        this.hooman.flags.is8way = true;
+
+        this.elevator = this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
+            x: 0,
+            y: 0,
+            z: -16
+        });
+        this.elevator.flags.draw = true;
 
         /*this.ships = [];
         this.ships.push(this.scene.geometryController.loadModel("Ship A", "modShipHamptonAegis", {
@@ -43,7 +64,7 @@ export default class LevelModelbuilder{
     }
 
     update(){
-        
+        this.hooman.lookDir.yaw += 0.05;
     }
 
     destroy() {

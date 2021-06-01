@@ -231,9 +231,24 @@ export default class LevelDream01{
             this.scene.player.conversationManager.setConversation("diaDreamBarbara00", 0);
         }
 
+        this.hooman = this.scene.geometryController.loadModel("turnAroundTest", "modCharacterTurnaroundTest", {
+            x: 16,
+            y: 0,
+            z: 180
+        });
+        this.hooman.setDrawMode(DRAWMODE.BILLBOARD);
+        //TODO - this doesnt and wont work with spritesheets or atlas bc the uv correction in dataquad, will fuck it up
+        //loading each direction with a seperate image could work but is VERY tedious and slow in loading
+        //there must be a better solution
+        for(let qd of this.hooman.quadData){
+            qd.frame = 3;
+            qd.setTexture(qd.texture, 3);
+        }
+
         //TRIGGERS
         this.barbara.flags.draw = true;
         this.beggar.flags.draw = true;
+        this.hooman.flags.draw = true;
         this.model.flags.draw = true;
         this.model1.flags.draw = true;
 
