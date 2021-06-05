@@ -64,7 +64,7 @@ export default class LevelModelbuilder{
     }
 
     update(){
-        this.hooman.lookDir.yaw += 0.05;
+        //this.hooman.lookDir.yaw += 0.05;
     }
 
     destroy() {
