@@ -272,9 +272,16 @@ export default class LevelDream01{
             y: 1024,
             z: 0
         });
+        this.mrTutorial.data = {
+            conversation: {
+                fileName: "diaMisterTutorial00",
+                treePosition: 0
+            }
+        }
         this.mrTutorial.interact = () => {
             this.scene.player.setMode(PLAYERMODE.DIALOGUE);
-            this.scene.player.conversationManager.setConversation("diaMisterTutorial00", 0);
+            this.scene.player.conversationManager.setNPC(this.mrTutorial);
+            this.scene.player.conversationManager.setConversation(this.mrTutorial.data.conversation.fileName, this.mrTutorial.data.conversation.treePosition);
         }
         this.mrTutorial.interact();
         this.scene.hand.setMouseLock(false);
@@ -286,10 +293,17 @@ export default class LevelDream01{
             z: 144//76
         });
         this.beggar.setDrawMode(DRAWMODE.BILLBOARD);
+        this.beggar.data = {
+            conversation: {
+                fileName: "diaDreamBeggar00",
+                treePosition: 0
+            }
+        }
         this.beggar.interactable = true;
         this.beggar.interact = () => {
             this.scene.player.setMode(PLAYERMODE.DIALOGUE);
-            this.scene.player.conversationManager.setConversation("diaDreamBeggar00", 0);
+            this.scene.player.conversationManager.setNPC(this.beggar);
+            this.scene.player.conversationManager.setConversation(this.beggar.data.conversation.fileName, this.beggar.data.conversation.treePosition);
         }
 
         this.barbara = this.scene.geometryController.loadModel("Saint Barbara", "modCharacterStBarbara", {
@@ -298,13 +312,20 @@ export default class LevelDream01{
             z: 44//76
         });
         this.barbara.setDrawMode(DRAWMODE.BILLBOARD);
+        this.barbara.data = {
+            conversation: {
+                fileName: "diaDreamBarbara01",
+                treePosition: 0
+            }
+        }
         this.barbara.interactable = true;
         this.barbara.interact = () => {
             //this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             //this.scene.loadLevel("hangar00");
 
             this.scene.player.setMode(PLAYERMODE.DIALOGUE);
-            this.scene.player.conversationManager.setConversation("diaDreamBarbara00", 0);
+            this.scene.player.conversationManager.setNPC(this.barbara);
+            this.scene.player.conversationManager.setConversation(this.barbara.data.conversation.fileName, this.barbara.data.conversation.treePosition);
         }
 
         this.hooman = this.scene.geometryController.loadModel("turnAroundTest", "modCharacterTurnaroundTest", {

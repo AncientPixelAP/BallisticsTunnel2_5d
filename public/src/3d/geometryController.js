@@ -110,13 +110,14 @@ export default class GeometryController{
     }
 
     getModelById(_id){
-        let arr = this.models.filter((m) => m.id === _id);
+        /*let arr = this.models.filter((m) => m.id === _id);
         if(arr !== null || arr.length > 0){
             return arr[0];
         }else{
             console.error("no model with id " + _id + " found");
             return null;
-        }
+        }*/
+        return this.models.find((m) => m.id === _id);
     }
 
     logLevel() {

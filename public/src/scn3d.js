@@ -84,7 +84,7 @@ export default class Scn3d extends Phaser.Scene {
         }
 
         this.hand = new Hand(this);
-        this.hand.setMouseLock(true);
+        //this.hand.setMouseLock(true);
 
         this.player = new Player3d(this);
 
@@ -120,6 +120,8 @@ export default class Scn3d extends Phaser.Scene {
 
         this.level = null;
         this.loadLevel("dream01");//modelBuilder dream01 marketsquare00
+        this.player.pos.x = 108;
+        this.player.pos.z = -256;
         this.player.jumpToPosition({x: 108, y: 0, z: -256});
 
         this.modelName = "";
@@ -149,7 +151,8 @@ export default class Scn3d extends Phaser.Scene {
                 if (hits.length > 0) {
                     hits = hits.sort((a, b) => a.depth - b.depth);
                     this.modelName = hits[hits.length - 1].modelId;
-                    this.debugTxt.setText(this.modelName);
+                    
+                    //this.debugTxt.setText(this.modelName);
 
                     this.player.setHintText("");
                     this.player.clearUseBox();
@@ -159,9 +162,6 @@ export default class Scn3d extends Phaser.Scene {
                         if (eud.distance([this.player.pos.x, this.player.pos.y, this.player.pos.z], [model.pos.x, model.pos.y, model.pos.z]) < 48) {
                             this.player.setHintText("click to use/talk");
                             this.player.setUseBox(model.getScreenBounds());
-                        }else{
-                            //this.player.setHintText("");
-                            //this.player.clearUseBox();
                         }
 
                         if (this.hand.justReleased || INPUTS.btnA.justReleased) {
@@ -170,12 +170,9 @@ export default class Scn3d extends Phaser.Scene {
                             this.player.setHintText("");
                             this.player.clearUseBox();
                         }
-                    }else{
-                        //this.player.setHintText("");
-                        //this.player.clearUseBox();
                     }
                 }else{
-                    this.debugTxt.setText("");
+                    //this.debugTxt.setText("");
                     this.player.clearUseBox();
                 }
 

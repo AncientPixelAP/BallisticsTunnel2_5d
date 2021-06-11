@@ -7,13 +7,13 @@
             "sprite": "sprCharBarbara",
             "answers": [
                 {
-                    "text": "Take some.",
+                    "text": "[take some]",
                     "actions": "GOTO 2 SETFLAG dreamcoin"
                 },{
-                    "text": "Take all.",
+                    "text": "[take all]",
                     "actions": "GOTO 1 SETFLAG dreamcoin"
                 },{
-                    "text": "Leave.",
+                    "text": "[leave]",
                     "actions": "EXIT"
                 }
             ]
@@ -22,12 +22,12 @@
             "text": "There is nothing left in the jar.",
             "answers": [
                 {
-                    "text": "Put the coins back.",
+                    "text": "[put the coins back]",
                     "actions": "GOTO 0",
                     "checkFlag": "dreamcoin"
                 },
                 {
-                    "text": "Leave.",
+                    "text": "[leave]",
                     "actions": "EXIT"
                 }
             ]
@@ -36,15 +36,15 @@
             "text": "The jar is half empty.",
             "answers": [
                 {
-                    "text": "Put the coins back.",
+                    "text": "[put the coins back]",
                     "actions": "GOTO 0",
                     "checkFlag": "dreamcoin"
                 },{
-                    "text": "Get the rest of the coins.",
+                    "text": "[get the rest of the coins]",
                     "actions": "GOTO 1",
                     "checkFlag": "dreamcoin"
                 },{
-                    "text": "Leave.",
+                    "text": "[leave]",
                     "actions": "EXIT"
                 }
             ]

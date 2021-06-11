@@ -201,7 +201,9 @@ export default class DataQuad {
             if (nz > recZ) {
                 recZ = nz;
             }
-            sumZ += nz;
+            //sumZ += nz;
+            //sumZ += (nz + (512 - Phaser.Math.Distance.Between(this.screenCoords[i].x, this.screenCoords[i].y, 0, 0) * -0.1)) * 1;
+            sumZ += nz;// + (Math.abs(this.screenCoords[i].y + this.screenCoords[i].x) * 0.1);
         }
         this.depth = sumZ * -0.25;
         //this.depth = recZ*-1;

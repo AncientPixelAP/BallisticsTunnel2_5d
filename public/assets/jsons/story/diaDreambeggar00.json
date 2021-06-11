@@ -15,7 +15,7 @@
                     "actions": "GOTO 2"
                 },
                 {
-                    "text": "cancel",
+                    "text": "[leave]",
                     "actions": "EXIT"
                 }
             ]

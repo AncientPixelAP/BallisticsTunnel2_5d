@@ -7,27 +7,27 @@
             "sprite": "sprCharBeggar",
             "answers": [
                 {
-                    "text": ">>>",
+                    "text": "[>>>]",
                     "actions": "GOTO 1"
                 }
             ]
         },{
             "id": 1,
-            "text": "Click the left Mousebutton to interact. Interactable objects will appear with a green overlay.",
+            "text": "Click the left Mousebutton to interact. A green overlay will show up on interactable objects.",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
-                    "text": ">>>",
+                    "text": "[>>>]",
                     "actions": "GOTO 2"
                 }
             ]
         },{
             "id": 2,
-            "text": "Have fun!",
+            "text": "Use the panel to your right to skip forward to the hangar and jump into the multiplayer.",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
-                    "text": ">>>",
+                    "text": "[>>>]",
                     "actions": "EXIT"
                 }
             ]

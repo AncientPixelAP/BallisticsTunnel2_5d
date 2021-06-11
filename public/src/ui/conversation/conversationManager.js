@@ -7,6 +7,7 @@ export default class ConversationManager{
         this.npc = null;
         this.npcSprite = null;
         this.npcText = this.scene.add.bitmapText(0, -32, "pixelmix", "", 8, 1).setOrigin(0.5);
+        this.npcText.maxWidth = 480;
         this.conversation = {
             file: null,
             treePosition: 0,
@@ -68,10 +69,15 @@ export default class ConversationManager{
                 arr.splice(0, 2);
             break;
             case "SETFILE":
-                arr.splice(0, 1);
+                this.setConversation(arr[1], Number(arr[2]));
+                arr.splice(0, 3);
             break;
             case "EXIT":
                 arr.splice(0, 1);
+                //save latest position in conversation for reentry
+                if (this.npc != null) {
+                    this.npc.data.conversation.treePosition = this.conversation.treePosition;
+                }
                 this.clearConversation();
                 this.scene.player.setMode(PLAYERMODE.LOOK);
             break;
@@ -122,8 +128,16 @@ export default class ConversationManager{
         return _str;
     }
 
+    setNPC(_npc){
+        this.npc = _npc;
+    }
+
     setConversation(_fileName, _startId) {
         this.conversation.file = this.scene.cache.json.get(_fileName);
+        //save current fileName in NPC if possible for reentry purpose
+        if (this.npc != null) {
+            this.npc.data.conversation.fileName = _fileName;
+        }
         this.conversation.treePosition = _startId;
         this.goto(_startId);
     }

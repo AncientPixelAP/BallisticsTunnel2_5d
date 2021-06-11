@@ -387,7 +387,7 @@ export default class Editor {
 
     duplicateQuad(_pos){
         let model = this.scene.geometryController.getModelById(this.quad.modelId);
-        if(model != null){
+        if(model != null || model != undefined){
             model.addQuadFromData({
                 type: this.quad.type,
                 texture: this.quad.texture,

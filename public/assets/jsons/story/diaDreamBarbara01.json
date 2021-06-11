@@ -1,0 +1,49 @@
+{
+    "title": "Saint Barabara",
+    "cards": [
+        {
+            "id": 0,
+            "text": "In the beginning there was darkness. Then something lit up and illuminated our world, a fire. Our shadows fell onto the walls of the cave we sat in and showed a wild dance.",
+            "sprite": "sprCharBarbara",
+            "answers": [
+                {
+                    "text": "[dance]",
+                    "actions": "GOTO 1"
+                },{
+                    "text": "[sit still]",
+                    "actions": "GOTO 2"
+                }
+            ]
+        },{
+            "id": 1,
+            "text": "Some of tried to move to the dance, but doing so only intensified the movements of the shadows and it got harder and harder to mimic them.", 
+            "sprite": "sprCharBarbara",
+            "answers": [
+                {
+                    "text": "[give up]",
+                    "actions": "GOTO 2"
+                }
+            ]
+        },{
+            "id": 2,
+            "text": "Where the light hit the caves walls it edged cavities in the rock. We put our fingers in the cracks and pulled.",
+            "sprite": "sprCharBarbara",
+            "answers": [
+                {
+                    "text": "[pull]",
+                    "actions": "GOTO 3"
+                }
+            ]
+        },{
+            "id": 3,
+            "text": "In the beginning there was the tunnel and I, Baraba, swore to protect it.",
+            "sprite": "sprCharBarbara",
+            "answers": [
+                {
+                    "text": "[burrow]",
+                    "actions": "SETFILE diaDreamBarbara00 0"
+                }
+            ]
+        }
+    ]
+}

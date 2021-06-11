@@ -20,6 +20,10 @@ export default class ScnMain extends Phaser.Scene {
         this.cameras.main.setScroll(-this.game.config.width * 0.5, -this.game.config.height * 0.5);
         this.cameras.main.setBackgroundColor(0x000000);
 
+        this.cameras.main.fadeFrom(500, 0, 0, 0, false, (_cam, _pct) => {
+
+        }, this);
+
         this.left = this.game.config.width * -0.5;
         this.right = this.game.config.width * 0.5;
         this.top = this.game.config.height * -0.5;
