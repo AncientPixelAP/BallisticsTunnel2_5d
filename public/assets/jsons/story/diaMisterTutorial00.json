@@ -1,0 +1,36 @@
+{
+    "title": "The Beggar´s Dream",
+    "cards": [
+        {
+            "id": 0,
+            "text": "Look around with the mouse and move with WASD",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": ">>>",
+                    "actions": "GOTO 1"
+                }
+            ]
+        },{
+            "id": 1,
+            "text": "Click the left Mousebutton to interact. Interactable objects will appear with a green overlay.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": ">>>",
+                    "actions": "GOTO 2"
+                }
+            ]
+        },{
+            "id": 2,
+            "text": "Have fun!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": ">>>",
+                    "actions": "EXIT"
+                }
+            ]
+        }
+    ]
+}

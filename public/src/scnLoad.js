@@ -12,6 +12,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.setBaseURL("./assets/");
 
         //dialogues
+        this.load.json("diaMisterTutorial00", "jsons/story/diaMisterTutorial00.json");
         this.load.json("diaDreamBeggar00", "jsons/story/diaDreamBeggar00.json");
         this.load.json("diaDreamBarbara00", "jsons/story/diaDreamBarbara00.json");
 
@@ -118,6 +119,9 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texPadding01", "sprites/3dTextures/texPadding01.png");
         this.load.image("texPadding02", "sprites/3dTextures/texPadding02.png");
         this.load.image("texDoorBars00", "sprites/3dTextures/texDoorBars00.png");
+        this.load.image("texKitchenTile00", "sprites/3dTextures/texKitchenTile00.png");
+        this.load.image("texKitchenTile01", "sprites/3dTextures/texKitchenTile01.png");
+        this.load.image("texKitchenTile02", "sprites/3dTextures/texKitchenTile02.png");
 
         this.load.image("texPainting16x16Dart", "sprites/3dTextures/texPainting16x16Dart00.png");
         this.load.image("texSegStartTunnel00", "sprites/segmentsSingles/sprSegStartTunnel00.png");
@@ -141,10 +145,14 @@ export default class ScnLoad extends Phaser.Scene {
 
         this.load.image("texSky00", "sprites/3dTextures/texSky00.png");  
         this.load.image("texGrass00", "sprites/3dTextures/texGrass00.png");
+        this.load.image("texGrass01", "sprites/3dTextures/texGrass01.png");
         this.load.image("texBush00", "sprites/3dTextures/texBush00.png");
-        this.load.image("texKitchenTile00", "sprites/3dTextures/texKitchenTile00.png");
-        this.load.image("texKitchenTile01", "sprites/3dTextures/texKitchenTile01.png");
-        this.load.image("texKitchenTile02", "sprites/3dTextures/texKitchenTile02.png");
+        this.load.image("texTree00", "sprites/3dTextures/texTree00_00.png");
+        this.load.image("texTree01", "sprites/3dTextures/texTree00_01.png");
+        this.load.image("texTree02", "sprites/3dTextures/texTree01_00.png");
+        this.load.image("texTree03", "sprites/3dTextures/texTree01_01.png");
+        this.load.image("texDesert00", "sprites/3dTextures/texDesert00.png");
+        this.load.image("texDesert01", "sprites/3dTextures/texDesert01.png");
 
         this.load.image("texMetroCarriageWallDoor00", "sprites/3dTextures/texMetroCarriageWallDoor00.png");
         this.load.image("texMetroCarriageWallWindow00", "sprites/3dTextures/texMetroCarriageWallWindow00.png");

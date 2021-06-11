@@ -81,5 +81,6 @@ export default class MovingGrid{
         for(let p of this.points){
             p.sprite.destroy();
         }
+        this.highlight.destroy();
     }
 }

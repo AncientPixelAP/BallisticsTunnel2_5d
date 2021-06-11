@@ -14,6 +14,8 @@ export default class ConversationManager{
                 name: ""
             }
         }
+
+        this.bg = this.scene.add.graphics();
     }
 
     update(){
@@ -71,7 +73,7 @@ export default class ConversationManager{
             case "EXIT":
                 arr.splice(0, 1);
                 this.clearConversation();
-                this.scene.player.mode = PLAYERMODE.LOOK;
+                this.scene.player.setMode(PLAYERMODE.LOOK);
             break;
             case "SETFLAG":
                 flagManager.setFlag(arr[1], arr[2]);
@@ -93,6 +95,12 @@ export default class ConversationManager{
             elem = this.conversation.file.cards[0];
         }
         this.npcText.setText(this.replaceCheck(elem.text));
+
+        let tb = this.npcText.getTextBounds();
+        this.bg.clear();
+        this.bg.fillStyle(0x000000, 1);
+        this.bg.fillRect(tb.local.x - (tb.local.width * 0.5) - 3, tb.local.y + this.npcText.y - (tb.local.height * 0.5) - 3, tb.local.width + 6, tb.local.height + 6);
+        this.bg.depth = this.npcText.depth - 1;
 
         if (this.npcSprite !== null) {
             this.npcSprite.destroy();
@@ -129,5 +137,19 @@ export default class ConversationManager{
         if (this.npcSprite !== null) {
             this.npcSprite.destroy();
         }
+        this.bg.clear();
+    }
+
+    destroy(){
+        this.npcText.destroy();
+        for (let b of this.btnOptions) {
+            b.btn.destroy();
+        }
+        this.btnOptions = [];
+        if (this.npcSprite !== null) {
+            this.npcSprite.destroy();
+        }
+        this.bg.clear();
+        this.bg.destroy();
     }
 }

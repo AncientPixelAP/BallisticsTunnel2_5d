@@ -55,7 +55,7 @@ export class Player3d{
         this.reticle = this.scene.add.sprite(0, 0, "sprUiCrosshairDot");
         this.reticle.depth = 9999;
         this.reticle.alpha = 0;
-        this.lowerHint = this.scene.add.bitmapText(0, (this.scene.game.config.height * 0.4), "bravenewEra_16", "click to use/talk", 16, 1).setOrigin(0.5).setLetterSpacing(1);
+        this.lowerHint = this.scene.add.bitmapText(0, (this.scene.game.config.height * 0.4), "bravenewEra_16", "", 16, 1).setOrigin(0.5).setLetterSpacing(1);
         this.lowerHint.depth = 9999;
         this.useBox = this.scene.add.graphics({x: 0, y: 0.5});
         this.useBox.depth = 9999;
@@ -95,7 +95,9 @@ export class Player3d{
         }
 
         if (this.conversation !== null) {
-            this.conversation.update();
+            if (this.mode === PLAYERMODE.DIALOGUE){
+                this.conversation.update();
+            }
         }
 
         this.conversationManager.update();

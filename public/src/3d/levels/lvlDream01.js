@@ -124,7 +124,7 @@ export default class LevelDream01{
             pitch: 0,
             roll: 0
         });
-        this.stairsT = this.scene.geometryController.loadModel("stairs behind bars", "modMetroPlatform01", {
+        /*this.stairsT = this.scene.geometryController.loadModel("stairs behind bars", "modMetroPlatform01", {
             x: 108,
             y: 0,
             z: -236
@@ -138,7 +138,71 @@ export default class LevelDream01{
             yaw: Math.PI,
             pitch: 0,
             roll: 0
-        });
+        });*/
+        this.elevator = [];
+        this.elevator.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
+            x: 108,
+            y: 0,
+            z: -256
+        }));
+        this.elevator.push(this.scene.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
+            x: 116,
+            y: 0,
+            z: -226
+        }));
+        this.elevator.push(this.scene.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
+            x: 100,
+            y: 0,
+            z: -226
+        }));
+        this.elevator.push(this.scene.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
+            x: 130,
+            y: -22,
+            z: -227
+        }));
+        for (let e of this.elevator) {
+            e.flags.draw = !e.flags.draw;
+        }
+        //TODO maybe make own elevator class with context to level that manages all the sub objects
+        //trains could work like that too
+        this.elevatorDoorRight = this.elevator[1];
+        this.elevatorDoorLeft = this.elevator[2];
+        this.btnElevator = this.elevator[3];
+        let _this = this;
+        this.elevatorDoorRight.data = {
+            positions: [
+                _this.elevatorDoorRight.pos.x,
+                _this.elevatorDoorRight.pos.x + 12
+            ],
+            currentPosition: 1
+        }
+        this.elevatorDoorLeft.data = {
+            positions: [
+                _this.elevatorDoorLeft.pos.x,
+                _this.elevatorDoorLeft.pos.x - 12
+            ],
+            currentPosition: 1
+        }
+        this.elevatorDoorRight.action = () => {
+            _this.elevatorDoorRight.mover.isMoving = true;
+            _this.elevatorDoorRight.mover.target.pos.spd = 0.1;
+            _this.elevatorDoorRight.mover.target.pos.x = _this.elevatorDoorRight.data.positions[_this.elevatorDoorRight.data.currentPosition];
+            _this.elevatorDoorLeft.mover.isMoving = true;
+            _this.elevatorDoorLeft.mover.target.pos.spd = 0.1;
+            _this.elevatorDoorLeft.mover.target.pos.x = _this.elevatorDoorLeft.data.positions[_this.elevatorDoorLeft.data.currentPosition];
+        };
+        this.elevatorDoorLeft.action = () => {
+            _this.elevatorDoorRight.action();
+        }
+        this.elevatorDoorRight.action();
+        this.btnElevator.data = {
+            open: true
+        }
+        this.btnElevator.interactable = true;
+        this.btnElevator.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.INTERACT);
+            this.scene.player.panel = new PanelElevator(this.scene);
+        }
 
         //uppper level of fake moving train
         this.stairTrainTransition = this.scene.geometryController.loadModel("MetroStairCarriageTransition", "modMetroStairCarriageTransition", {
@@ -202,6 +266,18 @@ export default class LevelDream01{
 
         this.ships = [];
 
+        //inital text tips
+        this.mrTutorial = this.scene.geometryController.loadModel("Mister Tutorial", "modCharacterBeggar", {
+            x: 0,
+            y: 1024,
+            z: 0
+        });
+        this.mrTutorial.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+            this.scene.player.conversationManager.setConversation("diaMisterTutorial00", 0);
+        }
+        this.mrTutorial.interact();
+        this.scene.hand.setMouseLock(false);
 
         //CHARACTERS
         this.beggar = this.scene.geometryController.loadModel("Old poor man", "modCharacterBeggar", {
@@ -237,13 +313,9 @@ export default class LevelDream01{
             z: 180
         });
         this.hooman.setDrawMode(DRAWMODE.BILLBOARD);
-        //TODO - this doesnt and wont work with spritesheets or atlas bc the uv correction in dataquad, will fuck it up
-        //loading each direction with a seperate image could work but is VERY tedious and slow in loading
-        //there must be a better solution
-        for(let qd of this.hooman.quadData){
-            qd.frame = 3;
-            qd.setTexture(qd.texture, 3);
-        }
+        this.hooman.flags.draw = true;
+        this.hooman.flags.is8way = true;
+        //this.hooman.lookDir.yaw = 0;
 
         //TRIGGERS
         this.barbara.flags.draw = true;
@@ -259,12 +331,15 @@ export default class LevelDream01{
             y: 0,
             z: 64
         });
-        this.triggerInit.scale({x: 36, y: 32, z: 1})
+        this.triggerInit.scale({x: 36, y: 32, z: 4})
         this.triggerInit.trigger.isTrigger = true;
         this.triggerInit.trigger.onEnter = () => {
             this.otherPlatform.flags.draw = !this.otherPlatform.flags.draw;
             this.otherTunnelEntry.flags.draw = !this.otherTunnelEntry.flags.draw;
-            this.stairsT.flags.draw = !this.stairsT.flags.draw;
+            //this.stairsT.flags.draw = !this.stairsT.flags.draw;
+            for(let e of this.elevator){
+                e.flags.draw = !e.flags.draw;
+            }
         }
         this.triggerInit.flags.draw = true;
 
@@ -275,7 +350,7 @@ export default class LevelDream01{
             y: 0,
             z: 768
         });
-        this.triggerStairsBottom.scale({x: 36, y: 32, z: 1})
+        this.triggerStairsBottom.scale({x: 36, y: 32, z: 4})
         this.triggerStairsBottom.trigger.isTrigger = true;
         this.triggerStairsBottom.trigger.onEnter = () => {
             for(let t of this.tunnelMoving){
@@ -296,7 +371,7 @@ export default class LevelDream01{
             y: -48,
             z: 1243
         });
-        this.triggerStairsTop.scale({ x: 36, y: 32, z: 1 })
+        this.triggerStairsTop.scale({ x: 36, y: 32, z: 4 })
         this.triggerStairsTop.trigger.isTrigger = true;
         this.triggerStairsTop.trigger.onEnter = () => {
             this.model.flags.draw = !this.model.flags.draw;

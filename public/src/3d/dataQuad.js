@@ -144,6 +144,7 @@ export default class DataQuad {
 
         let outsideScreenSafe = false;
         let cull = false;
+        let ptsOoB = 0;
 
         //calculate the quads point in 3d seen from the camera
         for (let [i, p] of this.points.entries()) {
@@ -169,18 +170,17 @@ export default class DataQuad {
             ny = outXY[1];
             nz = outXY[2];
 
-            /*if(nz < 0.1){
-                nz = 0.1;
-            }*/
-            if (nz < -100) {
-                cull = true;
+            if (nz <= 10) {
+                //cull = true;
+                ptsOoB += 1;
             }
+            nz *= this.scene.cam.fov;
             if (nz < 0) {
                 nz *= 0.01;
             }
-            let nzMod = nz + 10;
-
-            let zoom = 400;//2.5 - 0.01
+            
+            let nzMod = nz + this.scene.cam.zOffset;
+            let zoom = this.scene.cam.zoom;//400;//2.5 - 0.01
             this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
             this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
 
@@ -205,7 +205,11 @@ export default class DataQuad {
         }
         this.depth = sumZ * -0.25;
         //this.depth = recZ*-1;
-        this.shade = Math.max(0, 255 - ((recZ + 0) * 0.25));
+        this.shade = Math.max(0, 255 - ((recZ + 0) * 0.125));
+
+        if (ptsOoB === 4){
+            cull = true;
+        }
 
         if (this.type !== "collisionQuad") {
             if (cull === true) {//if(this.depth >= 0 || cull === true){//near clipping plane could be at -25 for example
@@ -229,8 +233,9 @@ export default class DataQuad {
                 }
             }
 
-            if (this.quads.length > null) {
-                if (this.depth < -12) {// (recZ > 16) at sumZ * -0.25
+            if (this.quads.length > 0) {
+                //if (this.depth < -12) {// (recZ > 16) at sumZ * -0.25
+                if(cull === false){
                     for (let q of this.quads) {
                         q.alphas = [1, 1, 1, 1, 1, 1];
                     }

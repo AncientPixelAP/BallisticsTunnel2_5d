@@ -119,10 +119,11 @@ export default class Scn3d extends Phaser.Scene {
         */
 
         this.level = null;
-        this.loadLevel("modelBuilder");//modelBuilder dream01 marketsquare00
+        this.loadLevel("dream01");//modelBuilder dream01 marketsquare00
+        this.player.jumpToPosition({x: 108, y: 0, z: -256});
 
         this.modelName = "";
-        this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "TEST Test test 00 gbqrSX5s", 16, 1).setOrigin(0).setLetterSpacing(1);
+        this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "", 16, 1).setOrigin(0).setLetterSpacing(1);
     }
 
     update(){

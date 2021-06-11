@@ -16,6 +16,9 @@ export default class Cam{
                 roll: 0.04
             }
         }
+        this.zoom = 800;
+        this.zOffset = 15;
+        this.fov = 2.5;
     }
 
     update(){

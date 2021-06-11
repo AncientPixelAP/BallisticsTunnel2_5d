@@ -111,7 +111,10 @@ export default class Editor {
                 "texPadding00",
                 "texPadding01",
                 "texPadding02",
-                "texDoorBars00"
+                "texDoorBars00",
+                "texKitchenTile00",
+                "texKitchenTile01",
+                "texKitchenTile02"
             ],[
                 "texBloodLineEnd",
                 "texBloodLineStraight00",
@@ -144,10 +147,14 @@ export default class Editor {
             ],[
                 "texSky00",
                 "texGrass00",
+                "texGrass01",
                 "texBush00",
-                "texKitchenTile00",
-                "texKitchenTile01",
-                "texKitchenTile02"
+                "texTree00",
+                "texTree01",
+                "texTree02",
+                "texTree03",
+                "texDesert00",
+                "texDesert01"
             ]],
             position: 0,
             bank: 0

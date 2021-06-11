@@ -279,7 +279,7 @@ export default class Model {
             } else if (this.debug.mode === DRAWMODE.BILLBOARD) {
                 //set image data according to own and camera direction
                 if(this.flags.is8way === true){
-                    let nDir = normAngle(this.lookDir.yaw - _dir.yaw);
+                    let nDir = normAngle(this.lookDir.yaw - _dir.yaw + (Math.PI * 0.125));
                     q.frame = Math.floor((nDir / Math.PI) * 4) + 4;
                     q.setTexture(q.texture, q.frame, false);
                 }

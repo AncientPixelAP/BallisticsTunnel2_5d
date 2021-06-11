@@ -22,10 +22,6 @@ export default class LevelModelbuilder{
             z: 180
         });
         this.hooman.setDrawMode(DRAWMODE.BILLBOARD);
-        /*for (let qd of this.hooman.quadData) {
-            qd.frame = 3;
-            qd.setTexture(qd.texture, 3);
-        }*/
         this.hooman.flags.draw = true;
         this.hooman.flags.is8way = true;
 

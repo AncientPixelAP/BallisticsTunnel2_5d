@@ -26,6 +26,11 @@ export default class ConversationOption{
         let tb = this.txt.getTextBounds();
         //console.log(tb);
         this.rect = new Phaser.GameObjects.Rectangle(this.scene, tb.local.x, tb.local.y + this.txt.y, tb.local.width, tb.local.height);
+
+        this.bg = this.scene.add.graphics();
+        this.bg.fillStyle(0x000000, 1);
+        this.bg.fillRect(tb.local.x - (tb.local.width * 0.5) - 3, tb.local.y + this.txt.y - (tb.local.height * 0.5) - 3, tb.local.width + 6, tb.local.height + 6);
+        this.bg.depth = this.txt.depth-1;
     }
 
     update(){
@@ -91,6 +96,8 @@ export default class ConversationOption{
 
     destroy(){
         this.txt.destroy();
+        this.rect.destroy();
+        this.bg.destroy();
     }
 
     setDepth(_depth){

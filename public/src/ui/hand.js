@@ -84,13 +84,21 @@ export default class Hand{
         this.prev.y = this.scene.input.activePointer.worldY;
     }
 
+    reset(){
+        this.pressed = false;
+        this.justReleased = false;
+        this.justPressed = false;
+    }
+
     setMouseLock(_bool){
         this.mouselock = _bool;
         if(this.mouselock === true){
             this.scene.input.mouse.requestPointerLock();
+            this.reset();
         }else{
             if (this.scene.input.mouse.locked){
                 this.scene.input.mouse.releasePointerLock();
+                this.reset();
             }
         }
     }
