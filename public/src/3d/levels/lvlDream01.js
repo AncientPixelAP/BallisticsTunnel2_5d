@@ -16,13 +16,13 @@ export default class LevelDream01{
             z: 0
         }));*/
         //player starts on this platform
-        this.model = this.scene.geometryController.loadModel("MetroPlatform", "modMetroPlatformToHallway", {
+        this.model = this.scene.geometryController.loadModel("MetroPlatform0", "modMetroPlatformToHallway", {
             x: 0,
             y: 0,
             z: 0
         });
         this.model.flags.draw = true;
-        this.model1 = this.scene.geometryController.loadModel("MetroPlatform", "modMetroPlatform", {
+        this.model1 = this.scene.geometryController.loadModel("MetroPlatform1", "modMetroPlatform", {
             x: 0,
             y: 0,
             z: 416
@@ -450,13 +450,13 @@ export default class LevelDream01{
                 this.ships.push(this.scene.geometryController.loadModel("Ship A", "modShipHamptonAegis", {
                     x: -82,
                     y: 16,
-                    z: -1200
+                    z: -2200
                 }));
                 this.ships[0].data = {
                     pivot: {
                         x: -82,
                         y: -24,
-                        z: -1200
+                        z: -2200
                     },
                     radius: 40,
                     angle: Math.PI * 0.5
@@ -467,13 +467,13 @@ export default class LevelDream01{
                 this.ships.push(this.scene.geometryController.loadModel("Ship B", "modShipArashiDart", {
                     x: -82,
                     y: 16,
-                    z: -1300
+                    z: -2300
                 }));
                 this.ships[1].data = {
                     pivot: {
                         x: -82,
                         y: -24,
-                        z: -1300
+                        z: -2300
                     },
                     radius: 48,
                     angle: Math.PI * -0.5
@@ -544,6 +544,7 @@ export default class LevelDream01{
                 //move and rotate ships
                 for (let s of this.ships) {
                     s.data.angle += 0.01;
+                    s.data.pivot.z += 10;
                     s.translateAndRotate({ x: 0, y: 0, z: 0 }, { yaw: 0, pitch: 0, roll: 0.01 });
                     s.jumpToPosition({ x: s.data.pivot.x + (Math.cos(s.data.angle) * s.data.radius), y: s.data.pivot.y + (Math.sin(s.data.angle) * s.data.radius), z: s.data.pivot.z });
                 }

@@ -152,7 +152,7 @@ export default class Scn3d extends Phaser.Scene {
                     hits = hits.sort((a, b) => a.depth - b.depth);
                     this.modelName = hits[hits.length - 1].modelId;
                     
-                    //this.debugTxt.setText(this.modelName);
+                    this.debugTxt.setText(this.modelName);
 
                     this.player.setHintText("");
                     this.player.clearUseBox();
@@ -172,7 +172,7 @@ export default class Scn3d extends Phaser.Scene {
                         }
                     }
                 }else{
-                    //this.debugTxt.setText("");
+                    this.debugTxt.setText("");
                     this.player.clearUseBox();
                 }
 

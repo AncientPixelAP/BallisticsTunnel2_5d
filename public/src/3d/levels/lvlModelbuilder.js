@@ -2,19 +2,20 @@ export default class LevelModelbuilder{
     constructor(_scene){
         this.scene = _scene;
 
-        /*this.ref = this.scene.geometryController.loadModel("Player Apartement", "modPlayerApartement", {
+        this.ref = this.scene.geometryController.loadModel("MetroPlatform0", "modMetroPlatform01", {
             x: 0,
             y: 0,
             z: 0
-        });*/
+        });
+        this.ref.flags.draw = true;
 
 
-        this.ref = this.scene.geometryController.loadModel("debug Tile", "modDebugTile", {
+
+        /*this.ref = this.scene.geometryController.loadModel("debug Tile", "modDebugTile", {
             x: 16,
             y: 0,
             z: 180
         });
-        this.ref.flags.draw = true;
 
         this.hooman = this.scene.geometryController.loadModel("turnAroundTest", "modCharacterTurnaroundTest", {
             x: 16,
@@ -30,7 +31,7 @@ export default class LevelModelbuilder{
             y: 0,
             z: -16
         });
-        this.elevator.flags.draw = true;
+        this.elevator.flags.draw = true;*/
 
         /*this.ships = [];
         this.ships.push(this.scene.geometryController.loadModel("Ship A", "modShipHamptonAegis", {

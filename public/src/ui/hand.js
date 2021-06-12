@@ -23,8 +23,14 @@ export default class Hand{
         this.vel = {
             x: 0,
             y: 0,
-            limit: Math.round(10 / this.sensitivity)
+            limit: Math.round(10 / this.sensitivity),
         }
+
+        this.movementPrev = {
+            x: 0,
+            y: 0
+        }
+
         this.prev = {
             x: 0,
             y: 0
@@ -39,7 +45,8 @@ export default class Hand{
         this.pos.y = this.scene.input.activePointer.worldY;
 
         if (this.scene.input.mouse.locked === true) {
-            if (this.scene.input.activePointer.moveTime+60 >= this.scene.data.systems.time.now) {
+            //if (this.scene.input.activePointer.moveTime+60 >= this.scene.data.systems.time.now) {
+            if (this.scene.input.activePointer.movementX - this.movementPrev.x != 0 || this.scene.input.activePointer.movementY - this.movementPrev.y){
                 //this.vel.x = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementX));
                 //this.vel.y = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementY));
                 this.vel.x = Math.max(-4, Math.min(4, this.scene.input.activePointer.movementX));
@@ -82,6 +89,8 @@ export default class Hand{
         this.vel.y = 0;
         this.prev.x = this.scene.input.activePointer.worldX;
         this.prev.y = this.scene.input.activePointer.worldY;
+        this.movementPrev.x = this.scene.input.activePointer.movementX;
+        this.movementPrev.y = this.scene.input.activePointer.movementY;
     }
 
     reset(){
