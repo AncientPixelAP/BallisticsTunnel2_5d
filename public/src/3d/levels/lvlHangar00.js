@@ -47,6 +47,16 @@ export default class LevelHangar00{
             y: 56,
             z: 256
         });
+        this.ship.interactable = true;
+        this.ship.interact = () => {
+            this.scene.gotoMenu();
+        }
+
+        /*this.btnRacing = this.scene.geometryController.loadModel("btnRacing", "modDebugTile", {
+            x: 192,
+            y: 56,
+            z: 256
+        });*/
 
         this.elevatorDoorRight = this.objects[1];
         this.elevatorDoorLeft = this.objects[2];
@@ -85,16 +95,8 @@ export default class LevelHangar00{
         this.btnElevator.data = {
             open: true
         }
+        this.btnElevator.interactable = true;
         this.btnElevator.interact = () => {
-            /*_this.btnElevator.data.open = !_this.btnElevator.data.open;
-            if (_this.btnElevator.data.open === true) {
-                _this.elevatorDoorRight.data.currentPosition = 1;
-                _this.elevatorDoorLeft.data.currentPosition = 1;
-            } else {
-                _this.elevatorDoorRight.data.currentPosition = 0;
-                _this.elevatorDoorLeft.data.currentPosition = 0;
-            }
-            _this.elevatorDoorRight.action();*/
             this.scene.player.setMode(PLAYERMODE.INTERACT);
             this.scene.player.panel = new PanelElevator(this.scene);
         }

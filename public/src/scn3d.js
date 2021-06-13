@@ -487,6 +487,7 @@ export default class Scn3d extends Phaser.Scene {
     }
 
     gotoMenu(){
+        this.hand.setMouseLock(false);
         this.scene.start("ScnLogin");
     }
 

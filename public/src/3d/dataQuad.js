@@ -174,15 +174,15 @@ export default class DataQuad {
                 //cull = true;
                 ptsOoB += 1;
             }
-            nz *= this.scene.cam.fov;
             if (nz < 0) {
                 nz *= 0.01;
             }
+            nz *= this.scene.cam.fov;
             
             let nzMod = nz + this.scene.cam.zOffset;
             let zoom = this.scene.cam.zoom;//400;//2.5 - 0.01
-            this.screenCoords[i].x = (nx / (Math.abs(nzMod) * 1)) * zoom;
-            this.screenCoords[i].y = (ny / (Math.abs(nzMod) * 1)) * zoom;
+            this.screenCoords[i].x = (nx / (Math.abs(Math.max(0.1,nzMod)) * 1)) * zoom;
+            this.screenCoords[i].y = (ny / (Math.abs(Math.max(0.1,nzMod)) * 1)) * zoom;
 
             if (outsideScreenSafe === false) {
                 outsideScreenSafe = this.screenCoords[i].x <= this.scene.left || this.screenCoords[i].x >= this.scene.right || this.screenCoords[i].y <= this.scene.top || this.screenCoords[i].y >= this.scene.bottom;
@@ -209,7 +209,8 @@ export default class DataQuad {
         //this.depth = recZ*-1;
         this.shade = Math.max(0, 255 - ((recZ + 0) * 0.125));
 
-        if (ptsOoB === 4){
+        //if (ptsOoB === 4){
+        if(ptsOoB > 3){
             cull = true;
         }
 

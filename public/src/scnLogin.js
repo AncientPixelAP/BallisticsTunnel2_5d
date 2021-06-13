@@ -2,6 +2,7 @@ import Hand from "./ui/hand.js";
 import Button from "./ui/button.js";
 import { SliderHorizontal } from "./ui/slider.js";
 import MovingGrid from "./ui/movingGrid.js";
+import ShipManager from "./shipManager.js";
 
 export default class ScnLogin extends Phaser.Scene {
 
@@ -145,93 +146,8 @@ export default class ScnLogin extends Phaser.Scene {
             }
         });
 
-        this.shipStats = [
-            {
-                model: "Aegis",
-                manufacturer: "Hapton Industries",
-                logo: "sprLogoHapton",
-                asset: "sprBike00_",
-                description: "The Aegis by Hapton Industries has very good acceleration and speed degrades slowly due to its small aircutting frame.",
-                acceleration: 0.01,
-                spd: 0.32,
-                curveMod: 0.5,
-                slipMax: 0.3,
-                slipZone: 0.5,
-                collisionZone: 0.3,
-                brake: 0.01,
-                rideHeight: 24,
-                pitchMax: 5,
-                pitchMin: -5,
-                energyMax: 100,
-                heatMax: 100,
-                friction: 0.0009,
-                speedDeg: 0.00085,
-                roll: 0.05
-            }, {
-                model: "Dart",
-                manufacturer: "Arashi Corporation",
-                logo: "sprLogoArashi",
-                asset: "sprBike01_",
-                description: "Arashi Corporation built Dart for one thing only: speed.\nIt gets so fast it can get troublesome to get around corners or into another pilots slipstream.",
-                acceleration: 0.008,
-                spd: 0.35,
-                curveMod: 0.49,
-                slipMax: 0.15,
-                slipZone: 0.4,
-                collisionZone: 0.3,
-                brake: 0.01,
-                rideHeight: 24,
-                pitchMax: 5,
-                pitchMin: -5,
-                energyMax: 100,
-                heatMax: 100,
-                friction: 0.001,
-                speedDeg: 0.0011,
-                roll: 0.05
-            }, {
-                model: "Asynch",
-                manufacturer: "Daito",
-                logo: "sprLogoDaito",
-                asset: "sprBike02_",
-                description: "Daito´s Asynch asymmetrical design allows for nimble manoeuveurs and excellent cornering speeds, but the offcenter engine it is hard to control for its pilots.",
-                acceleration: 0.009,
-                spd: 0.34,
-                curveMod: 0.51,
-                slipMax: 0.25,
-                slipZone: 0.5,
-                collisionZone: 0.3,
-                brake: 0.01,
-                rideHeight: 24,
-                pitchMax: 5,
-                pitchMin: -5,
-                energyMax: 100,
-                heatMax: 100,
-                friction: 0.001,
-                speedDeg: 0.0012,
-                roll: 0.06
-            }, {
-                model: "Kite",
-                manufacturer: "Tinnemann",
-                logo: "sprLogoTinnemann",
-                asset: "sprBike03_",
-                description: "Inspired by speedboat racing, Tinnemann´s Kite rides the walls of the loop like it would be water and is sometimes equally sluggish.\nThe Kite profits from slipstreaming and the perfect racing line.",
-                acceleration: 0.008,
-                spd: 0.33,
-                curveMod: 0.52,
-                slipMax: 0.27,
-                slipZone: 0.5,
-                collisionZone: 0.3,
-                brake: 0.01,
-                rideHeight: 24,
-                pitchMax: 5,
-                pitchMin: -5,
-                energyMax: 100,
-                heatMax: 100,
-                friction: 0.0009,
-                speedDeg: 0.00095,
-                roll: 0.04
-            }
-        ]
+        this.shipManager = new ShipManager();
+        this.shipStats = this.shipManager.shipStats;
 
         this.shipSelect = {
             bg: this.add.sprite(-16, 0, "sprSegStartTunnel00", 0),

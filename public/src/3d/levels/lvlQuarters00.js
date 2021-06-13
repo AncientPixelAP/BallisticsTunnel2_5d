@@ -1,32 +1,36 @@
+import PanelElevator from "../../ui/panelElevator.js";
+
 export default class LevelQuarters00{
     constructor(_scene){
         this.scene = _scene;
 
-        this.objects = [];
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
+        this.elevatorBase = this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
             x: 0,
             y: 0,
             z: 0
-        }));
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
+        });
+        this.elevatorBase.flags.draw = true;
+
+        this.elevatorDoorRight = this.scene.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
             x: 8,
             y: 0,
             z: 30
-        }));
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
+        });
+        this.elevatorDoorRight.flags.draw = true;
+
+        this.elevatorDoorLeft = this.scene.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
             x: -8,
             y: 0,
             z: 30
-        }));
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
+        });
+        this.elevatorDoorLeft.flags.draw = true;
+
+        this.btnElevator = this.scene.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
             x: 22,
             y: -22,
             z: 31.95
-        }));
-
-        this.elevatorDoorRight = this.objects[1];
-        this.elevatorDoorLeft = this.objects[2];
-        this.btnElevator = this.objects[3];
+        });
+        this.btnElevator.flags.draw = true;
 
         let _this = this;
 
@@ -61,7 +65,7 @@ export default class LevelQuarters00{
         this.btnElevator.data = {
             open: true
         }
-        this.btnElevator.interact = () => {
+        /*this.btnElevator.interact = () => {
             _this.btnElevator.data.open = !_this.btnElevator.data.open;
             if (_this.btnElevator.data.open === true) {
                 _this.elevatorDoorRight.data.currentPosition = 1;
@@ -71,6 +75,11 @@ export default class LevelQuarters00{
                 _this.elevatorDoorLeft.data.currentPosition = 0;
             }
             _this.elevatorDoorRight.action();
+        }*/
+        this.btnElevator.interactable = true;
+        this.btnElevator.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.INTERACT);
+            this.scene.player.panel = new PanelElevator(this.scene);
         }
     }
 

@@ -1,9 +1,9 @@
 {
-    "title": "The Beggar´s Dream",
+    "title": "Tutorial",
     "cards": [
         {
             "id": 0,
-            "text": "Look around with the mouse and move with WASD",
+            "text": "Look around with the Mouse or the Arrow Keys and move with WASD",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
@@ -13,7 +13,7 @@
             ]
         },{
             "id": 1,
-            "text": "Click the left Mousebutton to interact. A green overlay will show up on interactable objects.",
+            "text": "Use the left Mousebutton to interact. A green overlay will show up on interactable objects.",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
@@ -23,7 +23,7 @@
             ]
         },{
             "id": 2,
-            "text": "Use the panel to your right to skip forward to the hangar and jump into the multiplayer.",
+            "text": "Interct with the panel to your right to skip forward to the hangar and jump into the multiplayer or explore the WIP levels a bit.",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
