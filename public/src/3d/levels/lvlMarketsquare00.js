@@ -1,6 +1,11 @@
+import ElevatorGroup from "../modelGroups/elevator.js";
+
 export default class LevelMarketsquare00{
     constructor(_scene){
         this.scene = _scene;
+
+        this.elevator = new ElevatorGroup(this.scene, this, {x: 256, y: 16, z: -96});
+        this.elevator.setDraw(true);
 
         this.marketsquare = this.scene.geometryController.loadModel("Marketsquare Apartements", "modMarketsquareApartements", {
             x: 0,

@@ -1,30 +1,18 @@
-import PanelElevator from "../../ui/panelElevator.js";
+import ShipManager from "../../shipManager.js";
+import ElevatorGroup from "../modelGroups/elevator.js";
 
 export default class LevelHangar00{
     constructor(_scene){
         this.scene = _scene;
 
+        this.shipManager = new ShipManager();
+        this.shipStats = this.shipManager.shipStats;
+        this.shipSelect = {
+            currentBike: 0,
+            currentLivery: 0
+        }
+
         this.objects = [];
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
-            x: 0,
-            y: 0,
-            z: 0
-        }));
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
-            x: 8,
-            y: 0,
-            z: 30
-        }));
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
-            x: -8,
-            y: 0,
-            z: 30
-        }));
-        this.objects.push(this.scene.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
-            x: 22,
-            y: -22,
-            z: 31.9
-        }));
         this.objects.push(this.scene.geometryController.loadModel("HangarHallway", "modHangarHallway", {
             x: 0,
             y: 0,
@@ -49,7 +37,12 @@ export default class LevelHangar00{
         });
         this.ship.interactable = true;
         this.ship.interact = () => {
-            this.scene.gotoMenu();
+            this.scene.hand.setMouseLock(false);
+            //localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
+            this.scene.scene.start("ScnMain", { 
+                bikeData: this.shipStats[this.shipSelect.currentBike],
+                livery: this.shipSelect.currentLivery
+            });
         }
 
         /*this.btnRacing = this.scene.geometryController.loadModel("btnRacing", "modDebugTile", {
@@ -58,48 +51,8 @@ export default class LevelHangar00{
             z: 256
         });*/
 
-        this.elevatorDoorRight = this.objects[1];
-        this.elevatorDoorLeft = this.objects[2];
-        this.btnElevator = this.objects[3];
-
-        let _this = this;
-
-        this.elevatorDoorRight.data = {
-            positions: [
-                _this.elevatorDoorRight.pos.x,
-                _this.elevatorDoorRight.pos.x + 12
-            ],
-            currentPosition: 1
-        }
-        this.elevatorDoorLeft.data = {
-            positions: [
-                _this.elevatorDoorLeft.pos.x,
-                _this.elevatorDoorLeft.pos.x - 12
-            ],
-            currentPosition: 1
-        }
-        this.elevatorDoorRight.action = () => {
-            _this.elevatorDoorRight.mover.isMoving = true;
-            _this.elevatorDoorRight.mover.target.pos.spd = 0.1;
-            _this.elevatorDoorRight.mover.target.pos.x = _this.elevatorDoorRight.data.positions[_this.elevatorDoorRight.data.currentPosition];
-            _this.elevatorDoorLeft.mover.isMoving = true;
-            _this.elevatorDoorLeft.mover.target.pos.spd = 0.1;
-            _this.elevatorDoorLeft.mover.target.pos.x = _this.elevatorDoorLeft.data.positions[_this.elevatorDoorLeft.data.currentPosition];
-        };
-        this.elevatorDoorLeft.action = () => {
-            _this.elevatorDoorRight.action();
-        }
-        this.elevatorDoorRight.action();
-
-        
-        this.btnElevator.data = {
-            open: true
-        }
-        this.btnElevator.interactable = true;
-        this.btnElevator.interact = () => {
-            this.scene.player.setMode(PLAYERMODE.INTERACT);
-            this.scene.player.panel = new PanelElevator(this.scene);
-        }
+        this.elevator = new ElevatorGroup(this.scene, this, {x: 0, y: 0, z: 0});
+        this.elevator.setDraw(true);
 
         //CHARACTERS
         this.engineer = this.scene.geometryController.loadModel("engineer", "modCharacterEngineer", {

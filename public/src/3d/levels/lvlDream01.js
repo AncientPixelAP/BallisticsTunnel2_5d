@@ -1,4 +1,4 @@
-import PanelElevator from "../../ui/panelElevator.js";
+import ElevatorGroup from "../modelGroups/elevator.js";
 
 export default class LevelDream01{
     constructor(_scene){
@@ -139,70 +139,9 @@ export default class LevelDream01{
             pitch: 0,
             roll: 0
         });*/
-        this.elevator = [];
-        this.elevator.push(this.scene.geometryController.loadModel("ElevatorBase", "modElevatorBase", {
-            x: 108,
-            y: 0,
-            z: -256
-        }));
-        this.elevator.push(this.scene.geometryController.loadModel("ElevatorDoorRight", "modElevatorDoor", {
-            x: 116,
-            y: 0,
-            z: -226
-        }));
-        this.elevator.push(this.scene.geometryController.loadModel("ElevatorDoorLeft", "modElevatorDoor", {
-            x: 100,
-            y: 0,
-            z: -226
-        }));
-        this.elevator.push(this.scene.geometryController.loadModel("ElevatorButton", "modElevatorButton", {
-            x: 130,
-            y: -22,
-            z: -227
-        }));
-        for (let e of this.elevator) {
-            e.flags.draw = !e.flags.draw;
-        }
-        //TODO maybe make own elevator class with context to level that manages all the sub objects
-        //trains could work like that too
-        this.elevatorDoorRight = this.elevator[1];
-        this.elevatorDoorLeft = this.elevator[2];
-        this.btnElevator = this.elevator[3];
-        let _this = this;
-        this.elevatorDoorRight.data = {
-            positions: [
-                _this.elevatorDoorRight.pos.x,
-                _this.elevatorDoorRight.pos.x + 12
-            ],
-            currentPosition: 1
-        }
-        this.elevatorDoorLeft.data = {
-            positions: [
-                _this.elevatorDoorLeft.pos.x,
-                _this.elevatorDoorLeft.pos.x - 12
-            ],
-            currentPosition: 1
-        }
-        this.elevatorDoorRight.action = () => {
-            _this.elevatorDoorRight.mover.isMoving = true;
-            _this.elevatorDoorRight.mover.target.pos.spd = 0.1;
-            _this.elevatorDoorRight.mover.target.pos.x = _this.elevatorDoorRight.data.positions[_this.elevatorDoorRight.data.currentPosition];
-            _this.elevatorDoorLeft.mover.isMoving = true;
-            _this.elevatorDoorLeft.mover.target.pos.spd = 0.1;
-            _this.elevatorDoorLeft.mover.target.pos.x = _this.elevatorDoorLeft.data.positions[_this.elevatorDoorLeft.data.currentPosition];
-        };
-        this.elevatorDoorLeft.action = () => {
-            _this.elevatorDoorRight.action();
-        }
-        this.elevatorDoorRight.action();
-        this.btnElevator.data = {
-            open: true
-        }
-        this.btnElevator.interactable = true;
-        this.btnElevator.interact = () => {
-            this.scene.player.setMode(PLAYERMODE.INTERACT);
-            this.scene.player.panel = new PanelElevator(this.scene);
-        }
+        this.elevator = new ElevatorGroup(this.scene, this, {x: 108, y: 0, z: -256});
+        this.elevator.setDraw(true);
+        console.log(this.elevator);
 
         //uppper level of fake moving train
         this.stairTrainTransition = this.scene.geometryController.loadModel("MetroStairCarriageTransition", "modMetroStairCarriageTransition", {
@@ -358,9 +297,10 @@ export default class LevelDream01{
             this.otherPlatform.flags.draw = !this.otherPlatform.flags.draw;
             this.otherTunnelEntry.flags.draw = !this.otherTunnelEntry.flags.draw;
             //this.stairsT.flags.draw = !this.stairsT.flags.draw;
-            for(let e of this.elevator){
+            /*for(let e of this.elevator){
                 e.flags.draw = !e.flags.draw;
-            }
+            }*/
+            this.elevator.setDraw(!this.elevator.flags.draw);
         }
         this.triggerInit.flags.draw = true;
 
