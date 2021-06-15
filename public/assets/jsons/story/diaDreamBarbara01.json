@@ -3,7 +3,7 @@
     "cards": [
         {
             "id": 0,
-            "text": "In the beginning there was darkness. Then something lit up and illuminated our world, a fire. Our shadows fell onto the walls of the cave we sat in and showed a wild dance.",
+            "text": "In the beginning there was darkness. Then something lit up and illuminated our world. A fire. Our shadows fell onto the walls of the cave we sat in and showed a wild dance.",
             "sprite": "sprCharBarbara",
             "answers": [
                 {
@@ -16,7 +16,7 @@
             ]
         },{
             "id": 1,
-            "text": "Some of tried to move to the dance, but doing so only intensified the movements of the shadows and it got harder and harder to mimic them.", 
+            "text": "Some of us tried to move to the dance, but doing so only intensified the movements of the shadows and it got harder and harder to mimic them.", 
             "sprite": "sprCharBarbara",
             "answers": [
                 {
@@ -36,11 +36,21 @@
             ]
         },{
             "id": 3,
+            "text": "We digged and digged. Further up, leaving the cave behind, which slowly faded from memory, like a dream. Trying to reach the surface.",
+            "sprite": "sprCharBarbara",
+            "answers": [
+                {
+                    "text": "[dig more]",
+                    "actions": "GOTO 4"
+                }
+            ]
+        },{
+            "id": 4,
             "text": "In the beginning there was the tunnel and I, Baraba, swore to protect it.",
             "sprite": "sprCharBarbara",
             "answers": [
                 {
-                    "text": "[burrow]",
+                    "text": "[>>>]",
                     "actions": "SETFILE diaDreamBarbara00 0"
                 }
             ]

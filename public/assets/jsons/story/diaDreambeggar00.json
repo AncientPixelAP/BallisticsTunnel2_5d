@@ -12,7 +12,7 @@
                 },
                 {
                     "text": "I´m not that young actually...",
-                    "actions": "GOTO 2"
+                    "actions": "GOTO 1"
                 },
                 {
                     "text": "[leave]",
@@ -21,17 +21,16 @@
             ]
         },{
             "id": 1,
-            "text": "Spare a coin?",
+            "text": "Are you the technician?",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
                     "text": "Sure.",
-                    "actions": "GOTO 3",
-                    "checkFlag": "dreamcoin"
+                    "actions": "GOTO 6"
                 },
                 {
                     "text": "Nope, sorry.",
-                    "actions": "EXIT"
+                    "actions": "GOTO 4"
                 }
             ]
         },{
@@ -41,7 +40,7 @@
             "answers": [
                 {
                     "text": "Sure.",
-                    "actions": "GOTO 3",
+                    "actions": "GOTO 3 REMOVEFLAG dreamcoin",
                     "checkFlag": "dreamcoin"
                 },
                 {
@@ -56,10 +55,141 @@
             "answers": [
                 {
                     "text": "Take care.",
-                    "actions": "EXIT"
+                    "actions": "GOTO 15 EXIT"
                 },
                 {
                     "text": "Yeah, yeah...",
+                    "actions": "GOTO 15 EXIT"
+                }
+            ]
+        },{
+            "id": 4,
+            "text": "Well what do you do then, here in my station?!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "I don´t know? I am only a pilot.",
+                    "actions": "GOTO 5"
+                }
+            ]
+        },{
+            "id": 5,
+            "text": "A pilot, hm?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Yes.",
+                    "actions": "GOTO 2"
+                }
+            ]
+        },{
+            "id": 6,
+            "text": "Can you stop this bloody train, it´s been bothering me the whole day!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "How would I do that?",
+                    "actions": "GOTO 7"
+                }
+            ]
+        },{
+            "id": 7,
+            "text": "Didn´t you say, you were the technician?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Yes.",
+                    "actions": "GOTO 8"
+                },{
+                    "text": "Um, no?",
+                    "actions": "GOTO 4"
+                }
+            ]
+        },{
+            "id": 8,
+            "text": "I can´t leave this place, look around. Look upstairs.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Thanks.",
+                    "actions": "GOTO 9"
+                }
+            ]
+        },{
+            "id": 9,
+            "text": "By the way, do you have some money?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Sure.",
+                    "actions": "GOTO 3 REMOVEFLAG dreamcoin",
+                    "checkFlag": "dreamcoin"
+                },
+                {
+                    "text": "Nope, sorry.",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 10,
+            "text": "Doesn´t it bother you?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Bother who?",
+                    "actions": "GOTO 11"
+                }
+            ]
+        },{
+            "id": 11,
+            "text": "This bloody train, that won´t stop. It´s bothering me the whole day.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "I just arrived here.",
+                    "actions": "GOTO 12"
+                }
+            ]
+        },{
+            "id": 12,
+            "text": "I don´t care. Make it stop!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "And how would I do that?",
+                    "actions": "GOTO 13"
+                },{
+                    "text": "No reason to shout.",
+                    "actions": "GOTO 14"
+                }
+            ]
+        },{
+            "id": 13,
+            "text": "Don´t know, I can´t leave this place, look around. Look upstairs.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Will do...",
+                    "actions": "GOTO 15 EXIT"
+                }
+            ]
+        },{
+            "id": 14,
+            "text": "Sorry! It´s just... it does not stop. Please make it stop.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Will do...",
+                    "actions": "GOTO 15 EXIT"
+                }
+            ]
+        },{
+            "id": 15,
+            "text": "To the cave, to the cave, to the cavern...",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[leave]",
                     "actions": "EXIT"
                 }
             ]

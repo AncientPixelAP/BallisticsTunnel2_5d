@@ -80,6 +80,24 @@ export default class ElevatorGroup{
         this.flags.draw = _bool;
     }
 
+    setDoor(_bool){
+        let p = 0;
+        if(_bool === true){
+            p = 1;
+        }
+        this.elevatorDoorRight.action = () => {
+            this.elevatorDoorRight.mover.isMoving = true;
+            this.elevatorDoorRight.mover.target.pos.spd = 0.1;
+            this.elevatorDoorRight.mover.target.pos.x = _this.elevatorDoorRight.data.positions[p];
+            this.elevatorDoorLeft.mover.isMoving = true;
+            this.elevatorDoorLeft.mover.target.pos.spd = 0.1;
+            this.elevatorDoorLeft.mover.target.pos.x = _this.elevatorDoorLeft.data.positions[p];
+        };
+        this.elevatorDoorLeft.action = () => {
+            this.elevatorDoorRight.action();
+        }
+    }
+
     update(){
 
     }

@@ -8,10 +8,10 @@
             "answers": [
                 {
                     "text": "[take some]",
-                    "actions": "GOTO 2 SETFLAG dreamcoin"
+                    "actions": "GOTO 2 SETFLAG dreamcoin 1"
                 },{
                     "text": "[take all]",
-                    "actions": "GOTO 1 SETFLAG dreamcoin"
+                    "actions": "GOTO 1 SETFLAG dreamcoin 1"
                 },{
                     "text": "[leave]",
                     "actions": "EXIT"

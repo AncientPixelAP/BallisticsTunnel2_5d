@@ -3,7 +3,7 @@ export default class Flagmanager{
         this.flags = [];
     }
 
-    setFlag(_flagId, _value){
+    setFlag(_flagId, _value = true){
         let f = this.getFlagById(_flagId);
         if(f === null){
             console.log("creating new flag: " + _flagId)
@@ -14,6 +14,7 @@ export default class Flagmanager{
         }else{
             f.value = _value;
         }
+        console.log(this.flags);
     }
 
     getFlagById(_flagId){

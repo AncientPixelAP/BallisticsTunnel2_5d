@@ -2,11 +2,23 @@ let INPUTS = {
     stickLeft: {
         name: "stickLeft",
         horizontal: 0,
-        vertical: 0
+        vertical: 0,
+        asKey: {
+            up: createMyKey("stickLeftUp"),
+            down: createMyKey("stickLeftDown"),
+            right: createMyKey("stickLeftRight"),
+            left: createMyKey("stickLeftLeft"),
+        }
     }, stickRight: {
         name: "stickRight",
         horizontal: 0,
-        vertical: 0
+        vertical: 0,
+        asKey: {
+            up: createMyKey("stickRightUp"),
+            down: createMyKey("stickRightDown"),
+            right: createMyKey("stickRightRight"),
+            left: createMyKey("stickRightLeft"),
+        }
     },
     btnA: createMyKey("btnA"),
     btnB: createMyKey("btnB"),

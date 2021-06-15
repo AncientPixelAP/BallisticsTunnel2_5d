@@ -16,12 +16,65 @@ export default class ConversationManager{
             }
         }
 
+        this.highlightedAnswer = 0;
+        this.usedKeyboard = false;
+        this.cooldown = {
+            current: 0,
+            max: 10
+        }
+
         this.bg = this.scene.add.graphics();
     }
 
     update(){
-        for (let b of this.btnOptions) {
-            b.btn.update();
+        if(this.cooldown.current <= 0){
+            let lit = null;
+            for (let b of this.btnOptions) {
+                b.btn.update();
+                if(b.btn.state === b.btn.states.over){
+                    lit = b;
+                }
+            }
+
+            if(this.btnOptions.length > 0){
+                if(INPUTS.btnUp.justPressed === true || INPUTS.stickLeft.asKey.up.justPressed === true){
+                    this.usedKeyboard = true;
+                    if(lit !== null){
+                        lit.btn.state = lit.btn.states.out;
+                    }
+                    this.btnOptions[this.highlightedAnswer].btn.switchState(this.btnOptions[this.highlightedAnswer].btn.states.out);
+                    this.highlightedAnswer -= 1;
+                }
+                if(INPUTS.btnDown.justPressed === true || INPUTS.stickLeft.asKey.down.justPressed === true){
+                    this.usedKeyboard = true;
+                    if(lit !== null){
+                        lit.btn.state = lit.btn.states.out;
+                    }
+                    this.btnOptions[this.highlightedAnswer].btn.switchState(this.btnOptions[this.highlightedAnswer].btn.states.out);
+                    this.highlightedAnswer += 1;
+                }
+                
+                if(this.scene.hand.mouseMoved === true){
+                    if(lit !== this.btnOptions[this.highlightedAnswer]){
+                        this.btnOptions[this.highlightedAnswer].btn.switchState(this.btnOptions[this.highlightedAnswer].btn.states.out);
+                    }
+                    this.usedKeyboard = false;
+                }
+
+                if(this.usedKeyboard === true){
+                    if(lit !== null){
+                        lit.btn.switchState(lit.btn.states.out);
+                    }
+                    this.highlightedAnswer = Math.max(0, Math.min(this.highlightedAnswer, this.btnOptions.length-1));
+                    this.btnOptions[this.highlightedAnswer].btn.switchState(this.btnOptions[this.highlightedAnswer].btn.states.over);
+                }
+
+                if(INPUTS.btnA.justReleased === true){
+                    this.btnOptions[this.highlightedAnswer].btn.simulateClick();
+                }
+            }
+        }else{
+            this.cooldown.current -= 1;
         }
     }
     
@@ -59,6 +112,9 @@ export default class ConversationManager{
                 });
             }
         }
+
+        this.highlightedAnswer = Math.max(0, Math.min(this.highlightedAnswer, this.btnOptions.length-1));
+        this.cooldown.current = this.cooldown.max;
     }
 
     interpret(_actions) {
@@ -84,6 +140,10 @@ export default class ConversationManager{
             case "SETFLAG":
                 flagManager.setFlag(arr[1], arr[2]);
                 arr.splice(0, 3);
+            break;
+            case "REMOVEFLAG":
+                flagManager.removeFlag(arr[1]);
+                arr.splice(0, 2);
             break;
             default:
                 arr.splice(0, 1);

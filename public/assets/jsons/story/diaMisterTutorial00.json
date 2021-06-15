@@ -3,17 +3,20 @@
     "cards": [
         {
             "id": 0,
-            "text": "Look around with the Mouse or the Arrow Keys and move with WASD",
+            "text": "Look around with the MOUSE or the ARROW KEYS and move with WASD\nClick on an answer below or press ENTER",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
                     "text": "[>>>]",
                     "actions": "GOTO 1"
+                },{
+                    "text": "I am using a gamepad actually... (press A)",
+                    "actions": "GOTO 3"
                 }
             ]
         },{
             "id": 1,
-            "text": "Use the left Mousebutton to interact. A green overlay will show up on interactable objects.",
+            "text": "Use the LEFT MOUSEBUTTON to interact. A green overlay will show up on interactable objects.",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
@@ -23,12 +26,32 @@
             ]
         },{
             "id": 2,
-            "text": "Interct with the panel to your right to skip forward to the hangar and jump into the multiplayer or explore the WIP levels a bit.",
+            "text": "Interact with the panel to your right to skip forward to the hangar and jump into the multiplayer or explore the WIP levels a bit.",
             "sprite": "sprCharBeggar",
             "answers": [
                 {
                     "text": "[>>>]",
                     "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 3,
+            "text": "Look around with the RIGHT STICK and move with the LEFT STICK.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "GOTO 4"
+                }
+            ]
+        },{
+            "id": 4,
+            "text": "Use the A BUTTON to interact. A green overlay will show up on interactable objects.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "GOTO 2"
                 }
             ]
         }

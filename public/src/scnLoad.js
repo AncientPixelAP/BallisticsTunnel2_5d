@@ -392,6 +392,8 @@ export default class ScnLoad extends Phaser.Scene {
         greenscalePipeline.setFloat2('mouse', 0.0, 0.0);
 
 
+        this.warnTxt = this.add.bitmapText(0, (this.game.config.height * -0.5) + 32, "pixelmix", "Loading for the first time can take a while.\nPlease be patient.", 8, 1).setOrigin(0.5);
+
         this.loadTxt = this.add.bitmapText(0, (this.game.config.height * 0.5) - 32, "pixelmix", "LOADING: 0%", 8, 1).setOrigin(0.5);
         this.ancient = this.add.sprite(0, 0, "sprPixelMan").setScale(2);
         this.pixel = this.add.sprite(0, -48, "sprPixelTurn").setScale(2);

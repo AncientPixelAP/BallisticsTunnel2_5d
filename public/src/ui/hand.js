@@ -7,6 +7,7 @@ export default class Hand{
         this.justReleased = false;
 
         this.mouselock = false;
+        this.mouseMoved = false;
 
         this.sensitivity = window.innerHeight / 512;
 
@@ -46,15 +47,15 @@ export default class Hand{
 
         if (this.scene.input.mouse.locked === true) {
             //if (this.scene.input.activePointer.moveTime+60 >= this.scene.data.systems.time.now) {
-            if (this.scene.input.activePointer.movementX - this.movementPrev.x != 0 || this.scene.input.activePointer.movementY - this.movementPrev.y){
+            if (this.scene.input.activePointer.movementX - this.movementPrev.x != 0 || this.scene.input.activePointer.movementY - this.movementPrev.y != 0){
                 //this.vel.x = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementX));
                 //this.vel.y = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementY));
-                this.vel.x = Math.max(-4, Math.min(4, this.scene.input.activePointer.movementX));
-                this.vel.y = Math.max(-4, Math.min(4, this.scene.input.activePointer.movementY));
+                this.vel.x = Math.max(-8, Math.min(8, this.scene.input.activePointer.movementX));
+                this.vel.y = Math.max(-8, Math.min(8, this.scene.input.activePointer.movementY));
             }else{
                 if (gamepadsConnected > 0) {
-                    this.vel.x = Math.abs(INPUTS.stickRight.horizontal) > 0.1 ? INPUTS.stickRight.horizontal : 0;
-                    this.vel.y = Math.abs(INPUTS.stickRight.vertical) > 0.1 ? INPUTS.stickRight.vertical : 0;
+                    this.vel.x = Math.abs(INPUTS.stickRight.horizontal) > 0.1 ? INPUTS.stickRight.horizontal * 4 : 0;
+                    this.vel.y = Math.abs(INPUTS.stickRight.vertical) > 0.1 ? INPUTS.stickRight.vertical * 2 : 0;
                 }
             }
         }
@@ -82,6 +83,10 @@ export default class Hand{
                 this.justReleased = false;
             }
         }
+
+        if (this.pos.x - this.prev.x != 0 || this.pos.y - this.prev.y != 0){
+            this.mouseMoved = true;
+        }
     }
 
     lateUpdate(){
@@ -91,12 +96,14 @@ export default class Hand{
         this.prev.y = this.scene.input.activePointer.worldY;
         this.movementPrev.x = this.scene.input.activePointer.movementX;
         this.movementPrev.y = this.scene.input.activePointer.movementY;
+        this.mouseMoved = false;
     }
 
     reset(){
         this.pressed = false;
         this.justReleased = false;
         this.justPressed = false;
+        this.mouseMoved = false;
     }
 
     setMouseLock(_bool){
