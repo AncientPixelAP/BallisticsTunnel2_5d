@@ -35,7 +35,8 @@ export default class ConversationOption{
 
     update(){
         
-        if(this.rect.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)){
+        //if(this.rect.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)){
+        if(this.rect.getBounds().contains(this.scene.hand.pos.x, this.scene.hand.pos.y)){
             if(this.scene.hand.pressed === false){
                 if(this.active === false){
                     this.switchState(this.states.over);

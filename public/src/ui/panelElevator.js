@@ -28,7 +28,16 @@ export default class PanelElevator{
             this.destroy();
         });
 
-        this.btnLounge = new Button(this.scene, { x: 160, y: -33 }, "sprBtn00", "LOUNGE", false, () => {
+        this.btnQuarters = new Button(this.scene, { x: 160, y: -33 }, "sprBtn00", "QUARTERS", false, () => {
+            this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            this.scene.loadLevel("quarters00");
+
+            this.scene.player.setMode(PLAYERMODE.LOOK);
+            this.scene.player.panel = null;
+            this.destroy();
+        });
+
+        this.btnLounge = new Button(this.scene, { x: 160, y: 0 }, "sprBtn00", "LOUNGE", false, () => {
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             this.scene.loadLevel("marketsquare00");
 
@@ -37,7 +46,7 @@ export default class PanelElevator{
             this.destroy();
         });
 
-        this.btnSocial = new Button(this.scene, { x: 160, y: 0 }, "sprBtn00", "SOCIAL", false, () => {
+        this.btnSocial = new Button(this.scene, { x: 160, y: 33 }, "sprBtn00", "MARKET", false, () => {
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             this.scene.loadLevel("marketsquare00");
 
@@ -46,9 +55,18 @@ export default class PanelElevator{
             this.destroy();
         });
 
-        this.btnHangar = new Button(this.scene, { x: 160, y: 33 }, "sprBtn00", "HANGAR", false, () => {
+        this.btnHangar = new Button(this.scene, { x: 160, y: 66 }, "sprBtn00", "HANGAR", false, () => {
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             this.scene.loadLevel("hangar00");
+
+            this.scene.player.setMode(PLAYERMODE.LOOK);
+            this.scene.player.panel = null;
+            this.destroy();
+        });
+
+        this.btnPower = new Button(this.scene, { x: 160, y: 99 }, "sprBtn00", "POWER", false, () => {
+            //this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            //this.scene.loadLevel("hangar00");
 
             this.scene.player.setMode(PLAYERMODE.LOOK);
             this.scene.player.panel = null;
@@ -72,9 +90,11 @@ export default class PanelElevator{
         this.btnBack.update();
         //this.btnDream.update();
         this.btnAdmin.update();
+        this.btnQuarters.update();
         this.btnLounge.update();
         this.btnSocial.update();
         this.btnHangar.update();
+        this.btnPower.update();
     }
 
     destroy(){
@@ -83,8 +103,10 @@ export default class PanelElevator{
         this.btnBack.destroy();
         //this.btnDream.destroy();
         this.btnAdmin.destroy();
+        this.btnQuarters.destroy();
         this.btnLounge.destroy();
         this.btnSocial.destroy();
         this.btnHangar.destroy();
+        this.btnPower.destroy();
     }
 }

@@ -277,6 +277,26 @@ export default class LevelDream01{
         this.hooman.flags.is8way = true;
         //this.hooman.lookDir.yaw = 0;
 
+        this.lara = this.scene.geometryController.loadModel("Lara", "modCharacterTurnaroundLara", {
+            x: -8,
+            y: 0,
+            z: 274
+        });
+        this.lara.setDrawMode(DRAWMODE.BILLBOARD);
+        this.lara.flags.draw = true;
+        this.lara.flags.is8way = true;
+        this.lara.lookDir.yaw = Math.PI;
+
+        this.moritz = this.scene.geometryController.loadModel("Moritz", "modCharacterTurnaroundMoritz", {
+            x: 10,
+            y: 0,
+            z: 274
+        });
+        this.moritz.setDrawMode(DRAWMODE.BILLBOARD);
+        this.moritz.flags.draw = true;
+        this.moritz.flags.is8way = true;
+        this.moritz.lookDir.yaw = Math.PI;
+
         //TRIGGERS
         this.barbara.flags.draw = true;
         this.beggar.flags.draw = true;

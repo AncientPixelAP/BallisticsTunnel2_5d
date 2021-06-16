@@ -55,7 +55,8 @@ export class SliderHorizontal{
     }
 
     update() {
-        if (this.slider.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)) {
+        //if (this.slider.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)) {
+        if (this.slider.getBounds().contains(this.scene.hand.pos.x, this.scene.hand.pos.y)) {
             if (this.scene.hand.pressed === false) {
                 this.switchState(this.states.over);
                 this.active = false;
@@ -102,7 +103,8 @@ export class SliderHorizontal{
         }
 
         if (this.sliderTarget.follow === true) {
-            this.sliderPos.x = Math.min(this.sliderEndRight.x - this.margin, Math.max(this.scene.input.activePointer.worldX, this.sliderEndLeft.x + this.margin));
+            //this.sliderPos.x = Math.min(this.sliderEndRight.x - this.margin, Math.max(this.scene.input.activePointer.worldX, this.sliderEndLeft.x + this.margin));
+            this.sliderPos.x = Math.min(this.sliderEndRight.x - this.margin, Math.max(this.scene.hand.pos.x, this.sliderEndLeft.x + this.margin));
             this.slider.x = this.sliderPos.x;
         } else {
             if (this.autoReturn === true) {
@@ -238,7 +240,8 @@ export class SliderVertical {
     }
 
     update(){
-        if (this.slider.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)) {
+        //if (this.slider.getBounds().contains(this.scene.input.activePointer.worldX, this.scene.input.activePointer.worldY)) {
+        if (this.slider.getBounds().contains(this.scene.hand.pos.x, this.scene.hand.pos.y)) {
             if (this.scene.hand.pressed === false) {
                 this.switchState(this.states.over);
                 this.active = false;
@@ -285,7 +288,8 @@ export class SliderVertical {
         }
         
         if(this.sliderTarget.follow === true){
-            this.sliderPos.y = Math.min(this.sliderEndBottom.y - this.margin, Math.max(this.scene.input.activePointer.worldY, this.sliderEndTop.y + this.margin));
+            //this.sliderPos.y = Math.min(this.sliderEndBottom.y - this.margin, Math.max(this.scene.input.activePointer.worldY, this.sliderEndTop.y + this.margin));
+            this.sliderPos.y = Math.min(this.sliderEndBottom.y - this.margin, Math.max(this.scene.hand.pos.y, this.sliderEndTop.y + this.margin));
             this.slider.y = this.sliderPos.y;
         }else{
             if(this.autoReturn === true){

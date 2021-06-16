@@ -55,7 +55,7 @@ export default class ConversationManager{
                 }
                 
                 if(this.scene.hand.mouseMoved === true){
-                    if(lit !== this.btnOptions[this.highlightedAnswer]){
+                    if(lit !== this.btnOptions[this.highlightedAnswer] && lit !== null){
                         this.btnOptions[this.highlightedAnswer].btn.switchState(this.btnOptions[this.highlightedAnswer].btn.states.out);
                     }
                     this.usedKeyboard = false;

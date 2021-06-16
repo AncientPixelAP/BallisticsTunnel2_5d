@@ -43,8 +43,8 @@ export default class MovingGrid{
         this.highlight.clear();
         this.highlight.lineStyle(1, 0x00ff00);
         let lx = Math.floor(this.size.x / this.cellSize);
-        let mx = this.scene.input.activePointer.worldX + (this.scene.game.config.width * 0.5) - 16;
-        let my = this.scene.input.activePointer.worldY + (this.scene.game.config.height * 0.5) - 16;
+        let mx = this.scene.hand.pos.x + (this.scene.game.config.width * 0.5) - 16;
+        let my = this.scene.hand.pos.y + (this.scene.game.config.height * 0.5) - 16;
         let xx = Math.floor(mx / this.cellSize);
         let yy = Math.floor(my / this.cellSize);
         let id = Math.max(0, Math.min((yy * lx) + xx, this.points.length-1));

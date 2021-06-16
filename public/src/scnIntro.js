@@ -21,6 +21,19 @@ export default class ScnIntro extends Phaser.Scene {
         this.top = this.game.config.height * -0.5;
         this.bottom = this.game.config.height * 0.5;
 
+        this.keys = {
+            space: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE),
+            ctrl: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.CTRL),
+            shift: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT),
+            alt: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ALT),
+            end: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.END),
+            del: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DELETE),
+            tab: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TAB),
+            enter: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER),
+            escape: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESCAPE),
+            backspace: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.BACKSPACE),
+        }
+
         this.pos = {
             x: 0,
             y: this.game.config.height,
@@ -79,12 +92,22 @@ export default class ScnIntro extends Phaser.Scene {
             }, this);
         });
 
+        this.btnSkip = new Button(this, { x: -160, y: - 33 }, "sprBtn00", "SKIP", false, () => {
+            this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
+                if (_pct >= 1) {
+                    this.gotoGame();
+                }
+            }, this);
+        });
+
         //STORYBITS
         this.story = {
             currentBit: 0,
             previousBit: -1,
             bits: [
                 {
+                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "click to begin", 8, 1).setOrigin(0.5),
+                }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "The world is dying.", 8, 1).setOrigin(0.5),
                 }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "We are dying.", 8, 1).setOrigin(0.5),
@@ -135,8 +158,10 @@ export default class ScnIntro extends Phaser.Scene {
     }
 
     update(){
+        this.fillInputs();
         this.hand.update();
         this.btnBack.update();
+        this.btnSkip.update();
 
         if (this.story.currentBit < this.story.bits.length) {
             this.story.bits[this.story.currentBit].txt.x = this.pos.in.x + 64;
@@ -155,7 +180,7 @@ export default class ScnIntro extends Phaser.Scene {
             }
         }
 
-        if (this.hand.justReleased === true && this.tweenOut.isPlaying() === false){
+        if ((this.hand.justReleased === true || INPUTS.btnA.justReleased === true) && this.tweenOut.isPlaying() === false){
             if(this.story.currentBit < this.story.bits.length){
                 this.story.currentBit += 1;
                 this.story.previousBit += 1;
@@ -171,11 +196,70 @@ export default class ScnIntro extends Phaser.Scene {
                 this.tweenOut.updateTo("x", this.target.out.x, false);
                 this.tweenOut.updateTo("y", this.target.out.y, false);
                 this.tweenOut.restart();
+
+                if(this.story.currentBit === this.story.bits.length){
+                    this.gotoGame();
+                }
+            }else{
+                this.gotoGame();
             }
+        }
+
+        if(INPUTS.btnB.justReleased === true){
+            this.gotoMenu();
         }
     }
 
     gotoMenu(){
         this.scene.start("ScnLogin");
+    }
+
+    gotoGame(){
+        this.scene.start("Scn3d");
+    }
+
+    fillInputs(){
+        let gamepad = null;
+        gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
+        if (gamepad === undefined) {
+            gamepad = null;
+        }
+
+        //A
+        if (this.keys.enter.isDown || (gamepad !== null ? gamepad.buttons[0].pressed : false)) {
+            if (INPUTS.btnA.pressed === false) {
+                INPUTS.btnA.justPressed = true;
+                INPUTS.btnA.pressed = true;
+                INPUTS.btnA.justReleased = false;
+            } else {
+                INPUTS.btnA.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnA.pressed === true) {
+                INPUTS.btnA.pressed = false;
+                INPUTS.btnA.justReleased = true;
+                INPUTS.btnA.justPressed = false;
+            } else {
+                INPUTS.btnA.justReleased = false;
+            }
+        }
+        //B
+        if (this.keys.backspace.isDown || (gamepad !== null ? gamepad.buttons[1].pressed : false)) {
+            if (INPUTS.btnB.pressed === false) {
+                INPUTS.btnB.justPressed = true;
+                INPUTS.btnB.pressed = true;
+                INPUTS.btnB.justReleased = false;
+            } else {
+                INPUTS.btnB.justPressed = false;
+            }
+        } else {
+            if (INPUTS.btnB.pressed === true) {
+                INPUTS.btnB.pressed = false;
+                INPUTS.btnB.justReleased = true;
+                INPUTS.btnB.justPressed = false;
+            } else {
+                INPUTS.btnB.justReleased = false;
+            }
+        }
     }
 }

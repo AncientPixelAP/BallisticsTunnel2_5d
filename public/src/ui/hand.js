@@ -37,6 +37,16 @@ export default class Hand{
             y: 0
         }
 
+        this.magnet = {
+            pos: {
+                x: 0,
+                y: 0
+            },
+            len: 0
+        }
+
+        //this.sprPos = this.scene.add.sprite(0, 0, "sprUiCrosshairUse");
+
         //is set in game config, but maybe needs to be reset by a player in the options
         //this.scene.input.activePointer.smoothFactor = 0.2;
     }
@@ -45,8 +55,19 @@ export default class Hand{
         this.pos.x = this.scene.input.activePointer.worldX;
         this.pos.y = this.scene.input.activePointer.worldY;
 
+        /*if(this.scene.input.activePointer.velocity.x != 0 || this.scene.input.activePointer.velocity.y != 0){
+            this.pos.x = this.scene.input.activePointer.worldX;
+            this.pos.y = this.scene.input.activePointer.worldY;
+        }else{
+            console.log("use stick now")
+            this.pos.x += INPUTS.stickLeft.horizontal;
+            this.pos.y += INPUTS.stickLeft.vertical;
+        }*/
+
+
+
         if (this.scene.input.mouse.locked === true) {
-            //if (this.scene.input.activePointer.moveTime+60 >= this.scene.data.systems.time.now) {
+            //if (this.scene.input.activePointer.moveTime+10 >= this.scene.data.systems.time.now) {
             if (this.scene.input.activePointer.movementX - this.movementPrev.x != 0 || this.scene.input.activePointer.movementY - this.movementPrev.y != 0){
                 //this.vel.x = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementX));
                 //this.vel.y = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementY));
@@ -87,13 +108,16 @@ export default class Hand{
         if (this.pos.x - this.prev.x != 0 || this.pos.y - this.prev.y != 0){
             this.mouseMoved = true;
         }
+
+        //this.sprPos.x = this.pos.x;
+        //this.sprPos.y = this.pos.y;
     }
 
     lateUpdate(){
         this.vel.x = 0;
         this.vel.y = 0;
-        this.prev.x = this.scene.input.activePointer.worldX;
-        this.prev.y = this.scene.input.activePointer.worldY;
+        this.prev.x = this.pos.x;//this.scene.input.activePointer.worldX;
+        this.prev.y = this.pos.y;//this.scene.input.activePointer.worldY;
         this.movementPrev.x = this.scene.input.activePointer.movementX;
         this.movementPrev.y = this.scene.input.activePointer.movementY;
         this.mouseMoved = false;
