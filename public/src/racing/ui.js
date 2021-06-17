@@ -440,7 +440,7 @@ class Tacho{
         this.textWrap.slp.x = this.pos.x;
 
         let res = 1 - this.scene.player.spdMax;
-        this.resTxt.setText("RES " + String(res.toFixed(2)) + "    NRG " + zeroPad(this.scene.player.energy, 3));
+        this.resTxt.setText("RES " + String(res.toFixed(2)) + "    NRG " + zeroPad(Math.floor(this.scene.player.energy), 3));
         if (res >= 0.70) {
             if (this.overRes === false) {
                 this.overRes = true;

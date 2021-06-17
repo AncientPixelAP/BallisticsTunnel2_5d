@@ -1,0 +1,114 @@
+{
+    "title": "Grunts",
+    "cards": [
+        {
+            "id": 0,
+            "text": "This is the drivers lounge, do you want a challenge? I could challenge you!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "No thanks!",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 1,
+            "text": "Welcome to the Red Herring, the drivers lounge!",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Can I get a coffee?",
+                    "actions": "GOTO 2"
+                }
+            ]
+        },{
+            "id": 2,
+            "text": "I am sorry, we are out of coffee machines momentarily.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Ok, thanks, nevermind.",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 3,
+            "text": "Look who is here? Still no contract at Tinnemann?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Nope Moritz and I don´t want one.",
+                    "actions": "GOTO 4"
+                }
+            ]
+        },{
+            "id": 4,
+            "text": "Whatever, scrub toilets then.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "...",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 5,
+            "text": "Welcome to the heart of this complex, here you can buy parts, chat with the other drivers and advance the plot - eventually.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "On that, do you have a HX-120?",
+                    "actions": "GOTO 7",
+                    "checkFlag": "questOne"
+                },{
+                    "text": "On that, do you have a HX-850?",
+                    "actions": "GOTO 8",
+                    "checkFlag": "questOne"
+                },{
+                    "text": "So this will be some kind of hub, got it.",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 6,
+            "text": "Check your mail, chat with friends and family. This is your only connection to the world outside this facility.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 7,
+            "text": "A 120? You sure? I thought Hank ordered a 850?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Ah, yes, he said HX-850",
+                    "actions": "GOTO 8"
+                }
+            ]
+        },{
+            "id": 8,
+            "text": "There you go.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Umph, heavy - thanks.",
+                    "actions": "SETFLAG questTwo REMOVEFLAG questOne GOTO 9"
+                }
+            ]
+        },{
+            "id": 9,
+            "text": "Don´t complain. You´ve got no big pockets for nothing.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "See you.",
+                    "actions": "EXIT"
+                }
+            ]
+        }
+    ]
+}

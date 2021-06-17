@@ -267,7 +267,7 @@ export default class LevelDream01{
             this.scene.player.conversationManager.setConversation(this.barbara.data.conversation.fileName, this.barbara.data.conversation.treePosition);
         }
 
-        this.hooman = this.scene.geometryController.loadModel("turnAroundTest", "modCharacterTurnaroundTest", {
+        /*this.hooman = this.scene.geometryController.loadModel("turnAroundTest", "modCharacterTurnaroundTest", {
             x: 16,
             y: 0,
             z: 180
@@ -295,23 +295,22 @@ export default class LevelDream01{
         this.moritz.setDrawMode(DRAWMODE.BILLBOARD);
         this.moritz.flags.draw = true;
         this.moritz.flags.is8way = true;
-        this.moritz.lookDir.yaw = Math.PI;
+        this.moritz.lookDir.yaw = Math.PI;*/
 
         //TRIGGERS
         this.barbara.flags.draw = true;
         this.beggar.flags.draw = true;
-        this.hooman.flags.draw = true;
         this.model.flags.draw = true;
         this.model1.flags.draw = true;
 
 
 
-        this.triggerInit = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
-            x: 0,
-            y: 0,
+        this.triggerInit = this.scene.geometryController.loadModel("doorTrigger", "modTriggerWall1x1", {
+            x: -38,
+            y: 16,
             z: 64
         });
-        this.triggerInit.scale({x: 36, y: 32, z: 4})
+        this.triggerInit.scale({x: 96, y: 64, z: 1})
         this.triggerInit.trigger.isTrigger = true;
         this.triggerInit.trigger.onEnter = () => {
             this.otherPlatform.flags.draw = !this.otherPlatform.flags.draw;
@@ -322,16 +321,16 @@ export default class LevelDream01{
             }*/
             this.elevator.setDraw(!this.elevator.flags.draw);
         }
-        this.triggerInit.flags.draw = true;
+        //this.triggerInit.flags.draw = true;
 
 
 
-        this.triggerStairsBottom = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+        this.triggerStairsBottom = this.scene.geometryController.loadModel("doorTrigger", "modTriggerWall1x1", {
             x: 0,
             y: 0,
             z: 768
         });
-        this.triggerStairsBottom.scale({x: 36, y: 32, z: 4})
+        this.triggerStairsBottom.scale({x: 36, y: 32, z: 1})
         this.triggerStairsBottom.trigger.isTrigger = true;
         this.triggerStairsBottom.trigger.onEnter = () => {
             for(let t of this.tunnelMoving){
@@ -347,12 +346,12 @@ export default class LevelDream01{
         }
 
 
-        this.triggerStairsTop = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+        this.triggerStairsTop = this.scene.geometryController.loadModel("doorTrigger", "modTriggerWall1x1", {
             x: 0,
             y: -48,
             z: 1243
         });
-        this.triggerStairsTop.scale({ x: 36, y: 32, z: 4 })
+        this.triggerStairsTop.scale({ x: 36, y: 32, z: 1 })
         this.triggerStairsTop.trigger.isTrigger = true;
         this.triggerStairsTop.trigger.onEnter = () => {
             this.model.flags.draw = !this.model.flags.draw;
@@ -372,7 +371,7 @@ export default class LevelDream01{
             y: 16,
             z: -208
         });
-        this.triggerTrainRun.flags.draw = true;
+        //this.triggerTrainRun.flags.draw = true;
         this.triggerTrainRun.scale({ x: 36, y: 32, z: 4 })
         this.triggerTrainRun.trigger.isTrigger = true;
         this.triggerTrainRun.trigger.onEnter = () => {
@@ -394,13 +393,13 @@ export default class LevelDream01{
             }
         }
 
-        this.triggerShips = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+        this.triggerShips = this.scene.geometryController.loadModel("doorTrigger", "modTriggerWall1x1", {
             x: -82,
             y: 16,
             z: -800
         });
-        this.triggerShips.flags.draw = true;
-        this.triggerShips.scale({ x: 36, y: 32, z: 8 })
+        //this.triggerShips.flags.draw = true;
+        this.triggerShips.scale({ x: 36, y: 32, z: 1 })
         this.triggerShips.trigger.isTrigger = true;
         this.triggerShips.trigger.onEnter = () => {
             if(this.state !== 2){
@@ -444,17 +443,18 @@ export default class LevelDream01{
             }
         }
 
-        this.triggerForest = this.scene.geometryController.loadModel("doorTrigger", "modTrigger1x1", {
+        this.triggerForest = this.scene.geometryController.loadModel("doorTrigger", "modTriggerWall1x1", {
             x: -82,
             y: 16,
             z: -1188
         });
-        this.triggerForest.flags.draw = true;
-        this.triggerForest.scale({ x: 36, y: 32, z: 8 })
+        //this.triggerForest.flags.draw = true;
+        this.triggerForest.scale({ x: 36, y: 32, z: 1 })
         this.triggerForest.trigger.isTrigger = true;
         this.triggerForest.trigger.onEnter = () => {
             this.state = 2;
-            console.log("trigger forest section")
+            this.scene.player.jumpToPosition({ x: -135, y: 0, z: 156 });
+            this.scene.loadLevel("quarters01");
         }
 
         /*this.levelTrigger = this.scene.geometryController.loadModel("levelTrigger", "modTrigger64x64", {

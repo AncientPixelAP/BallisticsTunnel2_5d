@@ -70,7 +70,14 @@ export default class Editor {
                 "texContainerBrownDoor00"
             ],[
                 "sprDebugTexture",
+                "sprNeonArrow00_0",
+                "sprNeonArrow01_0",
+                "sprNeonArrow02_0",
+                "sprNeonArrow03_0",
                 "sprLogoArashi",
+                "sprLogoDaito",
+                "sprLogoHapton",
+                "sprLogoTinnemann",
                 "sprAdvertTeamArashi",
                 "texAdvertNutricubes00",
                 "texPainting16x16Dart",
@@ -167,6 +174,7 @@ export default class Editor {
             max: 16,
             txt: this.scene.add.bitmapText((this.scene.game.config.width * 0.5) - 16, (this.scene.game.config.height * -0.5) + 16, "bravenewEra_16", "grid: 4.00", 16, 1).setOrigin(1, 0).setLetterSpacing(1)
         }
+        this.grid.txt.alpha = 0;
         
 
         //setup Editor key grabs

@@ -8,7 +8,8 @@ export default class Button{
         this.colors = {
             out: 0xfff1e8,
             over: 0x29adff,
-            on: 0x00e436
+            on: 0x00e436,
+            off: 0xad2900
         }
 
         this.states = {
@@ -99,6 +100,10 @@ export default class Button{
             break;
             case this.states.on:
                 this.sprite.setTintFill(this.colors.on);
+                this.txt.setTintFill(this.colors.out);
+            break;
+            case this.states.off:
+                this.sprite.setTintFill(this.colors.off);
                 this.txt.setTintFill(this.colors.out);
             break;
             default:

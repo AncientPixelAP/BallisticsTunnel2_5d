@@ -16,6 +16,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("diaDreamBeggar00", "jsons/story/diaDreamBeggar00.json");
         this.load.json("diaDreamBarbara00", "jsons/story/diaDreamBarbara00.json");
         this.load.json("diaDreamBarbara01", "jsons/story/diaDreamBarbara01.json");
+        this.load.json("diaHangarMechanic00", "jsons/story/diaHangarMechanic00.json");
+        this.load.json("diaInfogrunts00", "jsons/story/diaInfogrunts00.json");
 
         //models
         this.load.json("modDebugTile", "jsons/models/debugTile.json");
@@ -25,6 +27,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modElevatorButton", "jsons/models/elevatorButton.json");
         this.load.json("modElevatorDoor", "jsons/models/elevatorDoor.json");
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
+        this.load.json("modHangarComputer", "jsons/models/hangarComputer.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
         //SHIPS
         this.load.json("modShipHamptonAegis", "jsons/models/ships/shipHamptonAegis.json");
@@ -37,6 +40,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
         this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");
         this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
+        this.load.json("modTriggerWall1x1", "jsons/models/triggerWall1x1.json");
         this.load.json("modTrigger1x1", "jsons/models/trigger1x1.json");
         this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
         this.load.json("modPowerGeneratorTurbine", "jsons/models/powerGeneratorTurbine.json");
@@ -60,6 +64,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modMetroCarriageControls", "jsons/models/dream/metroCarriageControls.json");
         this.load.json("modMetroStairCarriageTransition", "jsons/models/dream/metroStairCarriageTransition.json");
         //marketsquare
+        this.load.json("modElevatorRoom", "jsons/models/marketsquare/elevatorRoom.json");
+        this.load.json("modMarketStaircase", "jsons/models/marketsquare/marketStaircase.json");
         this.load.json("modMarketsquareApartements", "jsons/models/marketsquare/marketsquareApartements.json");
         this.load.json("modPlayerApartement", "jsons/models/marketsquare/playerApartement.json");
         this.load.json("modLounge", "jsons/models/marketsquare/lounge.json");

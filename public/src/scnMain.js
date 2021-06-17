@@ -439,20 +439,20 @@ export default class ScnMain extends Phaser.Scene {
                         this.player.heat -= 0.1;
                     }else{
                         this.player.heat -= modify * 0.1;
-                        scrape = true;
+                        //scrape = true;
                     }
                 } else if (modify > 0){//curve up
                     if (this.player.pitch * -1 < modify) {
                         //console.log("SCRAPING FLOOR");
                         this.player.heat += modify * 0.1;
-                        scrape = true;
+                        //scrape = true;
                     } else {
                         this.player.heat -= 0.1;
                     }
                 }else{
                     if (this.player.pitch * -1 < modify) {
                         this.player.heat += modify * 0.1;
-                        scrape = true;
+                        //scrape = true;
                     } else {
                         this.player.heat -= 0.1;
                     }
@@ -474,6 +474,9 @@ export default class ScnMain extends Phaser.Scene {
                         this.player.spdMax = 0;
                         //console.log("OUT OF ENERGY");
                     }
+                    this.cameras.main.shake(125, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, (_cam, _pct) => {
+                        
+                    }, this);
                 }else{
                     this.player.energy = Math.min(this.player.stats.energyMax, this.player.energy + 1);
                 }

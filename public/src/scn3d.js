@@ -10,6 +10,7 @@ import LevelDream01 from "./3d/levels/lvlDream01.js";
 import LevelMarketsquare00 from "./3d/levels/lvlMarketsquare00.js"
 //import LevelPlayerApartement00 from "./3d/levels/lvlPlayerApartement00.js"
 import LevelQuarters00 from "./3d/levels/lvlQuarters00.js"
+import LevelQuarters01 from "./3d/levels/lvlQuarters01.js";
 import LevelModelbuilder from "./3d/levels/lvlModelbuilder.js";
 
 export default class Scn3d extends Phaser.Scene {
@@ -126,6 +127,7 @@ export default class Scn3d extends Phaser.Scene {
 
         this.modelName = "";
         this.debugTxt = this.add.bitmapText((this.game.config.width * -0.5) + 16, (this.game.config.height * -0.5) + 16, "bravenewEra_16", "", 16, 1).setOrigin(0).setLetterSpacing(1);
+        this.debugTxt.alpha = 0;
     }
 
     update(){
@@ -469,6 +471,9 @@ export default class Scn3d extends Phaser.Scene {
             break;
             case "quarters00":
                 this.level = new LevelQuarters00(this);
+            break;
+            case "quarters01":
+                this.level = new LevelQuarters01(this);
             break;
             case "marketsquare00":
                 this.level = new LevelMarketsquare00(this);

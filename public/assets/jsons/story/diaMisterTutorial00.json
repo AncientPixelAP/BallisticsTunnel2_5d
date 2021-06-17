@@ -7,11 +7,11 @@
             "sprite": "sprCharBeggar",
             "answers": [
                 {
-                    "text": "[>>>]",
-                    "actions": "GOTO 1"
-                },{
                     "text": "I am using a gamepad actually... (press A)",
                     "actions": "GOTO 3"
+                },{
+                    "text": "[>>>]",
+                    "actions": "GOTO 1"
                 }
             ]
         },{
@@ -52,6 +52,59 @@
                 {
                     "text": "[>>>]",
                     "actions": "GOTO 2"
+                }
+            ]
+        },{
+            "id": 5,
+            "text": "Wakey wakey mon ami.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Ugh.",
+                    "actions": "GOTO 6"
+                }
+            ]
+        },{
+            "id": 6,
+            "text": "I cannot see you over the interom, but you sound like you still have your eyes closed.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "No, no, I am awake.",
+                    "actions": "GOTO 7"
+                }
+            ]
+        },{
+            "id": 7,
+            "text": "Good. Listen. I need a HX-850 from Van Deen. Be a dear, pick it up from the market and bring it to me.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Mmmh, new parts! Can do!",
+                    "actions": "SETFLAG questOne 1 GOTO 9"
+                },{
+                    "text": "Where should I bring it to?",
+                    "actions": "SETFLAG questOne 1 GOTO 8"
+                }
+            ]
+        },{
+            "id": 8,
+            "text": "You are still sleeping aren´t you? To ME in the Hangar. As if I could run away somehow...",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Yes yes, sorry.",
+                    "actions": "GOTO 9"
+                }
+            ]
+        },{
+            "id": 9,
+            "text": "Take your time.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "EXIT"
                 }
             ]
         }

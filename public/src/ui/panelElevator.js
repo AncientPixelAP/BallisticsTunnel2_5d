@@ -47,7 +47,7 @@ export default class PanelElevator{
         });
 
         this.btnSocial = new Button(this.scene, { x: 160, y: 33 }, "sprBtn00", "MARKET", false, () => {
-            this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
+            this.scene.player.jumpToPosition({x: 256, y: 16, z: -96});
             this.scene.loadLevel("marketsquare00");
 
             this.scene.player.setMode(PLAYERMODE.LOOK);
@@ -73,6 +73,10 @@ export default class PanelElevator{
             this.destroy();
         });
 
+        this.btnAdmin.switchState(this.btnAdmin.states.off);
+        this.btnLounge.switchState(this.btnLounge.states.off);
+        this.btnPower.switchState(this.btnPower.states.off);
+
         /*this.btnDream = new Button(this.scene, { x: 160, y: -66 }, "sprBtn00", "DREAM", false, () => {
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
             this.scene.loadLevel("dream00");
@@ -89,12 +93,12 @@ export default class PanelElevator{
 
         this.btnBack.update();
         //this.btnDream.update();
-        this.btnAdmin.update();
+        //this.btnAdmin.update();
         this.btnQuarters.update();
-        this.btnLounge.update();
+        //this.btnLounge.update();
         this.btnSocial.update();
         this.btnHangar.update();
-        this.btnPower.update();
+        //this.btnPower.update();
     }
 
     destroy(){

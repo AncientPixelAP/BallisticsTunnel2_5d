@@ -1,0 +1,43 @@
+{
+    "title": "The Mechanic",
+    "cards": [
+        {
+            "id": 0,
+            "text": "I will repair your ship and you will run some errands for me. Sounds good?",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "What does the upstairs console do?",
+                    "actions": "GOTO 1"
+                },{
+                    "text": "No problemo!",
+                    "actions": "EXIT"
+                },{
+                    "text": "Here is the 850 you have ordered.",
+                    "actions": "GOTO 2",
+                    "checkFlag": "questTwo"
+                }
+            ]
+        },{
+            "id": 1,
+            "text": "Currently it chooses which ship you´ll use in multiplayer. Just use the ship here if you want to race.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "EXIT"
+                }
+            ]
+        },{
+            "id": 2,
+            "text": "Now look at that beauty. This will enhance your wiggle room in the tunnels.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Great!",
+                    "actions": "REMOVEFLAG questTwo GOTO 0 EXIT"
+                }
+            ]
+        }
+    ]
+}

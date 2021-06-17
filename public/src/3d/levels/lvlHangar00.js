@@ -1,4 +1,5 @@
 import ShipManager from "../../shipManager.js";
+import PanelShipselector from "../../ui/panelShipselector.js";
 import ElevatorGroup from "../modelGroups/elevator.js";
 
 export default class LevelHangar00{
@@ -30,11 +31,16 @@ export default class LevelHangar00{
             z: 56
         }));
 
+        for(let o of this.objects){
+            o.flags.draw = true;
+        }
+
         this.ship = this.scene.geometryController.loadModel("ShipHamptonAegis", "modShipHamptonAegis", {
             x: 192,
             y: 56,
             z: 256
         });
+        this.ship.flags.draw = true;
         this.ship.interactable = true;
         this.ship.interact = () => {
             this.scene.hand.setMouseLock(false);
@@ -43,6 +49,18 @@ export default class LevelHangar00{
                 bikeData: this.shipStats[this.shipSelect.currentBike],
                 livery: this.shipSelect.currentLivery
             });
+        }
+
+        this.shipSelector = this.scene.geometryController.loadModel("Ship Seletor", "modHangarComputer", {
+            x: 48,
+            y: 0,
+            z: 308
+        });
+        this.shipSelector.flags.draw = true;
+        this.shipSelector.interactable = true;
+        this.shipSelector.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.INTERACT);
+            this.scene.player.panel = new PanelShipselector(this.scene);
         }
 
         /*this.btnRacing = this.scene.geometryController.loadModel("btnRacing", "modDebugTile", {
@@ -61,18 +79,29 @@ export default class LevelHangar00{
             z: 196
         });
         this.engineer.setDrawMode(DRAWMODE.BILLBOARD);
+        this.engineer.flags.draw = true;
+        this.engineer.data = {
+            conversation: {
+                fileName: "diaHangarMechanic00",
+                treePosition: 0
+            }
+        }
+        this.engineer.interactable = true;
+        this.engineer.interact = () => {this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+            this.scene.player.conversationManager.setNPC(this.engineer);
+            this.scene.player.conversationManager.setConversation(this.engineer.data.conversation.fileName, this.engineer.data.conversation.treePosition);
+        }
 
         //TRIGGER
-        this.engineer.flags.draw = true;
-        this.ship.flags.draw = true;
-        this.ship.flags.draw = true;
-        for(let o of this.objects){
-            o.flags.draw = true;
-        }
+        
     }
 
     update(){
         
+    }
+
+    juggleShip(){
+
     }
 
     destroy() {

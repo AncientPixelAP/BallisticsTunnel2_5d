@@ -180,7 +180,7 @@ export default class ScnIntro extends Phaser.Scene {
             }
         }
 
-        if ((this.hand.justReleased === true || INPUTS.btnA.justReleased === true) && this.tweenOut.isPlaying() === false){
+        if ((this.hand.justReleased === true || INPUTS.btnA.justReleased === true) && this.tweenOut.isPlaying() === false && this.tweenIn.isPlaying() === false){
             if(this.story.currentBit < this.story.bits.length){
                 this.story.currentBit += 1;
                 this.story.previousBit += 1;
