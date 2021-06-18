@@ -149,7 +149,7 @@ export default class LevelMarketsquare00{
 
         //TRIGGERS
         this.triggerToMarket = this.scene.geometryController.loadModel("doorTrigger", "modTriggerWall1x1", {
-            x: 212,
+            x: 220,
             y: 16,
             z: -8
         });
