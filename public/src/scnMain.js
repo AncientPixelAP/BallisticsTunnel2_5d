@@ -474,7 +474,7 @@ export default class ScnMain extends Phaser.Scene {
                         this.player.spdMax = 0;
                         //console.log("OUT OF ENERGY");
                     }
-                    this.cameras.main.shake(125, (this.player.spd * 0.01) * OPTIONS.effects.screenshake, false, (_cam, _pct) => {
+                    this.cameras.main.shake(125, (this.player.spd * 0.005) * OPTIONS.effects.screenshake, false, (_cam, _pct) => {
                         
                     }, this);
                 }else{
@@ -1039,6 +1039,8 @@ export default class ScnMain extends Phaser.Scene {
     jumpToWaitTunnel() {
         this.player.waitingTunnel = true;
         this.player.controls = SHIPCONTROLS.autoZero;
+        this.player.energy = this.player.stats.energyMax;
+        this.player.heat = 0;
         this.resetTrack();
         this.resetSpawner();
         this.trackGenerator.createTrackData(-1);
@@ -1118,6 +1120,9 @@ export default class ScnMain extends Phaser.Scene {
     fillInputs(){
         let gamepad = null;
         gamepad = navigator.getGamepads()[Math.max(0, gamepadsConnected - 1)];
+        if(gamepad === undefined){
+            gamepad = null;
+        }
         
         //GAS-BREAK
         INPUTS.stickLeft.vertical = 0;
