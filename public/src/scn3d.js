@@ -267,20 +267,22 @@ export default class Scn3d extends Phaser.Scene {
             isMoving = true;
         }
         if (Math.abs(INPUTS.stickLeft.vertical) > 0.1) {
-            toPos.z -= (Math.cos(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * (INPUTS.btnTriggerLeft.pressed ? this.player.spd.sprint : this.player.spd.normal);
-            toPos.x += (Math.sin(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * (INPUTS.btnTriggerLeft.pressed ? this.player.spd.sprint : this.player.spd.normal);
+            //toPos.z -= (Math.cos(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * (INPUTS.btnTriggerLeft.pressed ? this.player.spd.sprint : this.player.spd.normal);
+            //toPos.x += (Math.sin(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * (INPUTS.btnTriggerLeft.pressed ? this.player.spd.sprint : this.player.spd.normal);
+            toPos.z -= (Math.cos(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * this.player.spd.normal;
+            toPos.x += (Math.sin(this.player.dir.yaw) * INPUTS.stickLeft.vertical) * this.player.spd.normal;
             isMoving = true;
         }
 
         //JUMP
         if (INPUTS.btnShoulderRight.pressed) {
-            if (this.player.vel.y === 0) {
+            /*if (this.player.vel.y === 0) {
                 this.player.vel.y = -2;
                 this.player.pos.y += this.player.vel.y;
-            }
+            }*/
         }
         if (INPUTS.btnShoulderLeft.pressed) {
-            this.player.pos.y += 1;
+            //this.player.pos.y += 1;
         }
 
         let returnColl = [];

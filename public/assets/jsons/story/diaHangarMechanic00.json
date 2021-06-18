@@ -16,6 +16,9 @@
                     "text": "Here is the 850 you have ordered.",
                     "actions": "GOTO 2",
                     "checkFlag": "questTwo"
+                },{
+                    "text": "Any tips on flying this thing?",
+                    "actions": "GOTO 3"
                 }
             ]
         },{
@@ -25,7 +28,7 @@
             "answers": [
                 {
                     "text": "[>>>]",
-                    "actions": "EXIT"
+                    "actions": "GOTO 3"
                 }
             ]
         },{
@@ -36,6 +39,84 @@
                 {
                     "text": "Great!",
                     "actions": "REMOVEFLAG questTwo GOTO 0 EXIT"
+                }
+            ]
+        },{
+            "id": 3,
+            "text": "When starting out, don´t worry about pitching the nose up and down too much. Focus on slipstreaming other pilots.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "How do I know I am in their slipstream?",
+                    "actions": "GOTO 4"
+                },{
+                    "text": "[leave]",
+                    "actions": "GOTO 0 EXIT"
+                }
+            ]
+        },{
+            "id": 4,
+            "text": "Your HUD will outline them with a green rectangle, follow their movements closely to get closer behind them before breaking out of the slipstream.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "You mentioned pitching the nose.",
+                    "actions": "GOTO 5"
+                },{
+                    "text": "[leave]",
+                    "actions": "GOTO 0 EXIT"
+                }
+            ]
+        },{
+            "id": 5,
+            "text": "Pitching the nose down, causes a pressure difference on the belly of the ship, this propels you forward even faster.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "GOTO 6"
+                },{
+                    "text": "[leave]",
+                    "actions": "GOTO 0 EXIT"
+                }
+            ]
+        },{
+            "id": 6,
+            "text": "But beware, this will make you run hot and in upwards curves you should pitch up to fly with the curve and not scrape the floor.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "[>>>]",
+                    "actions": "GOTO 7"
+                },{
+                    "text": "[leave]",
+                    "actions": "GOTO 0 EXIT"
+                }
+            ]
+        },{
+            "id": 7,
+            "text": "Keeping your ship in the right temperature window will be key to get the fastest laps. If you get too hot you`ll loose energy and slow down.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "And then I need to get into the pits?",
+                    "actions": "GOTO 8"
+                },{
+                    "text": "[leave]",
+                    "actions": "GOTO 0 EXIT"
+                }
+            ]
+        },{
+            "id": 8,
+            "text": "Yeah, but not in this demo. Your ship will auto regenerate energy until pits are implemented.",
+            "sprite": "sprCharBeggar",
+            "answers": [
+                {
+                    "text": "Got you.",
+                    "actions": "GOTO 0 EXIT"
+                },{
+                    "text": "[leave]",
+                    "actions": "GOTO 0 EXIT"
                 }
             ]
         }

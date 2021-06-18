@@ -141,7 +141,6 @@ export default class LevelDream01{
         });*/
         this.elevator = new ElevatorGroup(this.scene, this, {x: 108, y: 0, z: -256});
         this.elevator.setDraw(true);
-        console.log(this.elevator);
 
         //uppper level of fake moving train
         this.stairTrainTransition = this.scene.geometryController.loadModel("MetroStairCarriageTransition", "modMetroStairCarriageTransition", {
