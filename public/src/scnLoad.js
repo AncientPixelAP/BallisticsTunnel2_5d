@@ -13,7 +13,7 @@ export default class ScnLoad extends Phaser.Scene {
 
         //dialogues
         this.load.json("diaMisterTutorial00", "jsons/story/diaMisterTutorial00.json");
-        this.load.json("diaDreamBeggar00", "jsons/story/diaDreamBeggar00.json");
+        this.load.json("diaDreamBeggar01", "jsons/story/diaDreamBeggar01.json");
         this.load.json("diaDreamBarbara00", "jsons/story/diaDreamBarbara00.json");
         this.load.json("diaDreamBarbara01", "jsons/story/diaDreamBarbara01.json");
         this.load.json("diaHangarMechanic00", "jsons/story/diaHangarMechanic00.json");

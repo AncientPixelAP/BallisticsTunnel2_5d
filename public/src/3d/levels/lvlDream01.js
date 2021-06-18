@@ -233,7 +233,7 @@ export default class LevelDream01{
         this.beggar.setDrawMode(DRAWMODE.BILLBOARD);
         this.beggar.data = {
             conversation: {
-                fileName: "diaDreamBeggar00",
+                fileName: "diaDreamBeggar01",
                 treePosition: 0
             }
         }
