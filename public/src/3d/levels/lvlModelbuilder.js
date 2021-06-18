@@ -2,7 +2,7 @@ export default class LevelModelbuilder{
     constructor(_scene){
         this.scene = _scene;
 
-        this.ref = this.scene.geometryController.loadModel("MetroPlatform0", "modMetroPlatform01", {
+        this.ref = this.scene.geometryController.loadModel("ref", "modMetroCarriageEnd", {
             x: 0,
             y: 0,
             z: 0
