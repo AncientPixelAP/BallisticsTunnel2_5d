@@ -106,7 +106,7 @@ export default class ScnIntro extends Phaser.Scene {
             previousBit: -1,
             bits: [
                 {
-                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "click to begin", 8, 1).setOrigin(0.5),
+                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "[click here to begin]", 8, 1).setOrigin(0.5),
                 }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "The world is dying.", 8, 1).setOrigin(0.5),
                 }, {
@@ -120,7 +120,7 @@ export default class ScnIntro extends Phaser.Scene {
                 }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "The rich got richer, the poor grew more poor.", 8, 1).setOrigin(0.5),
                 }, {
-                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "Nobody wanted to do something against the climate crisis. No government wanted to risk their economy.", 8, 1).setOrigin(0.5),
+                    txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "Nobody wanted to do anything against the climate crisis. No government wanted to risk their economy.", 8, 1).setOrigin(0.5),
                     sprite: this.add.sprite(this.pos.start.x, this.pos.start.y * 2, "sprStoryPolitics00")
                 }, {
                     txt: this.add.bitmapText(this.pos.start.x, this.pos.start.y, "pixelmix", "Instead we got to build for a new future with climate change.", 8, 1).setOrigin(0.5),
