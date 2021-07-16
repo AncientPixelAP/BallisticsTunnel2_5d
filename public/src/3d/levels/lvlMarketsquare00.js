@@ -139,9 +139,30 @@ export default class LevelMarketsquare00{
             }
         }
         this.josef.interactable = true;
-        this.josef.interact = () => {this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+        this.josef.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.DIALOGUE);
             this.scene.player.conversationManager.setNPC(this.josef);
             this.scene.player.conversationManager.setConversation(this.josef.data.conversation.fileName, this.josef.data.conversation.treePosition);
+        }
+
+        this.roomba = this.scene.geometryController.loadModel("Roomba", "modCharacterRoomba", {
+            x: 10,
+            y: 0,
+            z: 60
+        });
+        this.roomba.setDrawMode(DRAWMODE.BILLBOARD);
+        this.roomba.flags.is8way = false;
+        this.roomba.data = {
+            conversation: {
+                fileName: "diaInfogrunts00",
+                treePosition: 1
+            }
+        }
+        this.roomba.interactable = true;
+        this.roomba.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+            this.scene.player.conversationManager.setNPC(this.roomba);
+            this.scene.player.conversationManager.setConversation(this.roomba.data.conversation.fileName, this.roomba.data.conversation.treePosition);
         }
 
 
@@ -162,6 +183,7 @@ export default class LevelMarketsquare00{
             this.marketsquare.flags.draw = !this.marketsquare.flags.draw;
             this.ship.flags.draw = !this.ship.flags.draw;
             this.vendor.flags.draw = !this.vendor.flags.draw;
+            this.roomba.flags.draw = !this.roomba.flags.draw;
         }
         //this.triggerToMarket.flags.draw = true;
 
