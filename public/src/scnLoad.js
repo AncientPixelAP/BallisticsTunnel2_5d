@@ -29,29 +29,6 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modHangarHallway", "jsons/models/hangarHallway.json");
         this.load.json("modHangarComputer", "jsons/models/hangarComputer.json");
         this.load.json("modHangarMain", "jsons/models/hangarMain.json");
-        //SHIPS
-        this.load.json("modShipHamptonAegis", "jsons/models/ships/shipHamptonAegis.json");
-        this.load.json("modShipArashiDart", "jsons/models/ships/shipArashiDart.json");
-        this.load.json("modShipFormulaE", "jsons/models/ships/shipFormulaE.json");
-        this.load.json("modShipFormulaOne", "jsons/models/ships/shipFormulaOne.json");
-        //MISC
-        this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
-        this.load.json("modSmoke", "jsons/models/smoke.json");
-        this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
-        this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");
-        this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
-        this.load.json("modTriggerWall1x1", "jsons/models/triggerWall1x1.json");
-        this.load.json("modTrigger1x1", "jsons/models/trigger1x1.json");
-        this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
-        this.load.json("modPowerGeneratorTurbine", "jsons/models/powerGeneratorTurbine.json");
-        //CHARACTERS
-        this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
-        this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
-        this.load.json("modCharacterStBarbara", "jsons/models/characterStBarbara.json");
-        this.load.json("modCharacterRoomba", "jsons/models/characterRoomba.json");
-        this.load.json("modCharacterTurnaroundTest", "jsons/models/characterTurnaroundTest.json");
-        this.load.json("modCharacterTurnaroundLara", "jsons/models/characterTurnaroundLara.json");
-        this.load.json("modCharacterTurnaroundMoritz", "jsons/models/characterTurnaroundMoritz.json");
         //METRO
         this.load.json("modMetroHallwayT", "jsons/models/dream/metroHallwayT.json");
         this.load.json("modMetroPlatform", "jsons/models/dream/metroPlatform.json");
@@ -72,6 +49,32 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modLounge", "jsons/models/marketsquare/lounge.json");
         //OFFICE
         this.load.json("modOfficeRoom","jsons/models/office/officeRoom.json");
+        //SHIPS
+        this.load.json("modShipHamptonAegis", "jsons/models/ships/shipHamptonAegis.json");
+        this.load.json("modShipArashiDart", "jsons/models/ships/shipArashiDart.json");
+        this.load.json("modShipFormulaE", "jsons/models/ships/shipFormulaE.json");
+        this.load.json("modShipFormulaOne", "jsons/models/ships/shipFormulaOne.json");
+        //MISC
+        this.load.json("modDreamBloodLine", "jsons/models/dreamBloodLine.json");
+        this.load.json("modSmoke", "jsons/models/smoke.json");
+        this.load.json("modDreamDoor", "jsons/models/dreamDoor.json");
+        this.load.json("modDreamDoorFrame", "jsons/models/dreamDoorFrame.json");
+        this.load.json("modDreamRoom", "jsons/models/dreamRoom.json");
+        this.load.json("modTriggerWall1x1", "jsons/models/triggerWall1x1.json");
+        this.load.json("modTrigger1x1", "jsons/models/trigger1x1.json");
+        this.load.json("modTrigger64x64", "jsons/models/trigger64x64.json");
+        this.load.json("modPowerGeneratorTurbine", "jsons/models/powerGeneratorTurbine.json");
+        this.load.json("modChefsessel", "jsons/models/objChefsessel.json");
+        this.load.json("modTschechowGun", "jsons/models/objTschechowGun.json");
+        //CHARACTERS
+        this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
+        this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
+        this.load.json("modCharacterStBarbara", "jsons/models/characterStBarbara.json");
+        this.load.json("modCharacterRoomba", "jsons/models/characterRoomba.json");
+        this.load.json("modCharacterTurnaroundTest", "jsons/models/characterTurnaroundTest.json");
+        this.load.json("modCharacterTurnaroundLara", "jsons/models/characterTurnaroundLara.json");
+        this.load.json("modCharacterTurnaroundMoritz", "jsons/models/characterTurnaroundMoritz.json");
+        
 
         //3dtex
         this.load.image("texElevatorWall00", "sprites/3dTextures/texElevatorWall00.png");
@@ -204,6 +207,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texContainerBlueDoor00", "sprites/3dTextures/texContainerBlueDoor00.png");
         this.load.image("texContainerBrownDoor00", "sprites/3dTextures/texContainerBrownDoor00.png");
 
+        this.load.image("texAdvertNutricubes00", "sprites/clutter/sprAdvertNutricubes00.png");
+
         //characters
         this.load.image("PaulM_smallBrown", "raw/SebiM_lores00.png");
         this.load.image("PaulM_smallDog", "raw/PaulM_lores01.png");
@@ -216,8 +221,8 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.spritesheet("turnaroundLarasheet00", "sprites/characters/turnaroundLarasheet00.png", { frameWidth: 57, frameHeight: 120 });
         this.load.spritesheet("turnaroundMoritzsheet00", "sprites/characters/turnaroundMoritzsheet00.png", { frameWidth: 46, frameHeight: 128 });
 
-        this.load.image("texAdvertNutricubes00", "sprites/clutter/sprAdvertNutricubes00.png");
-
+        this.load.image("texObjChefsessel","sprites/objects/chefsessel00.png");
+        this.load.image("texObjTschechowGun","sprites/objects/tschechowGun00.png");
         
 
         //this.load.image('image0', '0.png');
