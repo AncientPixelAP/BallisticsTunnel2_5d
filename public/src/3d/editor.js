@@ -248,13 +248,57 @@ export default class Editor {
         }, this);
 
         this.scene.numkeys.plus.on("up", (_key, _event) => {
-            if (this.quad !== null) {
-                this.quad.cyclePoints(true);
+            if (this.scene.keys.z.isDown){
+                //change texture bank
+                this.textures.bank += 1;
+                this.textures.bank = Math.max(0, Math.min(this.textures.bank, this.textures.palette.length-1));
+                this.textures.position = Math.max(0, Math.min(this.textures.position, this.textures.palette[this.textures.bank].length-1));
+                if(this.quad !== null){
+                    this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
+                }
+            }else if (this.scene.keys.t.isDown){
+                //change texture
+                this.textures.position += 1;
+                this.textures.position = Math.max(0, Math.min(this.textures.position, this.textures.palette[this.textures.bank].length-1));
+                if(this.quad !== null){
+                    this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
+                }
+            }else if(this.scene.keys.g.isDown){
+                //enlarge gridsize
+                this.grid.size += 0.1;
+                this.grid.size = Math.max(this.grid.min, Math.min(this.grid.max, this.grid.size));
+                this.grid.txt.setText("Grid: " + this.grid.size.toFixed(1));
+            }else{
+                if (this.quad !== null) {
+                    this.quad.cyclePoints(true);
+                }
             }
         }, this);
         this.scene.numkeys.minus.on("up", (_key, _event) => {
-            if (this.quad !== null) {
-                this.quad.cyclePoints(false);
+            if (this.scene.keys.z.isDown){
+                //change texture bank
+                this.textures.bank -= 1;
+                this.textures.bank = Math.max(0, Math.min(this.textures.bank, this.textures.palette.length-1));
+                this.textures.position = Math.max(0, Math.min(this.textures.position, this.textures.palette[this.textures.bank].length-1));
+                if(this.quad !== null){
+                    this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
+                }
+            }else if (this.scene.keys.t.isDown){
+                //change texture
+                this.textures.position -= 1;
+                this.textures.position = Math.max(0, Math.min(this.textures.position, this.textures.palette[this.textures.bank].length-1));
+                if(this.quad !== null){
+                    this.quad.setTexture(this.textures.palette[this.textures.bank][this.textures.position], 0);
+                }
+            }else if(this.scene.keys.g.isDown){
+                //enlarge gridsize
+                this.grid.size -= 0.1;
+                this.grid.size = Math.max(this.grid.min, Math.min(this.grid.max, this.grid.size));
+                this.grid.txt.setText("Grid: " + this.grid.size.toFixed(1));
+            }else{
+                if (this.quad !== null) {
+                    this.quad.cyclePoints(false);
+                }
             }
         }, this);
 

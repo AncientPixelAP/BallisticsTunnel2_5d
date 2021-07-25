@@ -19,9 +19,9 @@ export default class PanelElevator{
             this.destroy();
         });
 
-        this.btnAdmin = new Button(this.scene, { x: 160, y: -66 }, "sprBtn00", "ADMIN", false, () => {
+        this.btnOffice = new Button(this.scene, { x: 160, y: -66 }, "sprBtn00", "OFFICE", false, () => {
             this.scene.player.jumpToPosition({ x: 0, y: 0, z: 0 });
-            this.scene.loadLevel("quarters00");
+            this.scene.loadLevel("office00");
 
             this.scene.player.setMode(PLAYERMODE.LOOK);
             this.scene.player.panel = null;
@@ -73,7 +73,6 @@ export default class PanelElevator{
             this.destroy();
         });
 
-        this.btnAdmin.switchState(this.btnAdmin.states.off);
         this.btnLounge.switchState(this.btnLounge.states.off);
         this.btnPower.switchState(this.btnPower.states.off);
 
@@ -93,7 +92,7 @@ export default class PanelElevator{
 
         this.btnBack.update();
         //this.btnDream.update();
-        //this.btnAdmin.update();
+        this.btnOffice.update();
         this.btnQuarters.update();
         //this.btnLounge.update();
         this.btnSocial.update();
@@ -106,7 +105,7 @@ export default class PanelElevator{
         this.bgGrid.destroy();
         this.btnBack.destroy();
         //this.btnDream.destroy();
-        this.btnAdmin.destroy();
+        this.btnOffice.destroy();
         this.btnQuarters.destroy();
         this.btnLounge.destroy();
         this.btnSocial.destroy();

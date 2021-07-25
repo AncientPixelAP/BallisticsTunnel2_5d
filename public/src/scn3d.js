@@ -12,6 +12,7 @@ import LevelMarketsquare00 from "./3d/levels/lvlMarketsquare00.js"
 import LevelQuarters00 from "./3d/levels/lvlQuarters00.js"
 import LevelQuarters01 from "./3d/levels/lvlQuarters01.js";
 import LevelModelbuilder from "./3d/levels/lvlModelbuilder.js";
+import LevelOffice00 from "./3d/levels/lvlOffice00.js";
 
 export default class Scn3d extends Phaser.Scene {
 
@@ -479,6 +480,9 @@ export default class Scn3d extends Phaser.Scene {
             break;
             case "marketsquare00":
                 this.level = new LevelMarketsquare00(this);
+            break;
+            case "office00":
+                this.level = new LevelOffice00(this);
             break;
             default:
             break;

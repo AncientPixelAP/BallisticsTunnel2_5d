@@ -199,7 +199,7 @@ export default class DataQuad {
             //this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 20, Math.min(this.scene.game.config.height * 20, this.screenCoords[i].y));)
 
             if (nz > recZ) {
-                recZ = nz;
+                recZ = nzMod;
             }
             //sumZ += nz;
             //sumZ += (nz + (512 - Phaser.Math.Distance.Between(this.screenCoords[i].x, this.screenCoords[i].y, 0, 0) * -0.1)) * 1;
