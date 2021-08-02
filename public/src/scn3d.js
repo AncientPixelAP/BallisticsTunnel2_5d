@@ -121,7 +121,7 @@ export default class Scn3d extends Phaser.Scene {
         */
 
         this.level = null;
-        this.loadLevel("dream01");//modelBuilder dream01 marketsquare00
+        this.loadLevel("quarters00");//modelBuilder dream01 marketsquare00
         this.player.pos.x = 108;
         this.player.pos.z = -256;
         this.player.jumpToPosition({x: 108, y: 0, z: -256});

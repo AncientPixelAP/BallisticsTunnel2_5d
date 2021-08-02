@@ -17,9 +17,9 @@ export default class LevelQuarters00{
         this.pc = this.scene.geometryController.loadModel("my pc", "modTriggerWall1x1", {
             x: -76,
             y: -13,
-            z: 232
+            z: 233
         });
-        this.pc.scale({x: 12, y: 32, z: 4});
+        this.pc.scale({x: 12, y: 32, z: 6});
         this.pc.data = {
             conversation: {
                 fileName: "diaInfogrunts00",

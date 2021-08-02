@@ -71,8 +71,12 @@ export default class Hand{
             if (this.scene.input.activePointer.movementX - this.movementPrev.x != 0 || this.scene.input.activePointer.movementY - this.movementPrev.y != 0){
                 //this.vel.x = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementX));
                 //this.vel.y = Math.max(-this.vel.limit, Math.min(this.vel.limit, this.scene.input.activePointer.movementY));
+                
                 this.vel.x = Math.max(-8, Math.min(8, this.scene.input.activePointer.movementX));
                 this.vel.y = Math.max(-8, Math.min(8, this.scene.input.activePointer.movementY));
+
+                //this.vel.x = this.scene.input.activePointer.movementX;
+                //this.vel.y = this.scene.input.activePointer.movementY;
             }else{
                 if (gamepadsConnected > 0) {
                     this.vel.x = Math.abs(INPUTS.stickRight.horizontal) > 0.1 ? INPUTS.stickRight.horizontal * 4 : 0;
