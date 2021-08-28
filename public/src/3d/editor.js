@@ -336,11 +336,15 @@ export default class Editor {
             if (this.scene.keys.g.isDown) {
                 if (_deltaY > 0) {
                     this.grid.size -= 0.1;
+                    this.grid.size = Math.max(this.grid.min, Math.min(this.grid.max, this.grid.size));
+                    this.grid.txt.setText("Grid: " + this.grid.size.toFixed(1));
+                    console.log(this.grid.size);
                 } else if (_deltaY < 0) {
                     this.grid.size += 0.1;
+                    this.grid.size = Math.max(this.grid.min, Math.min(this.grid.max, this.grid.size));
+                    this.grid.txt.setText("Grid: " + this.grid.size.toFixed(1));
+                    console.log(this.grid.size);
                 }
-                this.grid.size = Math.max(this.grid.min, Math.min(this.grid.max, this.grid.size));
-                this.grid.txt.setText("Grid: " + this.grid.size.toFixed(1));
             }
         }, this);
 
