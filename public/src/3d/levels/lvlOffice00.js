@@ -30,6 +30,30 @@ export default class LevelOffice00{
         this.tschechowGun.setDrawMode(DRAWMODE.BILLBOARD);
         this.tschechowGun.flags.draw = true;
 
+
+        //CHARACTERS
+        this.paulTest = this.scene.geometryController.loadModel("paul Test", "modCharacterPaul", {
+            x: -48,
+            y: 0,
+            z: 286
+        });
+        this.paulTest.setDrawMode(DRAWMODE.BILLBOARD);
+        //this.paulTest.flags.is8way = true;
+        this.paulTest.lookDir.yaw = Math.PI;
+        this.paulTest.data = {
+            conversation: {
+                fileName: "diaInfogrunts00",
+                treePosition: 3
+            }
+        }
+        this.paulTest.interactable = true;
+        this.paulTest.interact = () => {
+            this.scene.player.setMode(PLAYERMODE.DIALOGUE);
+            this.scene.player.conversationManager.setNPC(this.paulTest);
+            this.scene.player.conversationManager.setConversation(this.paulTest.data.conversation.fileName, this.paulTest.data.conversation.treePosition);
+        }
+        this.paulTest.flags.draw = true;
+
         /*
         this.vendor = this.scene.geometryController.loadModel("Vendor", "modCharacterTurnaroundTest", {
             x: -44,

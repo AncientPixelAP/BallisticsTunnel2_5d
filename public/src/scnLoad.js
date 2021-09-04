@@ -71,6 +71,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
         this.load.json("modCharacterStBarbara", "jsons/models/characterStBarbara.json");
         this.load.json("modCharacterRoomba", "jsons/models/characterRoomba.json");
+        this.load.json("modCharacterPaul", "jsons/models/characterPaulTest.json");
         this.load.json("modCharacterTurnaroundTest", "jsons/models/characterTurnaroundTest.json");
         this.load.json("modCharacterTurnaroundLara", "jsons/models/characterTurnaroundLara.json");
         this.load.json("modCharacterTurnaroundMoritz", "jsons/models/characterTurnaroundMoritz.json");
@@ -217,6 +218,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texCharBeggar", "sprites/characters/beggar.png");
         this.load.image("texCharBarbara", "sprites/characters/hlBarabara.png");
         this.load.image("texCharRoomba","sprites/characters/roomba.png");
+        this.load.image("texCharPaulTest","sprites/characters/paulTest00.png");
         this.load.spritesheet("turnaroundHumansheet00", "sprites/characters/turnaroundHumansheet00.png", { frameWidth: 46, frameHeight: 128 });
         this.load.spritesheet("turnaroundLarasheet00", "sprites/characters/turnaroundLarasheet00.png", { frameWidth: 57, frameHeight: 120 });
         this.load.spritesheet("turnaroundMoritzsheet00", "sprites/characters/turnaroundMoritzsheet00.png", { frameWidth: 46, frameHeight: 128 });
