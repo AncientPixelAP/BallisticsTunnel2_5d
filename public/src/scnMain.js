@@ -721,6 +721,7 @@ export default class ScnMain extends Phaser.Scene {
         this.player.sndEngine.rate += (newRate - this.player.sndEngine.rate) * 0.5;
         //this.player.sndEngine.rate = newRate;
 
+        this.ui.movePos.y = Math.sin(this.player.spd) * 100;
         this.ui.update();
     }
 

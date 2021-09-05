@@ -79,6 +79,11 @@ export default class Ui{
             }
         }
 
+        this.movePos = {
+            x: 0,
+            y: 0
+        }
+
         this.tacho = new Tacho(this.scene, this, this.positions.tacho.out.x, this.positions.tacho.out.y);
         this.minimap = new Minimap(this.scene, this, this.positions.minimap.out.x, this.positions.minimap.out.y);
         this.standings = new Standings(this.scene, this, this.positions.standings.out.x, this.positions.standings.out.y);
