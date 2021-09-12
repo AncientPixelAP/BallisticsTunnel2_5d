@@ -66,6 +66,7 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.json("modPowerGeneratorTurbine", "jsons/models/powerGeneratorTurbine.json");
         this.load.json("modChefsessel", "jsons/models/objChefsessel.json");
         this.load.json("modTschechowGun", "jsons/models/objTschechowGun.json");
+        this.load.json("modTree00", "jsons/models/tree00.json");
         //CHARACTERS
         this.load.json("modCharacterEngineer", "jsons/models/characterEngineer.json");
         this.load.json("modCharacterBeggar", "jsons/models/characterBeggar.json");
@@ -220,8 +221,13 @@ export default class ScnLoad extends Phaser.Scene {
         this.load.image("texCharRoomba","sprites/characters/roomba.png");
         this.load.image("texCharPaulTest","sprites/characters/paulTest00.png");
         this.load.spritesheet("turnaroundHumansheet00", "sprites/characters/turnaroundHumansheet00.png", { frameWidth: 46, frameHeight: 128 });
+        this.load.spritesheet("turnaroundPaulsheet00", "sprites/characters/turnaroundPaulsheet00.png", { frameWidth: 101, frameHeight: 128 });
         this.load.spritesheet("turnaroundLarasheet00", "sprites/characters/turnaroundLarasheet00.png", { frameWidth: 57, frameHeight: 120 });
         this.load.spritesheet("turnaroundMoritzsheet00", "sprites/characters/turnaroundMoritzsheet00.png", { frameWidth: 46, frameHeight: 128 });
+
+        this.load.image("portraitMoritz00", "sprites/characters/portraitMoritz00.png");
+        this.load.image("portraitLara00", "sprites/characters/portraitLara00.png");
+        
 
         this.load.image("texObjChefsessel","sprites/objects/chefsessel00.png");
         this.load.image("texObjTschechowGun","sprites/objects/tschechowGun00.png");

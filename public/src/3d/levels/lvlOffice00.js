@@ -38,7 +38,7 @@ export default class LevelOffice00{
             z: 286
         });
         this.paulTest.setDrawMode(DRAWMODE.BILLBOARD);
-        //this.paulTest.flags.is8way = true;
+        this.paulTest.flags.is8way = true;
         this.paulTest.lookDir.yaw = Math.PI;
         this.paulTest.data = {
             conversation: {

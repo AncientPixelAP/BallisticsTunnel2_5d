@@ -3,7 +3,7 @@
     "quadData": [
         {
             "type": "quad",
-            "texture": "texCharPaulTest",
+            "texture": "turnaroundPaulsheet00",
             "frame": 0,
             "position": {
                 "x": 0,
@@ -12,22 +12,22 @@
             },
             "points": [
                 {
-                    "x": 8,
+                    "x": 12,
                     "y": -32,
                     "z": 0
                 },
                 {
-                    "x": -8,
+                    "x": -12,
                     "y": -32,
                     "z": 0
                 },
                 {
-                    "x": -8,
+                    "x": -12,
                     "y": 0,
                     "z": 0
                 },
                 {
-                    "x": 8,
+                    "x": 12,
                     "y": 0,
                     "z": 0
                 }

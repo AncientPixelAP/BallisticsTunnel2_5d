@@ -175,7 +175,7 @@ export default class DataQuad {
                 ptsOoB += 1;
             }
             if (nz < 0) {
-                nz *= 0.01;
+                //nz *= 0.01;
             }
             nz *= this.scene.cam.fov;
             

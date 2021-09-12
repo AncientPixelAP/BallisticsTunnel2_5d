@@ -200,6 +200,52 @@ export default class Model {
         }
     }
 
+    jumpToRotation(_dir = { yaw: 0, pitch: 0, roll: 0 }, _p = { x: 0, y: 0, z: 0 }) {
+        let origDir = {
+            yaw: this.dir.yaw,
+            pitch: this.dir.pitch,
+            roll: this.dir.roll
+        }
+        /*this.dir.yaw = _dir.yaw;
+        this.dir.pitch = _dir.pitch;
+        this.dir.roll = _dir.roll;*/
+        for (let q of this.quadData) {
+            for (let [i, p] of q.points.entries()) {
+                let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
+                let nx = outXZ[0];
+                let ny = outXZ[1];
+                let nz = outXZ[2];
+                let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.pitch);
+                nx = outYZ[0];
+                ny = outYZ[1];
+                nz = outYZ[2];
+                let outXY = rti.rotateZ([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.roll);
+                p.x = outXY[0];
+                p.y = outXY[1];
+                p.z = outXY[2];
+            }
+        }
+        for (let q of this.collisionData) {
+            for (let [i, p] of q.points.entries()) {
+                let outXZ = rti.rotateY([0, 0, 0], [p.x, p.y, p.z], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.yaw);
+                let nx = outXZ[0];
+                let ny = outXZ[1];
+                let nz = outXZ[2];
+                let outYZ = rti.rotateX([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.pitch);
+                nx = outYZ[0];
+                ny = outYZ[1];
+                nz = outYZ[2];
+                let outXY = rti.rotateZ([0, 0, 0], [nx, ny, nz], [q.pos.x - this.pos.x, q.pos.y - this.pos.y, q.pos.z - this.pos.z], _dir.roll);
+                p.x = outXY[0];
+                p.y = outXY[1];
+                p.z = outXY[2];
+            }
+        }
+        this.dir.yaw = origDir.yaw;
+        this.dir.pitch = origDir.pitch;
+        this.dir.roll = origDir.roll;
+    }
+
     scale(_scale){
         for (let q of this.quadData) {
             for (let [i, p] of q.points.entries()) {
