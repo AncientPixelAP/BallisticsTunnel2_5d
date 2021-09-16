@@ -93,8 +93,8 @@ export default class Ui{
         this.minimap.move(this.positions.minimap.in.x, this.positions.minimap.in.y);
         this.binaryDisplay.move(this.positions.binaryDisplay.in.x, this.positions.binaryDisplay.in.y);
 
-        this.test1 = this.scene.add.sprite(-112, -73, "portraitLara00");
-        this.test1.depth = 10000;
+        //this.test1 = this.scene.add.sprite(-112, -73, "portraitLara00");
+        //this.test1.depth = 10000;
 
         //count for only updating visuals sometimes or alert blink and stuff
         //just use for fancy stuff

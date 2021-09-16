@@ -100,6 +100,14 @@ export default class ScnIntro extends Phaser.Scene {
             }, this);
         });
 
+        this.btnModelbuilder = new Button(this, { x: -160, y: 0 }, "sprBtn00", "MDBL", false, () => {
+            this.cameras.main.fade(500, 0, 0, 0, false, (_cam, _pct) => {
+                if (_pct >= 1) {
+                    this.scene.start("Scn3d", { scene: "modelBuilder", pos: { x: 0, y: 0, z: 0 } });
+                }
+            }, this);
+        });
+
         //STORYBITS
         this.story = {
             currentBit: 0,
@@ -162,6 +170,7 @@ export default class ScnIntro extends Phaser.Scene {
         this.hand.update();
         this.btnBack.update();
         this.btnSkip.update();
+        this.btnModelbuilder.update();
 
         if (this.story.currentBit < this.story.bits.length) {
             this.story.bits[this.story.currentBit].txt.x = this.pos.in.x + 64;
@@ -215,7 +224,7 @@ export default class ScnIntro extends Phaser.Scene {
     }
 
     gotoGame(){
-        this.scene.start("Scn3d");
+        this.scene.start("Scn3d", { scene: "dream01", pos: { x: 108, y: 0, z: -256 }});
     }
 
     fillInputs(){
