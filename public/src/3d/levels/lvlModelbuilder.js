@@ -40,17 +40,21 @@ export default class LevelModelbuilder{
         }
         */
 
+        this.state = 0;
+        let treeAngle = Math.PI * 0.5;
+
         this.trees = [];
         for(let y = -10 ; y <= 10 ; y++){
             for (let x = -10; x <= 10; x++) {
                 this.trees.push(this.scene.geometryController.loadModel("ref", "modTree00", {
                     x: (x * 64) + (Math.random() * 48) - 24,
-                    y: 0,
-                    z: (y * 64) + (Math.random() * 48) - 24
+                    y: (y * 64) + (Math.random() * 48) - 24,
+                    z: 512
                 }));
+                this.trees[this.trees.length - 1].data.radius = this.trees[this.trees.length - 1].pos.y;
                 this.trees[this.trees.length - 1].quadData[0].setTexture("texTree0"+Math.floor(Math.random() * 2));
+                this.trees[this.trees.length - 1].jumpToRotation({ yaw: 0, pitch: treeAngle, roll: 0 });
                 this.trees[this.trees.length - 1].setDrawMode(DRAWMODE.BILLBOARD);
-                //this.trees[this.trees.length - 1].translateAndRotate({x: 0, y: 0, z: 0}, {yaw: Math.random()*Math.PI, pitch: 0, roll: 0});
                 this.trees[this.trees.length - 1].flags.draw = true;
             }
         }
@@ -58,31 +62,33 @@ export default class LevelModelbuilder{
 
     update(){
         //this.hooman.lookDir.yaw += 0.05;
-
-        /*
-        for(let t of this.trees){
-            let h = Math.hypot(t.pos.x - this.scene.player.pos.x, t.pos.z - this.scene.player.pos.z);
-
-            //t.jumpToRotation({ yaw: 0, pitch: 0.01, roll: 0 });
-            //t.translateAndRotate({x: 0,y: 0,z: 0}, {yaw: 0,pitch: (h * -0.01) - t.dir.pitch,roll: (h * -0.01) - t.dir.roll,});
-
-            //t.jumpToPosition({ x: t.pos.x, y: h, z: t.pos.z });
-        }
-        */
         
-        //infinite forest
-        for (let t of this.trees) {
-            if (t.pos.x - this.scene.player.pos.x > 704){
-                t.jumpToPosition({ x: t.pos.x - 1280, y: t.pos.y, z: t.pos.z });
-            } else if (t.pos.x - this.scene.player.pos.x < -704){
-                t.jumpToPosition({ x: t.pos.x + 1280, y: t.pos.y, z: t.pos.z });
+        if(this.state === 0){
+            for(let t of this.trees){
+                let d = 512 - this.scene.player.pos.z;
+                let a = (Math.PI * 0.5) * (d/512);
+                t.jumpToRotation({ yaw: 0, pitch: a, roll: 0 });
+                t.jumpToPosition({ x: t.pos.x, y: Math.cos(a + (Math.PI * 0.5)) * t.data.radius, z: 512 + Math.sin(a + (Math.PI * 0.5)) * t.data.radius });
+                if(d <= 0){
+                    this.state = 1;
+                }
             }
-            if (t.pos.z - this.scene.player.pos.z > 704) {
-                t.jumpToPosition({ x: t.pos.x, y: t.pos.y, z: t.pos.z - 1280 });
-            } else if (t.pos.z - this.scene.player.pos.z < -704) {
-                t.jumpToPosition({ x: t.pos.x, y: t.pos.y, z: t.pos.z + 1280 });
+        }else{
+            //infinite forest
+            for (let t of this.trees) {
+                if (t.pos.x - this.scene.player.pos.x > 704) {
+                    t.jumpToPosition({ x: t.pos.x - 1280, y: t.pos.y, z: t.pos.z });
+                } else if (t.pos.x - this.scene.player.pos.x < -704) {
+                    t.jumpToPosition({ x: t.pos.x + 1280, y: t.pos.y, z: t.pos.z });
+                }
+                if (t.pos.z - this.scene.player.pos.z > 704) {
+                    t.jumpToPosition({ x: t.pos.x, y: t.pos.y, z: t.pos.z - 1280 });
+                } else if (t.pos.z - this.scene.player.pos.z < -704) {
+                    t.jumpToPosition({ x: t.pos.x, y: t.pos.y, z: t.pos.z + 1280 });
+                }
             }
         }
+        
     }
 
     destroy() {
