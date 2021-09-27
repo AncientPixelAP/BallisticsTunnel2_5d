@@ -19,6 +19,23 @@ export default class Segment{
         this.sprite = this.scene.add.sprite(this.pos.x, this.pos.y, this.asset, this.frame);
     }
 
+    update3d(){
+        this.screenPos.x = (this.pos.x / (Math.abs(Math.max(0.1, this.pos.z)) * 1)) * this.scene.zoom;
+        this.screenPos.y = (this.pos.y / (Math.abs(Math.max(0.1, this.pos.z)) * 1)) * this.scene.zoom;
+
+        let dz = 1 / this.pos.z;
+        let shade = Math.max(0, 255 - ((this.pos.z * 4) + this.pos.z));
+
+        this.sprite.rotation = this.scene.player.roll - this.dir;
+
+        this.sprite.x = this.screenPos.x; //* dz;
+        this.sprite.y = this.screenPos.y - (24 * this.scene.zoom) * dz; //* dz;
+
+        this.sprite.setScale(dz * this.scene.zoom);
+        this.sprite.setTint(Phaser.Display.Color.GetColor(shade, shade, shade));
+        this.sprite.depth = dz;
+    }
+
     update(){
 
         let len = Phaser.Math.Distance.Between(0, 0, this.pos.x, this.pos.y);

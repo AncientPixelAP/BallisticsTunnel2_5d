@@ -84,9 +84,9 @@ export default class TrackGenerator{
                         name: "Start Finish",
                         jumpTo: 1,
                         segments: [
-                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [2], 0, 1),
                             this.createSegment(0, 0, 0, "sprSegFinishLine00", [0, 1], 0.25, 16),
-                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [0], 0, 1),
+                            this.createSegment(0, 0, 0, "sprSegFinishLine00", [2], 0, 1),
 
                             this.createSegment(0, 0, 0, "sprSegMetalRoad05", [0, 1, 2, 3, 3, 2, 0, 0], 1, 8),
                             this.createSegment(0, 0, 0, "sprSegMetalRoad00", [0], 0, 64),
@@ -751,13 +751,13 @@ export default class TrackGenerator{
         }
 
         //sum up track length
-        this.scene.trackLength = 0;
+        /*this.scene.trackLength = 0;
         for (let s of this.scene.trackData) {
             for(let seg of s.segments){
                 this.scene.trackLength += seg.units;
             }
-        }
+        }*/
 
-        this.scene.ui.minimap.createMiniMap();
+        //this.scene.ui.minimap.createMiniMap();
     }
 }
