@@ -166,6 +166,7 @@ export default class ScnMain extends Phaser.Scene {
             this.delta.current -= this.delta.treshold;
             //do stuff
 
+            //gas - break
             if (INPUTS.stickLeft.vertical < -0.3) {//if (this.cursors.up.isDown) {
                 if (this.player.spd.current < this.player.spd.max) {
                     this.player.spd.current = Math.min(this.player.spd.max, this.player.spd.current + this.player.stats.acceleration);
@@ -183,6 +184,9 @@ export default class ScnMain extends Phaser.Scene {
             if (this.player.spd.current > this.player.spd.max) {
                 this.player.spd.current = Math.max(0, this.player.spd.current - this.player.stats.speedDeg);
             }
+
+            //roll around the tunnel
+            this.player.roll += this.player.stats.roll * Math.max(-1, Math.min(1, Math.abs(INPUTS.stickLeft.horizontal) > 0.3 ? INPUTS.stickLeft.horizontal : 0));
 
             if(this.trackPoints.length > 0){
                 //calculate how often to jump along the track
@@ -203,7 +207,7 @@ export default class ScnMain extends Phaser.Scene {
                         pos: {
                             x: 0,
                             y: 0,
-                            z: 0
+                            z: jumps[j]
                         },
                         curve: {
                             x: 0,
@@ -220,18 +224,18 @@ export default class ScnMain extends Phaser.Scene {
                         let p = this.trackPoints[pos];
                         slice.curve.x = p.curve.x;
                         slice.curve.y = p.curve.y;
-                        slice.pos.x = root.pos.x - (Math.sin((root.curve.x + p.curve.x)) * 10), // cuerve + HALPPI
-                        slice.pos.y = root.pos.y + (Math.sin((root.curve.y + p.curve.y)) * 10),
-                        slice.pos.z = root.pos.z + (Math.cos((root.curve.x + p.curve.x)) * 1),
+                        slice.pos.x = root.pos.x - (Math.sin((root.curve.x + p.curve.x)) * 10); // cuerve + HALPPI
+                        slice.pos.y = root.pos.y + (Math.sin((root.curve.y + p.curve.y)) * 10);
+                        slice.pos.z = root.pos.z + (Math.cos((root.curve.x + p.curve.x)) * 1);
+                        slice.sprite.setTexture(slice.asset, slice.frame);
                         slice.asset = p.asset;
                         slice.frame = p.subImg;
-                        slice.sprite.setTexture(slice.asset, slice.frame);
 
                         root.pos.x = slice.pos.x;
                         root.pos.y = slice.pos.y;
                         root.pos.z = slice.pos.z;
-                        root.curve.x += p.curve.x,
-                        root.curve.y += p.curve.y
+                        root.curve.x += p.curve.x;
+                        root.curve.y += p.curve.y;
 
                         slice.update3d();
                     }
@@ -272,16 +276,15 @@ export default class ScnMain extends Phaser.Scene {
                 y: 0,
                 z: 0
             },
-            subImg: 0
+            subImgNo: 0
         }
 
         this.trackPoints = [];
         for(let sector of this.trackData){
             for(let s of sector.segments){
-                let imgSpd = s.imgSpd;
                 for(let i = 0 ; i < s.units ; i ++){
                     if(s.imgSpd === -1){
-                        root.subImg = Math.floor(Math.random() * s.subimgArr.length);
+                        root.subImgNo = Math.floor(Math.random() * s.subimgArr.length);
                     }
 
                     this.trackPoints.push({
@@ -296,7 +299,7 @@ export default class ScnMain extends Phaser.Scene {
                         },
                         roll: s.roll,
                         asset: s.asset,
-                        subImg: s.subimgArr[Math.floor(root.subImg)],
+                        subImg: s.subimgArr[Math.floor(root.subImgNo)],
                         sectorId: sector.id,
                         secctorName: sector.name,
                         sectorNext: sector.jumpTo
@@ -306,12 +309,13 @@ export default class ScnMain extends Phaser.Scene {
                     root.pos.y = this.trackPoints[this.trackPoints.length - 1].pos.y;
                     root.pos.z = this.trackPoints[this.trackPoints.length - 1].pos.z;
                     if(s.imgSpd >= 0){
-                        root.subImg += s.imgSpd;
+                        root.subImgNo += s.imgSpd;
+                        if(root.subImgNo >= s.subimgArr.length){root.subImgNo = 0;}
                     }else{
-                        root.subImg = Math.floor(Math.random() * s.subimgArr.length)
+                        root.subImgNo = Math.floor(Math.random() * s.subimgArr.length)
                     }
                 }
-                root.subImg = 0;
+                root.subImgNo = 0;
             }
         }
 
