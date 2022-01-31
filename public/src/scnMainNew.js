@@ -207,7 +207,7 @@ export default class ScnMain extends Phaser.Scene {
                         pos: {
                             x: 0,
                             y: 0,
-                            z: jumps[j]
+                            z: jumps[j] * -1
                         },
                         curve: {
                             x: 0,
@@ -238,6 +238,18 @@ export default class ScnMain extends Phaser.Scene {
                         root.curve.y += p.curve.y;
 
                         slice.update3d();
+
+                        for (let o of this.obstacles) {
+                            if (pos === o.trackPos){
+                                o.pos.x = slice.pos.x;
+                                o.pos.y = slice.pos.y;
+                                o.pos.z = slice.pos.z;
+                                /*console.log(o);
+                                o.curve.x = slice.curve.x;
+                                o.curve.y = slice.curve.y;
+                                o.update3d();*/
+                            }
+                        }
                     }
                 }
             }

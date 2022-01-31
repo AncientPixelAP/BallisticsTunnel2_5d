@@ -24,6 +24,8 @@ export default class TrackGenerator{
             roll: _roll,
             len: _len,
             trackPos: _trackPos,
+            pos: {x: 0, y: 0, z: 0},
+            curve: {x: 0, y: 0},
             asset: _asset,
             sprite: this.scene.add.sprite(0, 0, _asset),
             imgSpd: _imgSpd,
