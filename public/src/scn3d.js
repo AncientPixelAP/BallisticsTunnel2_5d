@@ -28,7 +28,7 @@ export default class Scn3d extends Phaser.Scene {
     create() {
         console.log(this);
         this.cameras.main.setScroll(-this.game.config.width * 0.5, -this.game.config.height * 0.5);
-        this.cameras.main.setBackgroundColor(0xbdd6ff);
+        this.cameras.main.setBackgroundColor(0x000000);
 
         this.cameras.main.fadeFrom(500, 0, 0, 0, false, (_cam, _pct) => {
 
