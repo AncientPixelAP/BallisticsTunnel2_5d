@@ -45,7 +45,7 @@ export default class LevelHangar00{
         this.ship.interact = () => {
             this.scene.hand.setMouseLock(false);
             //localStorage.setItem(SAVEGAMENAME, JSON.stringify(this.saveGame));
-            this.scene.scene.start("ScnMain", { 
+            this.scene.scene.start("ScnRacing", { 
                 bikeData: this.shipStats[this.shipSelect.currentBike],
                 livery: this.shipSelect.currentLivery
             });
