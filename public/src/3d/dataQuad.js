@@ -175,14 +175,14 @@ export default class DataQuad {
                 ptsOoB += 1;
             }
             if (nz < 0) {
-                //nz *= 0.01;
+                nz *= 0.001;
             }
             nz *= this.scene.cam.fov;
             
             let nzMod = nz + this.scene.cam.zOffset;
             let zoom = this.scene.cam.zoom;//400;//2.5 - 0.01
-            this.screenCoords[i].x = (nx / (Math.abs(Math.max(0.1,nzMod)) * 1)) * zoom;
-            this.screenCoords[i].y = (ny / (Math.abs(Math.max(0.1,nzMod)) * 1)) * zoom;
+            this.screenCoords[i].x = (nx / (Math.abs(Math.max(0.1, nzMod)) * 1)) * zoom;
+            this.screenCoords[i].y = (ny / (Math.abs(Math.max(0.1, nzMod)) * 1)) * zoom;
 
             if (outsideScreenSafe === false) {
                 outsideScreenSafe = this.screenCoords[i].x <= this.scene.left || this.screenCoords[i].x >= this.scene.right || this.screenCoords[i].y <= this.scene.top || this.screenCoords[i].y >= this.scene.bottom;
@@ -191,12 +191,12 @@ export default class DataQuad {
             this.zDepth = (1 / Math.abs(nzMod)) * zoom;
 
             //ortho rendering
-            /*this.screenCoords[i].x = nx;
-            this.screenCoords[i].y = ny;*/
+            //this.screenCoords[i].x = nx;
+            //this.screenCoords[i].y = ny;
 
             //clamp screenCoords
             //this.screenCoords[i].x = Math.max(-this.scene.game.config.width * 20, Math.min(this.scene.game.config.width * 20, this.screenCoords[i].x));
-            //this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 20, Math.min(this.scene.game.config.height * 20, this.screenCoords[i].y));)
+            //this.screenCoords[i].y = Math.max(-this.scene.game.config.height * 20, Math.min(this.scene.game.config.height * 20, this.screenCoords[i].y));
 
             if (nz > recZ) {
                 recZ = nzMod;

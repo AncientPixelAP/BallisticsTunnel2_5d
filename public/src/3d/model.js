@@ -116,12 +116,19 @@ export default class Model {
                 let amt = this.mover.target.dir.yaw - this.dir.yaw;
                 toMove.dir.yaw = Math.abs(amt) < Math.abs(this.mover.target.dir.spd) ? amt : this.mover.target.dir.spd;
             }
+            //xz
             if (d > this.mover.target.pos.spd) {
                 finishedMoving = false;
                 let a = Phaser.Math.Angle.Between(this.pos.x, this.pos.z, this.mover.target.pos.x, this.mover.target.pos.z);
                 toMove.offset.x = Math.cos(a) * this.mover.target.pos.spd;
                 toMove.offset.z = Math.sin(a) * this.mover.target.pos.spd;
             }
+            //y
+            /*if(this.pos.y + this.mover.target.pos.spd < this.mover.target.pos.z){
+                toMove.offset.y = this.mover.target.pos.spd;
+            }else if (this.pos.y + this.mover.target.pos.spd > this.mover.target.pos.z) {
+                toMove.offset.y = this.mover.target.pos.spd;
+            }*/
 
             if (finishedMoving === false || finishedTurning === false) {
                 this.translateAndRotate(toMove.offset, toMove.dir);
@@ -137,6 +144,7 @@ export default class Model {
             this.trigger.keep = 0;
             this.trigger.triggered = false;
             this.trigger.onExit();
+            //console.log("exit")
         }
 
         //clear quads and stop drawing if draw has been set to false in the meantime (eg out of view (set int geometry controller))
@@ -321,7 +329,7 @@ export default class Model {
                 q.draw();
             } else {
                 q.calculate3d(_from, _dir);
-                q.drawNo3d(false);
+                q.drawNo3d(_from, _dir, false);
             }
         }
         if (this.debug.drawCollisions === true) {
@@ -477,9 +485,11 @@ export default class Model {
         if (this.trigger.triggered === false) {
             this.trigger.triggered = true;
             this.trigger.onEnter();
+            //console.log("enter")
         } else {
             this.trigger.onOverlap();
             this.trigger.keep = 1;
+            //console.log("overlap")
         }
     }
 
